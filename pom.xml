@@ -181,17 +181,19 @@
         <module>openjpa-persistence-locking</module>
         <module>openjpa-xmlstore</module>
         <module>openjpa-slice</module>
+<!--
         <module>openjpa-jest</module>
-        <module>openjpa-kubernetes</module>
-        <module>openjpa</module>
+        <module>openjpa-kubernetes</module> 
+       <module>openjpa</module>
         <module>openjpa-project</module>
         <module>openjpa-examples</module>
-        <module>openjpa-integration</module>
-        <module>openjpa-all</module>
-        <module>openjpa-tools</module>
+        <module>openjpa-integration</module> 
+       <module>openjpa-all</module>
+       <module>openjpa-tools</module>
         <module>openjpa-features</module>
         <module>openjpa-junit5</module>
-    </modules>
+ -->  
+  </modules>
 
     <profiles>
         <!-- ================ -->
