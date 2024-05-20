@@ -276,7 +276,7 @@
                                         <argument>-classes</argument>
                                         <argument>ba-dua/classes</argument>
                                         <argument>-show-classes</argument>
-                                        <argument>-show-methods</argument>
+                                        <!--<argument>-show-methods</argument>-->
                                         <argument>-xml</argument>
                                         <argument>${project.build.directory}/badua.xml</argument>
                                     </arguments>
