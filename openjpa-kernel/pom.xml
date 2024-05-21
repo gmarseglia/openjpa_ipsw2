@@ -319,7 +319,16 @@
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
                         <configuration>
+                            <threads>4</threads>
                             <targetClasses>
                                 <param>org.apache.openjpa.kernel.ResultShape</param>
                             </targetClasses>
