@@ -20,7 +20,8 @@
 <!--
     Maven release plugin requires the project tag to be on a single line.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -102,7 +103,8 @@
                         <phase>process-classes</phase>
                         <configuration>
                             <target>
-                                <java classname="org.apache.openjpa.ee.WASManagedRuntime" classpathref="maven.runtime.classpath" />
+                                <java classname="org.apache.openjpa.ee.WASManagedRuntime"
+                                      classpathref="maven.runtime.classpath"/>
                             </target>
                         </configuration>
                         <goals>
@@ -114,8 +116,9 @@
                         <phase>process-classes</phase>
                         <configuration>
                             <target>
-                                <java classname="org.apache.openjpa.util.ProxyManagerImpl" classpathref="maven.runtime.classpath">
-                                    <arg line="-utils 5" />
+                                <java classname="org.apache.openjpa.util.ProxyManagerImpl"
+                                      classpathref="maven.runtime.classpath">
+                                    <arg line="-utils 5"/>
                                 </java>
                             </target>
                         </configuration>
@@ -142,7 +145,7 @@
                             </excludes>
                             <archive>
                                 <manifest>
-                                   <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                 </manifest>
                                 <manifestEntries>
                                     <Implementation-Build>${buildNumber}</Implementation-Build>
@@ -276,7 +279,7 @@
                                         <argument>-classes</argument>
                                         <argument>ba-dua/classes</argument>
                                         <argument>-show-classes</argument>
-                                        <!--<argument>-show-methods</argument>-->
+                                        <argument>-show-methods</argument>
                                         <argument>-xml</argument>
                                         <argument>${project.build.directory}/badua.xml</argument>
                                     </arguments>
@@ -294,6 +297,33 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Pit profile -->
+        <profile>
+            <id>pitest</id>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>LATEST</version>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <configuration>
+                            <targetClasses>
+                                <param>org.apache.openjpa.kernel.ResultShape</param>
+                            </targetClasses>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
