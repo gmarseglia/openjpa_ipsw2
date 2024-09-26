@@ -111,21 +111,21 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>generate-standard-sco-proxies</id>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <target>
-                                <java classname="org.apache.openjpa.util.ProxyManagerImpl"
-                                      classpathref="maven.runtime.classpath">
-                                    <arg line="-utils 5"/>
-                                </java>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
+<!--                    <execution>-->
+<!--                        <id>generate-standard-sco-proxies</id>-->
+<!--                        <phase>process-classes</phase>-->
+<!--                        <configuration>-->
+<!--                            <target>-->
+<!--                                <java classname="org.apache.openjpa.util.ProxyManagerImpl"-->
+<!--                                      classpathref="maven.runtime.classpath">-->
+<!--                                    <arg line="-utils 5"/>-->
+<!--                                </java>-->
+<!--                            </target>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
                 </executions>
             </plugin>
             <plugin>
