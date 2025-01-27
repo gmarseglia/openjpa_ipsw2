@@ -95,6 +95,7 @@
     </dependencies>
 
     <properties>
+        <rat.skip>true</rat.skip>
         <customTest.surefireIncludes></customTest.surefireIncludes>
         <customTest.jacocoIncludes></customTest.jacocoIncludes>
         <customTest.baduaArgument></customTest.baduaArgument>
@@ -115,7 +116,7 @@
                     org/apache/openjpa/lib/util/StringUtil.class
                 </customTest.jacocoIncludes>
                 <customTest.baduaArgument>
-                    ba-dua/classes/
+                    target/classes/org/apache/openjpa/lib/util/
                 </customTest.baduaArgument>
                 <customTest.pitestTargetClasses>
                     org.apache.openjpa.lib.util.StringUtil
@@ -134,9 +135,6 @@
         <!-- Custom test definition profile -->
         <profile>
             <id>customTest</id>
-            <properties>
-                <rat.skip>true</rat.skip>
-            </properties>
             <dependencies>
                 <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
                 <dependency>
@@ -315,7 +313,6 @@
                                         <argument>-input</argument>
                                         <argument>${project.build.directory}/coverage.ser</argument>
                                         <argument>-classes</argument>
-                                        <!--                                        <argument>ba-dua/classes</argument>-->
                                         <argument>${customTest.baduaArgument}</argument>
                                         <argument>-show-classes</argument>
                                         <argument>-show-methods</argument>
