@@ -1,6 +1,5 @@
-package org.apache.openjpa.lib;
+package org.apache.openjpa.lib.util;
 
-import org.apache.openjpa.lib.util.StringUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
