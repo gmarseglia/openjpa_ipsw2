@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -135,8 +136,19 @@ public class MyStringUtilTest {
     @ParameterizedTest
     @MethodSource("splitTestArguments")
     @Timeout(value = 5, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
-    public void splitTest(TestState testState){
+    public void splitTest(TestState testState) {
+        logger.info(testState.description);
 
+        MyStringUtilConfigurer.setup(testState);
+
+        String debugMsg = String.format(
+                "str: %s, token: %s, max: %d, expected: %s",
+                testState.str == null ? "null" : testState.str,
+                testState.token == null ? "null" : testState.str,
+                testState.max,
+                Arrays.toString(testState.expectedArray)
+        );
+        logger.info(debugMsg);
     }
 
     public enum StrState {
