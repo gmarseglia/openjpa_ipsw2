@@ -10,4 +10,4 @@ nb-configuration.xml
 nbactions*.xml
 .checkstyle
 
-/openjpa-lib/results/
+/openjpa-lib/results/*/
