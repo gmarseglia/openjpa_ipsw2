@@ -20,7 +20,8 @@
 <!--
     Maven release plugin requires the project tag to be on a single line.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -78,7 +79,337 @@
             <artifactId>geronimo-validation_1.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <properties>
+        <customTest.surefireIncludes></customTest.surefireIncludes>
+        <customTest.jacocoIncludes></customTest.jacocoIncludes>
+        <customTest.baduaArgument></customTest.baduaArgument>
+        <customTest.pitestTargetClasses></customTest.pitestTargetClasses>
+        <customTest.pitestTargetTests></customTest.pitestTargetTests>
+        <customTest.pitestExcludedMethods></customTest.pitestExcludedMethods>
+    </properties>
+
+    <profiles>
+        <!-- Profile for the activation for the StringUtil Test suite -->
+        <profile>
+            <id>myStringUtilSuite</id>
+            <properties>
+                <customTest.surefireIncludes>
+                    MyStringUtilTest.java
+                </customTest.surefireIncludes>
+                <customTest.jacocoIncludes>
+                    org/apache/openjpa/lib/util/StringUtil.class
+                </customTest.jacocoIncludes>
+                <customTest.baduaArgument>
+                    ba-dua/classes/
+                </customTest.baduaArgument>
+                <customTest.pitestTargetClasses>
+                    org.apache.openjpa.lib.util.StringUtil
+                </customTest.pitestTargetClasses>
+                <customTest.pitestTargetTests>
+                    org.apache.openjpa.lib.util.MyStringUtilTest
+                </customTest.pitestTargetTests>
+                <customTest.pitestExcludedMethods>
+                    isEmpty,isNotEmpty,isBlank,isNotBlank,contains,equalsIgnoreCase,replace,trim,trimToNull,join,
+                    ,parse,capitalize,uncapitalize,endsWithIgnoreCase,stripEnd,parseCharString
+                </customTest.pitestExcludedMethods>
+            </properties>
+        </profile>
+
+
+        <!-- Custom test definition profile -->
+        <profile>
+            <id>customTest</id>
+            <properties>
+                <rat.skip>true</rat.skip>
+            </properties>
+            <dependencies>
+                <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+                <dependency>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                    <version>4.11.0</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <!-- Define tests to run -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <!-- List of test to run -->
+                            <includes>
+                                ${customTest.surefireIncludes}
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>ignoreTestFailure</id>
+            <properties>
+                <maven.test.failure.ignore>true</maven.test.failure.ignore>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>onlySuccess</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <environmentVariables>
+                                <flag>onlySuccess</flag>
+                            </environmentVariables>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <configuration>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-only-success</outputDirectory>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <configuration>
+                            <environmentVariables>
+                                <flag>onlySuccess</flag>
+                            </environmentVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Jacoco profile -->
+        <profile>
+            <id>jacoco</id>
+            <build>
+                <plugins>
+                    <!-- Execute tests -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <argLine>@{argLine}</argLine>
+                        </configuration>
+                    </plugin>
+                    <!-- Produce Jacoco report -->
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.8</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <!-- attached to Maven test phase -->
+                            <execution>
+                                <id>report</id>
+                                <phase>test</phase>
+                                <configuration>
+                                    <includes>
+                                        ${customTest.jacocoIncludes}
+                                    </includes>
+                                </configuration>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Badua profile -->
+        <profile>
+            <id>badua</id>
+            <dependencies>
+                <dependency>
+                    <groupId>br.usp.each.saeg</groupId>
+                    <artifactId>ba-dua-cli</artifactId>
+                    <version>0.6.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>br.usp.each.saeg</groupId>
+                    <artifactId>ba-dua-agent-rt</artifactId>
+                    <version>0.6.0</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <!-- Copy agent from dependency -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.10</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>br.usp.each.saeg</groupId>
+                                            <artifactId>ba-dua-agent-rt</artifactId>
+                                            <classifier>all</classifier>
+                                            <version>0.6.0</version>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Execute tests -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <argLine>
+                                -javaagent:target/dependency/ba-dua-agent-rt-0.6.0-all.jar
+                                -Doutput.file=target/coverage.ser
+                            </argLine>
+                        </configuration>
+                    </plugin>
+                    <!-- Produce and prettify badua report -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.5.0</version>
+                        <executions>
+                            <!-- Produce Badua report -->
+                            <execution>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <phase>test</phase>
+                                <configuration>
+                                    <mainClass>br.usp.each.saeg.badua.cli.Report</mainClass>
+                                    <arguments>
+                                        <argument>-input</argument>
+                                        <argument>${project.build.directory}/coverage.ser</argument>
+                                        <argument>-classes</argument>
+                                        <!--                                        <argument>ba-dua/classes</argument>-->
+                                        <argument>${customTest.baduaArgument}</argument>
+                                        <argument>-show-classes</argument>
+                                        <argument>-show-methods</argument>
+                                        <argument>-xml</argument>
+                                        <argument>${project.build.directory}/badua.xml</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <!-- Prettify Badua report -->
+                            <execution>
+                                <id>Prettify Badua Report</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${basedir}/ba-dua/prettify.sh</executable>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Pit profile -->
+        <profile>
+            <id>pitest</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>LATEST</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-junit5-plugin</artifactId>
+                    <version>LATEST</version>
+                </dependency>
+            </dependencies>
+            <properties>
+                <withHistory>false</withHistory>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <environmentVariables>
+                                <flag>pitest</flag>
+                            </environmentVariables>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <environmentVariables>
+                                <flag>pitest</flag>
+                            </environmentVariables>
+                            <reportsDirectory>${project.build.directory}/site/pit-reports</reportsDirectory>
+                            <threads>4</threads>
+                            <targetClasses>
+                                ${customTest.pitestTargetClasses}
+                            </targetClasses>
+                            <targetTests>
+                                ${customTest.pitestTargetTests}
+                            </targetTests>
+                            <timeoutConstant>10000</timeoutConstant>
+                            <avoidCallsTo>
+                                <avoidCallsTo>java.util.logging</avoidCallsTo>
+                                <avoidCallsTo>org.apache.log4j</avoidCallsTo>
+                                <avoidCallsTo>org.slf4j</avoidCallsTo>
+                                <avoidCallsTo>org.apache.commons.logging</avoidCallsTo>
+                            </avoidCallsTo>
+                            <excludedMethods>
+                                ${customTest.pitestExcludedMethods}
+                            </excludedMethods>
+                            <verbose>false</verbose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -99,41 +430,46 @@
                                      uncommitted changes.  Git doesn't do that, so we have to work a bit to
                                      emulate that behavior.  -->
                                 <echo>Determining if there are uncommitted changes...</echo>
-                                <exec outputproperty="git.diff.exitval" resultproperty="diff.state" failonerror="false" failifexecutionfails="false" executable="git">
-                                    <arg line="diff --quiet HEAD" />
+                                <exec outputproperty="git.diff.exitval" resultproperty="diff.state" failonerror="false"
+                                      failifexecutionfails="false" executable="git">
+                                    <arg line="diff --quiet HEAD"/>
                                 </exec>
-                                <exec outputproperty="git.diff.cached.exitval" resultproperty="diff.state.cached" failonerror="false" failifexecutionfails="false" executable="git">
-                                    <arg line="diff --cached --quiet HEAD" />
+                                <exec outputproperty="git.diff.cached.exitval" resultproperty="diff.state.cached"
+                                      failonerror="false" failifexecutionfails="false" executable="git">
+                                    <arg line="diff --cached --quiet HEAD"/>
                                 </exec>
                                 <condition property="uncommitted.changes" value="M" else="">
                                     <or>
-                                        <equals arg1="${diff.state}" arg2="1" />
-                                        <equals arg1="${diff.state.cached}" arg2="1" />
+                                        <equals arg1="${diff.state}" arg2="1"/>
+                                        <equals arg1="${diff.state.cached}" arg2="1"/>
                                     </or>
                                 </condition>
-                                
+
                                 <echo>Getting the 'GIT' revision value</echo>
-                                <exec outputproperty="git.revision" failonerror="false" failifexecutionfails="false" executable="git">
-                                    <arg line="rev-parse --short=7 HEAD" />
+                                <exec outputproperty="git.revision" failonerror="false" failifexecutionfails="false"
+                                      executable="git">
+                                    <arg line="rev-parse --short=7 HEAD"/>
                                 </exec>
                                 <echo>Revision: ${git.revision}${uncommitted.changes}</echo>
 
                                 <echo>Getting the 'PCEnhancer' revision value</echo>
-                                <exec outputproperty="pcenhancer.git.revision" failonerror="false" failifexecutionfails="false" executable="git" append="false">
-                                    <arg line="rev-parse --short=7 HEAD:./../openjpa-kernel/src/main/java/org/apache/openjpa/enhance/PCEnhancer.java" />
+                                <exec outputproperty="pcenhancer.git.revision" failonerror="false"
+                                      failifexecutionfails="false" executable="git" append="false">
+                                    <arg line="rev-parse --short=7 HEAD:./../openjpa-kernel/src/main/java/org/apache/openjpa/enhance/PCEnhancer.java"/>
                                 </exec>
                                 <echo>openjpa.enhancer.revision=${pcenhancer.git.revision}${uncommitted.changes}</echo>
 
                                 <echo>OpenJPA version: ${project.version}</echo>
-                                <condition property="outdir" value="${project.build.outputDirectory}" else="${java.io.tmpdir}/openjpamvntmp">
-                                    <available type="dir" file="${project.build.outputDirectory}" />
+                                <condition property="outdir" value="${project.build.outputDirectory}"
+                                           else="${java.io.tmpdir}/openjpamvntmp">
+                                    <available type="dir" file="${project.build.outputDirectory}"/>
                                 </condition>
-                                <mkdir dir="${outdir}/META-INF" />
+                                <mkdir dir="${outdir}/META-INF"/>
 
                                 <echo file="${outdir}/META-INF/org.apache.openjpa.revision.properties">
-revision.number=${git.revision}${uncommitted.changes}
-openjpa.version=${project.version}
-openjpa.enhancer.revision=${pcenhancer.git.revision}${uncommitted.changes}
+                                    revision.number=${git.revision}${uncommitted.changes}
+                                    openjpa.version=${project.version}
+                                    openjpa.enhancer.revision=${pcenhancer.git.revision}${uncommitted.changes}
                                 </echo>
                             </target>
                         </configuration>
