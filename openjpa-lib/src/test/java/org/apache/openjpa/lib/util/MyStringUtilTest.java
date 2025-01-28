@@ -30,7 +30,7 @@ public class MyStringUtilTest {
                 TokenState.WITHOUT_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
 
@@ -40,7 +40,7 @@ public class MyStringUtilTest {
                 TokenState.NULL,
                 MaxState.LESS_THAN_ZERO,
                 ExpectedState.ILLEGAL_ARGUMENT_EXCEPTION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -49,7 +49,7 @@ public class MyStringUtilTest {
                 TokenState.LENGTH_EQUAL_AS_ZERO,
                 MaxState.LESS_THAN_ZERO,
                 ExpectedState.ILLEGAL_ARGUMENT_EXCEPTION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -58,7 +58,7 @@ public class MyStringUtilTest {
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -67,7 +67,7 @@ public class MyStringUtilTest {
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.EQUAL_AS_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -76,7 +76,7 @@ public class MyStringUtilTest {
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.GREATER_THAN_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -85,7 +85,7 @@ public class MyStringUtilTest {
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.GREATER_THAN_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -94,7 +94,7 @@ public class MyStringUtilTest {
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.GREATER_THAN_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -103,16 +103,16 @@ public class MyStringUtilTest {
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
                 "#10: str is empty",
-                StrState.NULL,
+                StrState.LENGTH_EQUAL_AS_ZERO,
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -121,7 +121,7 @@ public class MyStringUtilTest {
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
                 ExpectedState.OPERATION,
-                false
+                true
         ));
 
 
@@ -163,6 +163,9 @@ public class MyStringUtilTest {
                         testState.expectedArray,
                         StringUtil.split(testState.str, testState.token, testState.max)
                 );
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + testState.expectedState);
         }
     }
 
@@ -201,7 +204,8 @@ public class MyStringUtilTest {
 
         String[] expectedArray;
 
-        public TestState(String description, StrState strState, TokenState tokenState, MaxState maxState, ExpectedState expectedState, boolean successful) {
+        public TestState(String description, StrState strState, TokenState tokenState, MaxState maxState,
+                         ExpectedState expectedState, boolean successful) {
             this.description = description;
             this.strState = strState;
             this.tokenState = tokenState;
