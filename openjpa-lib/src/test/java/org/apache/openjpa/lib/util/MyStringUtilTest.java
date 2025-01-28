@@ -1,5 +1,6 @@
 package org.apache.openjpa.lib.util;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -24,13 +25,14 @@ public class MyStringUtilTest {
         List<Arguments> activeArguments = new ArrayList<>();
 
         availableTestState.add(new TestState(
-                "#01: basic usage",
+                "#01: token without regex special characters",
                 StrState.LAST_TOKEN_IN_BETWEEN_LESS_EQUAL_THAN_MAX_BL,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITHOUT_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
+
 
         availableTestState.add(new TestState(
                 "#02: token is null",
@@ -53,72 +55,72 @@ public class MyStringUtilTest {
         availableTestState.add(new TestState(
                 "#04: max is negative and token at the end",
                 StrState.LAST_TOKEN_AT_END_GREATER_THAN_MAX_EG,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
 
         availableTestState.add(new TestState(
                 "#05: max is 0 and token at the end",
                 StrState.LAST_TOKEN_AT_END_GREATER_THAN_MAX_EG,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.EQUAL_AS_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
 
         availableTestState.add(new TestState(
                 "#06: segment are more than positive max and token at the end",
                 StrState.LAST_TOKEN_AT_END_GREATER_THAN_MAX_EG,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.GREATER_THAN_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
 
         availableTestState.add(new TestState(
                 "#07: segment are less than positive max and token at the end",
                 StrState.LAST_TOKEN_AT_END_LESS_EQUAL_THAN_MAX_EL,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.GREATER_THAN_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
 
         availableTestState.add(new TestState(
                 "#08: segment are more than positive max and token in between",
                 StrState.LAST_TOKEN_IN_BETWEEN_GREATER_THAN_MAX_BG,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.GREATER_THAN_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
 
         availableTestState.add(new TestState(
                 "#09: str is null",
                 StrState.NULL,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
 
         availableTestState.add(new TestState(
                 "#10: str is empty",
                 StrState.NULL,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
 
         availableTestState.add(new TestState(
                 "#11: str does not contain token",
                 StrState.NULL,
-                TokenState.LENGTH_GREATER_THAN_ZERO,
+                TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
-                ExpectedState.SAME_AS_STRING_SPLIT,
+                ExpectedState.OPERATION,
                 false
         ));
 
@@ -146,9 +148,22 @@ public class MyStringUtilTest {
                 testState.str == null ? "null" : testState.str,
                 testState.token == null ? "null" : testState.str,
                 testState.max,
-                Arrays.toString(testState.expectedArray)
+                testState.expectedArray == null ? "null" : Arrays.toString(testState.expectedArray)
         );
         logger.info(debugMsg);
+
+        switch (testState.expectedState) {
+            case ILLEGAL_ARGUMENT_EXCEPTION:
+                Assertions.assertThrows(
+                        IllegalArgumentException.class,
+                        () -> StringUtil.split(testState.str, testState.token, testState.max));
+                break;
+            case OPERATION:
+                Assertions.assertArrayEquals(
+                        testState.expectedArray,
+                        StringUtil.split(testState.str, testState.token, testState.max)
+                );
+        }
     }
 
     public enum StrState {
@@ -160,7 +175,7 @@ public class MyStringUtilTest {
     }
 
     public enum TokenState {
-        NULL, LENGTH_EQUAL_AS_ZERO, LENGTH_GREATER_THAN_ZERO
+        NULL, LENGTH_EQUAL_AS_ZERO, WITH_REGEX_SPECIAL_CHARS, WITHOUT_REGEX_SPECIAL_CHARS
     }
 
     public enum MaxState {
@@ -169,7 +184,7 @@ public class MyStringUtilTest {
 
 
     public enum ExpectedState {
-        ILLEGAL_ARGUMENT_EXCEPTION, SAME_AS_STRING_SPLIT
+        ILLEGAL_ARGUMENT_EXCEPTION, OPERATION
     }
 
     public static class TestState {

@@ -5,20 +5,31 @@ public class MyStringUtilConfigurer {
     public static final String SUBSTRING_1 = "one";
     public static final String SUBSTRING_2 = "two";
     public static final String SUBSTRING_3 = "three";
+    public static final String TOKEN_WITHOUT_REGEX_SPECIAL_CHARS = "0";
+    public static final String TOKEN_WITH_REGEX_SPECIAL_CHARS = ".";
+    public static final String TOKEN_WITH_ESCAPED_REGEX_SPECIAL_CHARS = "\\.";
 
     public static void setup(MyStringUtilTest.TestState testState) {
 
         /* Set up token */
         String token;
+        String regexEquivalentToken;
         switch (testState.tokenState) {
             case NULL:
                 token = null;
+                regexEquivalentToken = null;
                 break;
             case LENGTH_EQUAL_AS_ZERO:
                 token = "";
+                regexEquivalentToken = "";
                 break;
-            case LENGTH_GREATER_THAN_ZERO:
-                token = ".";
+            case WITHOUT_REGEX_SPECIAL_CHARS:
+                token = TOKEN_WITHOUT_REGEX_SPECIAL_CHARS;
+                regexEquivalentToken = TOKEN_WITHOUT_REGEX_SPECIAL_CHARS;
+                break;
+            case WITH_REGEX_SPECIAL_CHARS:
+                token = TOKEN_WITH_REGEX_SPECIAL_CHARS;
+                regexEquivalentToken = TOKEN_WITH_ESCAPED_REGEX_SPECIAL_CHARS;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + testState.tokenState);
@@ -73,14 +84,21 @@ public class MyStringUtilConfigurer {
 
         /* Set up expectedArray */
         String[] expectedArray;
-        if (str == null || str.isEmpty()) {
-            expectedArray = new String[0];
-        } else {
-            // #TODO
-            throw new IllegalStateException("expectedArray NOT IMPLEMENTED YET!");
+        switch (testState.expectedState) {
+            case OPERATION:
+                if (str == null || str.isEmpty()) {
+                    expectedArray = new String[0];
+                } else {
+                    expectedArray = str.split(regexEquivalentToken, max);
+                }
+                break;
+            case ILLEGAL_ARGUMENT_EXCEPTION:
+                expectedArray = null;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + testState.expectedState);
         }
         testState.expectedArray = expectedArray;
     }
-
 
 }
