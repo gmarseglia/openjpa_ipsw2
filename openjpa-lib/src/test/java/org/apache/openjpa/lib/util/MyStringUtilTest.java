@@ -117,7 +117,7 @@ public class MyStringUtilTest {
 
         availableTestState.add(new TestState(
                 "#11: str does not contain token",
-                StrState.NULL,
+                StrState.WITHOUT_TOKEN,
                 TokenState.WITH_REGEX_SPECIAL_CHARS,
                 MaxState.LESS_THAN_ZERO,
                 ExpectedState.OPERATION,
