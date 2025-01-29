@@ -8,6 +8,7 @@ public class MyStringUtilConfigurer {
     public static final String TOKEN_WITHOUT_REGEX_SPECIAL_CHARS = "0";
     public static final String TOKEN_WITH_REGEX_SPECIAL_CHARS = ".";
     public static final String TOKEN_WITH_ESCAPED_REGEX_SPECIAL_CHARS = "\\.";
+    public static int GREATER_THAN_0_MAX = 2;
 
     public static void setup(MyStringUtilTest.TestState testState) {
 
@@ -46,7 +47,7 @@ public class MyStringUtilConfigurer {
                 max = 0;
                 break;
             case GREATER_THAN_ZERO:
-                max = 1;
+                max = GREATER_THAN_0_MAX;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + testState.maxState);
