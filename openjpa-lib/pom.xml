@@ -133,28 +133,64 @@
             </properties>
         </profile>
 
-        <!-- Profile for the activation for the all the test suites -->
+        <!-- Profile for the activation for the Options Test suite -->
         <profile>
-            <id>myAllSuite</id>
+            <id>myOptionsSuite</id>
             <properties>
                 <customTest.surefireIncludes>
-                    MyStringUtilTest.java
+                    MyOptionsTest.java
                 </customTest.surefireIncludes>
                 <customTest.jacocoIncludes>
-                    org/apache/openjpa/lib/util/StringUtil.class
+                    org/apache/openjpa/lib/util/Options.class
                 </customTest.jacocoIncludes>
                 <customTest.baduaArgument>
                     target/classes/org/apache/openjpa/lib/util/
                 </customTest.baduaArgument>
                 <customTest.pitestTargetClasses>
-                    org.apache.openjpa.lib.util.StringUtil
+                    org.apache.openjpa.lib.util.Options
                 </customTest.pitestTargetClasses>
                 <customTest.pitestTargetTests>
-                    org.apache.openjpa.lib.util.MyStringUtilTest
+                    org.apache.openjpa.lib.util.MyOptionsTest
+                </customTest.pitestTargetTests>
+                <customTest.pitestExcludedMethods>
+                    setFromCmdLine,trimQuote,findOptionsFor,getType,invoke,stringToObject,getDefaultValue,
+                    ,getBooleanProperty,getFloatProperty,getDoubleProperty,getLongProperty,getIntProperty,
+                    ,getProperty,removeBooleanProperty,removeFloatProperty,removeDoubleProperty,removeLongProperty
+                    ,removeIntProperty,removeProperty,
+                </customTest.pitestExcludedMethods>
+            </properties>
+        </profile>
+
+        <!-- Profile for the activation for the all the test suites -->
+        <profile>
+            <id>myAllSuite</id>
+            <properties>
+                <customTest.surefireIncludes>
+                    MyStringUtilTest.java,
+                    ,MyOptionsTest.java
+                </customTest.surefireIncludes>
+                <customTest.jacocoIncludes>
+                    org/apache/openjpa/lib/util/StringUtil.class,
+                    ,org/apache/openjpa/lib/util/Options.class
+                </customTest.jacocoIncludes>
+                <customTest.baduaArgument>
+                    target/classes/org/apache/openjpa/lib/util/
+                </customTest.baduaArgument>
+                <customTest.pitestTargetClasses>
+                    org.apache.openjpa.lib.util.StringUtil,
+                    ,org.apache.openjpa.lib.util.Options
+                </customTest.pitestTargetClasses>
+                <customTest.pitestTargetTests>
+                    org.apache.openjpa.lib.util.MyStringUtilTest,
+                    ,org.apache.openjpa.lib.util.MyOptionsTest
                 </customTest.pitestTargetTests>
                 <customTest.pitestExcludedMethods>
                     isEmpty,isNotEmpty,isBlank,isNotBlank,contains,equalsIgnoreCase,replace,trim,trimToNull,join,
-                    ,parse,capitalize,uncapitalize,endsWithIgnoreCase,stripEnd,parseCharString
+                    ,parse,capitalize,uncapitalize,endsWithIgnoreCase,stripEnd,parseCharString,
+                    setFromCmdLine,trimQuote,findOptionsFor,getType,invoke,stringToObject,getDefaultValue,
+                    ,getBooleanProperty,getFloatProperty,getDoubleProperty,getLongProperty,getIntProperty,
+                    ,getProperty,removeBooleanProperty,removeFloatProperty,removeDoubleProperty,removeLongProperty
+                    ,removeIntProperty,removeProperty,
                 </customTest.pitestExcludedMethods>
             </properties>
         </profile>
