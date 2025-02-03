@@ -10,7 +10,13 @@ public class MyOptionsObjects {
         SpecialClass deepestSpecialClassAttribute1(String id);
     }
 
-    public static class ObjectWithYYNN {
+    public interface IntermediateInterface {
+        Object intermediateDeeper();
+
+        Object intermediateDeepest();
+    }
+
+    public static class ObjectWithYYNN implements IntermediateInterface {
         private ObjectWithYYNN deeper;
         private DeepestObjectType1 deepest;
 
@@ -28,6 +34,16 @@ public class MyOptionsObjects {
 
         public void setDeepest(DeepestObjectType1 deepest) {
             this.deepest = deepest;
+        }
+
+        @Override
+        public Object intermediateDeeper() {
+            return this.deeper;
+        }
+
+        @Override
+        public Object intermediateDeepest() {
+            return this.deepest;
         }
     }
 

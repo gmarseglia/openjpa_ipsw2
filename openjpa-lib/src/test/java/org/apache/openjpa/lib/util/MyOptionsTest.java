@@ -1,6 +1,7 @@
 package org.apache.openjpa.lib.util;
 
 import org.apache.openjpa.lib.util.MyOptionsEnums.*;
+import org.apache.openjpa.lib.util.MyOptionsObjects.IntermediateInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
 public class MyOptionsTest {
@@ -193,6 +195,20 @@ public class MyOptionsTest {
 
                 /* Assert the correct value */
                 Assertions.assertEquals(expected, actual, String.format("property.id: %s", property.id));
+
+                /* Assert the correct way is used to proceed towards the deepest object */
+                if (property.expectedSet.contains(ExpectedFlags.VIA_GETTER)) {
+                    try {
+                        IntermediateInterface top = (IntermediateInterface) testState.obj;
+                        IntermediateInterface middle = (IntermediateInterface) top.intermediateDeeper();
+                        top.getClass().getMethod("getDeeper").invoke(verify(top, atLeastOnce()));
+                        middle.getClass().getMethod("getDeepest").invoke(verify(middle, atLeastOnce()));
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    } catch (NoSuchMethodException e) {
+                        throw new IllegalStateException("obj was not built correctly");
+                    }
+                }
 
                 /* Assert the correct final way has been used to set the attribute */
                 if (property.expectedSet.contains(ExpectedFlags.FINAL_SETTER)) {
