@@ -3,10 +3,13 @@ package org.apache.openjpa.lib.util;
 import org.apache.openjpa.lib.util.MyOptionsEnums.*;
 import org.apache.openjpa.lib.util.MyOptionsTest.PropertyState;
 import org.apache.openjpa.lib.util.MyOptionsTest.TestState;
+import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Set;
+
+import static org.mockito.Mockito.spy;
 
 public class MyOptionsConfigurer {
 
@@ -107,13 +110,14 @@ public class MyOptionsConfigurer {
                 testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR
         ) {
             Object deepestObject = getDeepestObject();
+            deepestObject = spy(deepestObject);
             testState.deepestObject = deepestObject;
             if (this.maxDepth == 0) {
                 testState.obj = deepestObject;
             } else {
-                MyOptionsObjects.ObjectWithYYNN obj = new MyOptionsObjects.ObjectWithYYNN();
-                obj.setDeeper(new MyOptionsObjects.ObjectWithYYNN());
-                obj.getDeeper().setDeepest((MyOptionsObjects.DeepestObject) deepestObject);
+                MyOptionsObjects.ObjectWithYYNN obj = spy(new MyOptionsObjects.ObjectWithYYNN());
+                obj.setDeeper(spy(new MyOptionsObjects.ObjectWithYYNN()));
+                obj.getDeeper().setDeepest((MyOptionsObjects.DeepestObjectType1) deepestObject);
             }
             return;
         }
@@ -134,7 +138,7 @@ public class MyOptionsConfigurer {
                     p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
             ) {
-                return new MyOptionsObjects.DeepestObject();
+                return new MyOptionsObjects.DeepestObjectType1();
             }
         }
 

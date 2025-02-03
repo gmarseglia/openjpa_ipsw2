@@ -10,9 +10,25 @@ public class MyOptionsObjects {
         SpecialClass deepestSpecialClassAttribute1(String id);
     }
 
+    public interface DeepestSetterForProperty1 {
+        void setPrimitiveAttribute1(int primitiveAttribute1);
+
+        void setStringAttribute1(String stringAttribute1);
+
+        void setSpecialClassAttribute1(SpecialClass specialClassAttribute1);
+    }
+
+    public interface DeepestSetterForProperty2 {
+        void setPrimitiveAttribute2(int primitiveAttribute1);
+
+        void setStringAttribute2(String stringAttribute1);
+
+        void setSpecialClassAttribute2(SpecialClass specialClassAttribute1);
+    }
+
     public static class ObjectWithYYNN {
         private ObjectWithYYNN deeper;
-        private DeepestObject deepest;
+        private DeepestObjectType1 deepest;
 
         public ObjectWithYYNN getDeeper() {
             return deeper;
@@ -22,16 +38,16 @@ public class MyOptionsObjects {
             this.deeper = deeper;
         }
 
-        public DeepestObject getDeepest() {
+        public DeepestObjectType1 getDeepest() {
             return deepest;
         }
 
-        public void setDeepest(DeepestObject deepest) {
+        public void setDeepest(DeepestObjectType1 deepest) {
             this.deepest = deepest;
         }
     }
 
-    public static class DeepestObject implements DeepestInterface {
+    public static class DeepestObjectType1 implements DeepestInterface, DeepestSetterForProperty1 {
         public String StringAttribute2;
         public SpecialClass SpecialClassAttribute2;
         public int PrimitiveAttribute2;
@@ -39,21 +55,23 @@ public class MyOptionsObjects {
         private SpecialClass SpecialClassAttribute1;
         private int PrimitiveAttribute1;
 
-        public DeepestObject() {
+        public DeepestObjectType1() {
         }
 
-        public void setStringAttribute1(String stringAttribute1) {
-            StringAttribute1 = stringAttribute1;
-        }
-
-        public void setSpecialClassAttribute1(SpecialClass specialClassAttribute1) {
-            SpecialClassAttribute1 = specialClassAttribute1;
-        }
-
+        @Override
         public void setPrimitiveAttribute1(int primitiveAttribute1) {
             PrimitiveAttribute1 = primitiveAttribute1;
         }
 
+        @Override
+        public void setStringAttribute1(String stringAttribute1) {
+            StringAttribute1 = stringAttribute1;
+        }
+
+        @Override
+        public void setSpecialClassAttribute1(SpecialClass specialClassAttribute1) {
+            SpecialClassAttribute1 = specialClassAttribute1;
+        }
 
         @Override
         public int deepestPrimitiveAttribute(String id) {

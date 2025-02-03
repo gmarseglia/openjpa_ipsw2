@@ -2,17 +2,22 @@ package org.apache.openjpa.lib.util;
 
 import org.apache.openjpa.lib.util.MyOptionsEnums.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import static org.mockito.Mockito.verify;
 
 public class MyOptionsTest {
 
@@ -71,7 +76,7 @@ public class MyOptionsTest {
 
     @ParameterizedTest
     @MethodSource("splitTestArguments")
-    public void setIntoTest(TestState testState) {
+    public void setIntoTest(TestState testState) throws InvocationTargetException, IllegalAccessException {
         logger.info(testState.description);
 
         MyOptionsConfigurer configurer = new MyOptionsConfigurer();
@@ -90,14 +95,43 @@ public class MyOptionsTest {
             Object actual;
 
             if (property.expectedSet.contains(ExpectedFlags.SET)) {
+                Runnable verifySetMethodCalled = null;
                 switch (property.a23) {
                     case PRIMITIVE:
                         expected = new Integer(expectedStr);
                         actual = deepestObject.deepestPrimitiveAttribute(property.id);
+
+                        /* Find the set method */
+                        try {
+                            String SetMethodName = "setPrimitiveAttribute" + property.id;
+                            Method setMethod = deepestObject.getClass().getMethod(SetMethodName, int.class);
+                            verifySetMethodCalled = () -> {
+                                try {
+                                    setMethod.invoke(verify(testState.deepestObject), (int) expected);
+                                } catch (IllegalAccessException | InvocationTargetException e) {
+                                    throw new AssertionError(e);
+                                }
+                            };
+                        } catch (NoSuchMethodException ignored) {
+                        }
                         break;
                     case STRING:
                         expected = expectedStr;
                         actual = deepestObject.deepestStringAttribute(property.id);
+
+                        /* Find the set method */
+                        try {
+                            String SetMethodName = "setStringAttribute" + property.id;
+                            Method setMethod = deepestObject.getClass().getMethod(SetMethodName, int.class);
+                            verifySetMethodCalled = () -> {
+                                try {
+                                    setMethod.invoke(verify(testState.deepestObject), (String) expected);
+                                } catch (IllegalAccessException | InvocationTargetException e) {
+                                    throw new AssertionError(e);
+                                }
+                            };
+                        } catch (NoSuchMethodException ignored) {
+                        }
                         break;
                     case CLASS_WITH_ADEQUATE_CONSTRUCTOR:
                         expected = new SpecialClass(expectedStr);
@@ -107,9 +141,19 @@ public class MyOptionsTest {
                         throw new IllegalStateException("Unexpected value: " + property.a23);
                 }
 
+                /* Assert the correct value */
                 Assertions.assertEquals(expected, actual);
-            }
 
+                /* Assert the correct final way has been used to set the attribute */
+                if (property.expectedSet.contains(ExpectedFlags.FINAL_SETTER)) {
+                    assert verifySetMethodCalled != null;
+                    verifySetMethodCalled.run();
+                } else if (property.expectedSet.contains(ExpectedFlags.FINAL_PUBLIC)) {
+                    if (verifySetMethodCalled != null) {
+                        Assertions.assertThrows(AssertionError.class, (Executable) verifySetMethodCalled);
+                    }
+                }
+            }
         }
     }
 
