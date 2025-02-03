@@ -5,9 +5,8 @@ import org.apache.openjpa.lib.util.MyOptionsObjects.*;
 import org.apache.openjpa.lib.util.MyOptionsTest.PropertyState;
 import org.apache.openjpa.lib.util.MyOptionsTest.TestState;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
-
-import static org.mockito.Mockito.spy;
 
 public class MyOptionsConfigurer {
 
@@ -100,8 +99,8 @@ public class MyOptionsConfigurer {
         Class deepestClass = getDeepestClass();
         DeepestInterface deepest;
         try {
-            deepest = spy((DeepestInterface) deepestClass.newInstance());
-        } catch (InstantiationException | IllegalAccessException e) {
+            deepest = (DeepestInterface) deepestClass.getConstructor(boolean.class).newInstance(false);
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
 
@@ -118,16 +117,19 @@ public class MyOptionsConfigurer {
         if (intermediateClass == null)
             throw new IllegalStateException("#TODO: not implemented combination of B1, B2, B3, B4");
 
+        IntermediateInterface top;
+        IntermediateInterface middle;
         try {
-            IntermediateInterface top = spy((IntermediateInterface) intermediateClass.newInstance());
-            IntermediateInterface middle = spy((IntermediateInterface) intermediateClass.newInstance());
+            top = (IntermediateInterface) intermediateClass.getConstructor(boolean.class).newInstance(false);
+            middle = (IntermediateInterface) intermediateClass.getConstructor(boolean.class).newInstance(false);
             testState.obj = top;
             if (testState.c1 == C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES) {
                 top.intermediateSetDeeper(middle);
                 if (testState.c2 == C2_last_instance_is_null.NON_NULL_LAST_INSTANCE)
-                    top.intermediateSetDeepest(deepest);
+                    middle.intermediateSetDeepest(deepest);
             }
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

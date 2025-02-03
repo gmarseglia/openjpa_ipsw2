@@ -1,5 +1,7 @@
 package org.apache.openjpa.lib.util;
 
+import static org.apache.openjpa.lib.util.MyOptionsMethodTracker.addMethod;
+
 public class MyOptionsObjects {
 
     public interface AnyDeepInterface {
@@ -7,7 +9,6 @@ public class MyOptionsObjects {
     }
 
     public interface DeepestInterface {
-
         int deepestPrimitiveAttribute(String id);
 
         String deepestStringAttribute(String id);
@@ -20,8 +21,6 @@ public class MyOptionsObjects {
 
         void intermediateSetDeeper(IntermediateInterface lower);
 
-        DeepestInterface intermediateGetDeepest();
-
         void intermediateSetDeepest(DeepestInterface deepest);
     }
 
@@ -30,21 +29,31 @@ public class MyOptionsObjects {
         private DeepestObjectType1 deepest;
 
         private ObjectWithYYNNType1() {
+            addMethod("new IntermediateInterface");
+        }
+
+        public ObjectWithYYNNType1(boolean track) {
+            if (track)
+                addMethod("new IntermediateInterface");
         }
 
         public ObjectWithYYNNType1 getDeeper() {
+            addMethod("getDeeper");
             return deeper;
         }
 
         public void setDeeper(ObjectWithYYNNType1 deeper) {
+            addMethod("setDeeper");
             this.deeper = deeper;
         }
 
         public DeepestObjectType1 getDeepest() {
+            addMethod("getDeepest");
             return deepest;
         }
 
         public void setDeepest(DeepestObjectType1 deepest) {
+            addMethod("setDeepest");
             this.deepest = deepest;
         }
 
@@ -65,7 +74,7 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deeper.setDeepest((DeepestObjectType1) deepest);
+            this.deepest = (DeepestObjectType1) deepest;
         }
     }
 
@@ -74,21 +83,31 @@ public class MyOptionsObjects {
         private DeepestObjectType1 deepest;
 
         public ObjectWithYYNYType1() {
+            addMethod("new IntermediateInterface");
+        }
+
+        public ObjectWithYYNYType1(boolean track) {
+            if (track)
+                addMethod("new IntermediateInterface");
         }
 
         public ObjectWithYYNYType1 getDeeper() {
+            addMethod("getDeeper");
             return deeper;
         }
 
         public void setDeeper(ObjectWithYYNYType1 deeper) {
+            addMethod("setDeeper");
             this.deeper = deeper;
         }
 
         public DeepestObjectType1 getDeepest() {
+            addMethod("getDeepest");
             return deepest;
         }
 
         public void setDeepest(DeepestObjectType1 deepest) {
+            addMethod("setDeepest");
             this.deepest = deepest;
         }
 
@@ -109,7 +128,7 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deeper.setDeepest((DeepestObjectType1) deepest);
+            this.deepest = (DeepestObjectType1) deepest;
         }
     }
 
@@ -122,17 +141,26 @@ public class MyOptionsObjects {
         private int PrimitiveAttribute1;
 
         public DeepestObjectType1() {
+            addMethod("new DeepestInterface");
+        }
+
+        public DeepestObjectType1(boolean track){
+            if (track)
+                addMethod("new DeepestInterface");
         }
 
         public void setPrimitiveAttribute1(int primitiveAttribute1) {
+            addMethod("setPrimitiveAttribute1");
             PrimitiveAttribute1 = primitiveAttribute1;
         }
 
         public void setStringAttribute1(String stringAttribute1) {
+            addMethod("setStringAttribute1");
             StringAttribute1 = stringAttribute1;
         }
 
         public void setSpecialClassAttribute1(SpecialClass specialClassAttribute1) {
+            addMethod("setSpecialClassAttribute1");
             SpecialClassAttribute1 = specialClassAttribute1;
         }
 
