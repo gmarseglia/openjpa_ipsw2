@@ -10,22 +10,6 @@ public class MyOptionsObjects {
         SpecialClass deepestSpecialClassAttribute1(String id);
     }
 
-    public interface DeepestSetterForProperty1 {
-        void setPrimitiveAttribute1(int primitiveAttribute1);
-
-        void setStringAttribute1(String stringAttribute1);
-
-        void setSpecialClassAttribute1(SpecialClass specialClassAttribute1);
-    }
-
-    public interface DeepestSetterForProperty2 {
-        void setPrimitiveAttribute2(int primitiveAttribute1);
-
-        void setStringAttribute2(String stringAttribute1);
-
-        void setSpecialClassAttribute2(SpecialClass specialClassAttribute1);
-    }
-
     public static class ObjectWithYYNN {
         private ObjectWithYYNN deeper;
         private DeepestObjectType1 deepest;
@@ -47,7 +31,7 @@ public class MyOptionsObjects {
         }
     }
 
-    public static class DeepestObjectType1 implements DeepestInterface, DeepestSetterForProperty1 {
+    public static class DeepestObjectType1 implements DeepestInterface {
         public String StringAttribute2;
         public SpecialClass SpecialClassAttribute2;
         public int PrimitiveAttribute2;
@@ -58,17 +42,14 @@ public class MyOptionsObjects {
         public DeepestObjectType1() {
         }
 
-        @Override
         public void setPrimitiveAttribute1(int primitiveAttribute1) {
             PrimitiveAttribute1 = primitiveAttribute1;
         }
 
-        @Override
         public void setStringAttribute1(String stringAttribute1) {
             StringAttribute1 = stringAttribute1;
         }
 
-        @Override
         public void setSpecialClassAttribute1(SpecialClass specialClassAttribute1) {
             SpecialClassAttribute1 = specialClassAttribute1;
         }

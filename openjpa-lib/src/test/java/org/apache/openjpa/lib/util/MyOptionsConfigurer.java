@@ -3,10 +3,7 @@ package org.apache.openjpa.lib.util;
 import org.apache.openjpa.lib.util.MyOptionsEnums.*;
 import org.apache.openjpa.lib.util.MyOptionsTest.PropertyState;
 import org.apache.openjpa.lib.util.MyOptionsTest.TestState;
-import org.mockito.Mockito;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Set;
 
 import static org.mockito.Mockito.spy;
@@ -26,12 +23,11 @@ public class MyOptionsConfigurer {
         findMaxDepth();
 
         /* Create Object */
-        /* Use B1, B2, B3, B4 and B5.1, B5.2, B5.3, B5.4, B5.5, C2.1 for each property */
+        /* Use B1, B2, B3, B4, C1 and B5.1, B5.2, B5.3, B5.4, B5.5, C2.1 for each property */
         setupB();   // this also create the obj
 
-        /* Setup A1, C1 */
+        /* Setup A1 */
         setupA1();
-        setupC1();
 
         /* Set up A2.1, A2.2, A2.3 for each property */
         for (PropertyState property : testState.properties) {
@@ -103,23 +99,27 @@ public class MyOptionsConfigurer {
         if (testState.b4 == null)
             testState.b4 = B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR;
 
-        /* This is the case YYNN */
-        if (testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
-                testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
-                testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
-                testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR
-        ) {
-            Object deepestObject = getDeepestObject();
-            deepestObject = spy(deepestObject);
-            testState.deepestObject = deepestObject;
-            if (this.maxDepth == 0) {
-                testState.obj = deepestObject;
-            } else {
+        Object deepestObject = getDeepestObject();
+        deepestObject = spy(deepestObject);
+        testState.deepestObject = deepestObject;
+
+        if (this.maxDepth == 0) {
+            testState.obj = deepestObject;
+            return;
+        } else {
+            /* This is the case YYNN */
+            if (testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
+                    testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
+                    testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
+                    testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR &&
+                    testState.c1 == C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES
+            ) {
                 MyOptionsObjects.ObjectWithYYNN obj = spy(new MyOptionsObjects.ObjectWithYYNN());
                 obj.setDeeper(spy(new MyOptionsObjects.ObjectWithYYNN()));
                 obj.getDeeper().setDeepest((MyOptionsObjects.DeepestObjectType1) deepestObject);
+                testState.obj = obj;
+                return;
             }
-            return;
         }
 
         throw new IllegalStateException("#TODO: not implemented combination of B1, B2, B3, B4");
@@ -145,18 +145,6 @@ public class MyOptionsConfigurer {
         throw new IllegalStateException("#TODO: not implemented combination of B5.1, B5.2, B5.3, B5.4, B5.5");
     }
 
-    private void setupC1() {
-        if (testState.c1 != null) {
-            switch (testState.c1) {
-                case NULL_INTERMEDIATE_INSTANCES:
-                case NON_NULL_INTERMEDIATE_INSTANCES:
-                    throw new IllegalStateException("#TODO implement: " + testState.c1);
-                default:
-                    throw new IllegalStateException("Unexpected value: " + testState.c1);
-            }
-        }
-    }
-
     private void setupPropertyA21to23(PropertyState property) {
         /* Setup A2.1 */
         String prefixKey;
@@ -165,7 +153,8 @@ public class MyOptionsConfigurer {
                 prefixKey = "";
                 break;
             case DEPTH_GREATER_THAN_ZERO:
-                throw new IllegalStateException("#TODO implement: " + property.a21);
+                prefixKey = "deeper.deepest.";
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + property.a21);
         }
@@ -195,15 +184,16 @@ public class MyOptionsConfigurer {
                 singleValue = STRING_VALUE;
                 property.typeOfValues = "String";
                 break;
-            case CLASS_WITH_ADEQUATE_CONSTRUCTOR:
-                throw new IllegalStateException("#TODO implement: " + property.a23);
+            case SPECIAL_CLASS:
+                singleValue = STRING_VALUE;
+                property.typeOfValues = "SpecialClass";
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + property.a23);
         }
 
         /* Finally set up the key of the property */
         property.key = prefixKey + property.typeOfValues + "Attribute" + property.id;
-
 
         /* Finally set up the value of the property */
         StringBuilder valueBuilder = new StringBuilder();
@@ -214,14 +204,6 @@ public class MyOptionsConfigurer {
             }
         }
         property.value = valueBuilder.toString();
-    }
-
-    private boolean isSetterForProperty(Method method, String propertyId) {
-        return (method.getName().contains("set") && method.getName().contains("Attribute" + propertyId));
-    }
-
-    private boolean isFieldForProperty(Field field, String propertyId) {
-        return (field.getName().contains(propertyId));
     }
 
     private void setupPropertyC21(PropertyState property) {

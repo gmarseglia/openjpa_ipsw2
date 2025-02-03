@@ -30,11 +30,11 @@ public class MyOptionsTest {
         List<Arguments> activeArguments = new ArrayList<>();
 
         availableTestState.add(new TestState(
-                "#01: Multiple shallow properties using SUT and defaults",
+                "#02: Multiple shallow properties using SUT and defaults",
                 A1_Number_of_properties.MULTIPLE_PROPERTIES,
                 null, null, null, null,
                 null,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A2_1_depth.DEPTH_ZERO,
@@ -53,7 +53,7 @@ public class MyOptionsTest {
                 A2_1_depth.DEPTH_ZERO,
                 A2_2_number_of_values.ONE_VALUE,
                 A2_3_type_of_values.STRING,
-                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                A2_4_SUT_or_defaults.ONLY_IN_DEFAULTS,
                 B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER,
                 null,
                 null,
@@ -63,6 +63,41 @@ public class MyOptionsTest {
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_PUBLIC)
         )));
 
+        availableTestState.add(new TestState(
+                "#03: Multiple deep properties, with getter",
+                A1_Number_of_properties.MULTIPLE_PROPERTIES,
+                B1_intermediate_getter.WITH_INTERMEDIATE_GETTER,
+                B2_intermediate_setter.WITH_INTERMEDIATE_SETTER,
+                B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES,
+                B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
+                C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
+                true
+        ).addProperty(new PropertyState(
+                "1",
+                A2_1_depth.DEPTH_GREATER_THAN_ZERO,
+                A2_2_number_of_values.ONE_VALUE,
+                A2_3_type_of_values.PRIMITIVE,
+                A2_4_SUT_or_defaults.BOTH_SUT_AND_DEFAULTS,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                C2_1_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER)
+        )).addProperty(new PropertyState(
+                "2",
+                A2_1_depth.DEPTH_GREATER_THAN_ZERO,
+                A2_2_number_of_values.ONE_VALUE,
+                A2_3_type_of_values.SPECIAL_CLASS,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER,
+                null, null,
+                B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
+                B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
+                C2_1_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_PUBLIC)
+        )));
 
         for (TestState state : availableTestState) {
             if (!state.successful)
@@ -76,7 +111,7 @@ public class MyOptionsTest {
 
     @ParameterizedTest
     @MethodSource("splitTestArguments")
-    public void setIntoTest(TestState testState) throws InvocationTargetException, IllegalAccessException {
+    public void setIntoTest(TestState testState) {
         logger.info(testState.description);
 
         MyOptionsConfigurer configurer = new MyOptionsConfigurer();
@@ -84,7 +119,7 @@ public class MyOptionsTest {
 
         logger.info("setup done");
 
-        testState.SUT.setInto(testState.obj);
+        Options unsetOptions = testState.SUT.setInto(testState.obj);
 
         logger.info("setInto done");
 
@@ -121,8 +156,8 @@ public class MyOptionsTest {
 
                         /* Find the set method */
                         try {
-                            String SetMethodName = "setStringAttribute" + property.id;
-                            Method setMethod = deepestObject.getClass().getMethod(SetMethodName, int.class);
+                            String setMethodName = "setStringAttribute" + property.id;
+                            Method setMethod = deepestObject.getClass().getMethod(setMethodName, int.class);
                             verifySetMethodCalled = () -> {
                                 try {
                                     setMethod.invoke(verify(testState.deepestObject), (String) expected);
@@ -133,16 +168,31 @@ public class MyOptionsTest {
                         } catch (NoSuchMethodException ignored) {
                         }
                         break;
-                    case CLASS_WITH_ADEQUATE_CONSTRUCTOR:
+                    case SPECIAL_CLASS:
                         expected = new SpecialClass(expectedStr);
                         actual = deepestObject.deepestSpecialClassAttribute1(property.id);
+
+                        /* Find the set method */
+                        try {
+                            String setMethodName = "setSpecialClassAttribute" + property.id;
+                            Method setMethod = deepestObject.getClass().getMethod(setMethodName, SpecialClass.class);
+                            SpecialClass argument = new SpecialClass(property.value);
+                            verifySetMethodCalled = () -> {
+                                try {
+                                    setMethod.invoke(verify(testState.deepestObject), argument);
+                                } catch (IllegalAccessException | InvocationTargetException e) {
+                                    throw new AssertionError(e);
+                                }
+                            };
+                        } catch (NoSuchMethodException ignored) {
+                        }
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + property.a23);
                 }
 
                 /* Assert the correct value */
-                Assertions.assertEquals(expected, actual);
+                Assertions.assertEquals(expected, actual, String.format("property.id: %s", property.id));
 
                 /* Assert the correct final way has been used to set the attribute */
                 if (property.expectedSet.contains(ExpectedFlags.FINAL_SETTER)) {

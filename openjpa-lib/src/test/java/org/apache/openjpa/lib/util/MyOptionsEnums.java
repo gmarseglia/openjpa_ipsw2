@@ -15,7 +15,7 @@ public class MyOptionsEnums {
     }
 
     public enum A2_3_type_of_values {
-        PRIMITIVE, STRING, CLASS_WITH_ADEQUATE_CONSTRUCTOR
+        PRIMITIVE, STRING, SPECIAL_CLASS
     }
 
     public enum A2_4_SUT_or_defaults {
