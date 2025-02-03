@@ -11,20 +11,24 @@ public class MyOptionsObjects {
     }
 
     public interface IntermediateInterface {
-        Object intermediateDeeper();
+        Object intermediateGetDeeper();
 
-        Object intermediateDeepest();
+        void intermediateSetDeeper(IntermediateInterface lower);
+
+        Object intermediateGetDeepest();
+
+        void intermediateSetDeepest(DeepestInterface deepest);
     }
 
-    public static class ObjectWithYYNN implements IntermediateInterface {
-        private ObjectWithYYNN deeper;
+    public static class ObjectWithYYNNType1 implements IntermediateInterface {
+        private ObjectWithYYNNType1 deeper;
         private DeepestObjectType1 deepest;
 
-        public ObjectWithYYNN getDeeper() {
+        public ObjectWithYYNNType1 getDeeper() {
             return deeper;
         }
 
-        public void setDeeper(ObjectWithYYNN deeper) {
+        public void setDeeper(ObjectWithYYNNType1 deeper) {
             this.deeper = deeper;
         }
 
@@ -37,13 +41,23 @@ public class MyOptionsObjects {
         }
 
         @Override
-        public Object intermediateDeeper() {
+        public Object intermediateGetDeeper() {
             return this.deeper;
         }
 
         @Override
-        public Object intermediateDeepest() {
+        public void intermediateSetDeeper(IntermediateInterface lower) {
+            this.deeper = (ObjectWithYYNNType1) lower;
+        }
+
+        @Override
+        public Object intermediateGetDeepest() {
             return this.deepest;
+        }
+
+        @Override
+        public void intermediateSetDeepest(DeepestInterface deepest) {
+            this.deeper.setDeepest((DeepestObjectType1) deepest);
         }
     }
 

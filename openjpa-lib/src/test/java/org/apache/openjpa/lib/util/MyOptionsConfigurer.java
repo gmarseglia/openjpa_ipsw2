@@ -1,6 +1,9 @@
 package org.apache.openjpa.lib.util;
 
 import org.apache.openjpa.lib.util.MyOptionsEnums.*;
+import org.apache.openjpa.lib.util.MyOptionsObjects.DeepestObjectType1;
+import org.apache.openjpa.lib.util.MyOptionsObjects.IntermediateInterface;
+import org.apache.openjpa.lib.util.MyOptionsObjects.ObjectWithYYNNType1;
 import org.apache.openjpa.lib.util.MyOptionsTest.PropertyState;
 import org.apache.openjpa.lib.util.MyOptionsTest.TestState;
 
@@ -24,7 +27,7 @@ public class MyOptionsConfigurer {
 
         /* Create Object */
         /* Use B1, B2, B3, B4, C1, C2 and B5.1, B5.2, B5.3, B5.4, B5.5 for each property */
-        setupB();   // this also create the obj
+        createObj();   // this also create the obj
 
         /* Setup A1 */
         setupA1();
@@ -84,17 +87,14 @@ public class MyOptionsConfigurer {
         }
     }
 
-    private void setupB() {
+    private void createObj() {
         /* Set up B1 characteristics */
         if (testState.b1 == null)
             testState.b1 = B1_intermediate_getter.WITH_INTERMEDIATE_GETTER;
-
         if (testState.b2 == null)
             testState.b2 = B2_intermediate_setter.WITH_INTERMEDIATE_SETTER;
-
         if (testState.b3 == null)
             testState.b3 = B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES;
-
         if (testState.b4 == null)
             testState.b4 = B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR;
 
@@ -103,20 +103,26 @@ public class MyOptionsConfigurer {
         testState.deepestObject = deepestObject;
 
         if (this.maxDepth == 0) {
-            testState.obj = deepestObject;
+            if (testState.c2 == C2_last_instance_is_null.NON_NULL_LAST_INSTANCE)
+                testState.obj = deepestObject;
+
             return;
         } else {
             /* This is the case YYNN */
-            if (testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
+            if (getDeepestClass() == DeepestObjectType1.class &&
+                    testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
                     testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
                     testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                     testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR &&
                     testState.c1 == C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES
             ) {
-                MyOptionsObjects.ObjectWithYYNN obj = spy(new MyOptionsObjects.ObjectWithYYNN());
-                obj.setDeeper(spy(new MyOptionsObjects.ObjectWithYYNN()));
-                obj.getDeeper().setDeepest((MyOptionsObjects.DeepestObjectType1) deepestObject);
+                IntermediateInterface obj = spy(new ObjectWithYYNNType1());
                 testState.obj = obj;
+                if (testState.c1 == C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES) {
+                    obj.intermediateSetDeeper(spy(new ObjectWithYYNNType1()));
+                    if (testState.c2 == C2_last_instance_is_null.NON_NULL_LAST_INSTANCE)
+                        obj.intermediateSetDeepest((MyOptionsObjects.DeepestInterface) deepestObject);
+                }
                 return;
             }
         }
@@ -124,7 +130,7 @@ public class MyOptionsConfigurer {
         throw new IllegalStateException("#TODO: not implemented combination of B1, B2, B3, B4");
     }
 
-    private Object getDeepestObject() {
+    private Class getDeepestClass() {
         if (testState.properties.size() == 2) {
             PropertyState p1 = testState.properties.get(0);
             PropertyState p2 = testState.properties.get(1);
@@ -137,11 +143,21 @@ public class MyOptionsConfigurer {
                     p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
             ) {
-                return new MyOptionsObjects.DeepestObjectType1();
+                return DeepestObjectType1.class;
             }
         }
 
         throw new IllegalStateException("#TODO: not implemented combination of B5.1, B5.2, B5.3, B5.4, B5.5");
+    }
+
+    private Object getDeepestObject() {
+        Class deepestClass = getDeepestClass();
+
+        try {
+            return deepestClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setupPropertyA21to23(PropertyState property) {
