@@ -35,7 +35,7 @@ public class MyOptionsTest {
                 "#02: Multiple shallow properties using SUT and defaults",
                 A1_Number_of_properties.MULTIPLE_PROPERTIES,
                 null, null, null, null,
-                null,
+                null, C2_last_instance_is_null.NULL_LAST_INSTANCE,
                 true
         ).addProperty(new PropertyState(
                 "1",
@@ -48,7 +48,6 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                C2_1_last_instance_is_null.NON_NULL_LAST_INSTANCE,
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER)
         )).addProperty(new PropertyState(
                 "2",
@@ -61,7 +60,6 @@ public class MyOptionsTest {
                 null,
                 B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
                 B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
-                C2_1_last_instance_is_null.NON_NULL_LAST_INSTANCE,
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_PUBLIC)
         )));
 
@@ -73,6 +71,7 @@ public class MyOptionsTest {
                 B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES,
                 B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
                 C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
+                C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
                 true
         ).addProperty(new PropertyState(
                 "1",
@@ -85,7 +84,6 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                C2_1_last_instance_is_null.NON_NULL_LAST_INSTANCE,
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER)
         )).addProperty(new PropertyState(
                 "2",
@@ -97,9 +95,43 @@ public class MyOptionsTest {
                 null, null,
                 B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
                 B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
-                C2_1_last_instance_is_null.NON_NULL_LAST_INSTANCE,
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_PUBLIC)
         )));
+
+        // availableTestState.add(new TestState(
+        //         "#04: Multiple deep properties, with getter returning null",
+        //         A1_Number_of_properties.MULTIPLE_PROPERTIES,
+        //         B1_intermediate_getter.WITH_INTERMEDIATE_GETTER,
+        //         B2_intermediate_setter.WITH_INTERMEDIATE_SETTER,
+        //         B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES,
+        //         B4_intermediate_javabean_constructor.WITH_JAVABEAN_CONSTRUCTOR,
+        //         C1_intermediate_instances_are_null.NULL_INTERMEDIATE_INSTANCES,
+        //         C2_last_instance_is_null.NULL_LAST_INSTANCE,
+        //         false
+        // ).addProperty(new PropertyState(
+        //         "1",
+        //         A2_1_depth.DEPTH_GREATER_THAN_ZERO,
+        //         A2_2_number_of_values.ONE_VALUE,
+        //         A2_3_type_of_values.PRIMITIVE,
+        //         A2_4_SUT_or_defaults.ONLY_IN_SUT,
+        //         B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+        //         B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES,
+        //         B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+        //         B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+        //         null,
+        //         EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_NEW_SETTER_GETTER, ExpectedFlags.FINAL_SETTER)
+        // )).addProperty(new PropertyState(
+        //         "2",
+        //         A2_1_depth.DEPTH_GREATER_THAN_ZERO,
+        //         A2_2_number_of_values.ONE_VALUE,
+        //         A2_3_type_of_values.PRIMITIVE,
+        //         A2_4_SUT_or_defaults.ONLY_IN_SUT,
+        //         B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER,
+        //         null, null,
+        //         B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
+        //         B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
+        //         EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_NEW_SETTER_GETTER, ExpectedFlags.FINAL_PUBLIC)
+        // )));
 
         for (TestState state : availableTestState) {
             if (!state.successful)
@@ -234,7 +266,6 @@ public class MyOptionsTest {
         B5_3_parsable_for_setter b53;
         B5_4_deepest_public_attribute b54;
         B5_5_parsable_for_public_attribute b55;
-        C2_1_last_instance_is_null c21;
         Set<ExpectedFlags> expectedSet;
 
         String key;
@@ -245,8 +276,7 @@ public class MyOptionsTest {
         public PropertyState(
                 String id, A2_1_depth a21, A2_2_number_of_values a22, A2_3_type_of_values a23, A2_4_SUT_or_defaults a24,
                 B5_1_deepest_setter b51, B5_2_number_of_parameter_of_deepest_setter b52, B5_3_parsable_for_setter b53,
-                B5_4_deepest_public_attribute b54, B5_5_parsable_for_public_attribute b55,
-                C2_1_last_instance_is_null c21, Set<ExpectedFlags> expectedSet) {
+                B5_4_deepest_public_attribute b54, B5_5_parsable_for_public_attribute b55, Set<ExpectedFlags> expectedSet) {
             this.id = id;
             this.a21 = a21;
             this.a22 = a22;
@@ -257,7 +287,6 @@ public class MyOptionsTest {
             this.b53 = b53;
             this.b54 = b54;
             this.b55 = b55;
-            this.c21 = c21;
             this.expectedSet = expectedSet;
         }
     }
@@ -270,6 +299,7 @@ public class MyOptionsTest {
         B3_intermediate_public_attributes b3;
         B4_intermediate_javabean_constructor b4;
         C1_intermediate_instances_are_null c1;
+        C2_last_instance_is_null c2;
         ArrayList<PropertyState> properties = new ArrayList<>();
         boolean successful;
 
@@ -280,7 +310,7 @@ public class MyOptionsTest {
         public TestState(
                 String description, A1_Number_of_properties a1, B1_intermediate_getter b1, B2_intermediate_setter b2,
                 B3_intermediate_public_attributes b3, B4_intermediate_javabean_constructor b4,
-                C1_intermediate_instances_are_null c1, boolean successful) {
+                C1_intermediate_instances_are_null c1, C2_last_instance_is_null c2, boolean successful) {
             this.description = description;
             this.a1 = a1;
             this.b1 = b1;
@@ -288,6 +318,7 @@ public class MyOptionsTest {
             this.b3 = b3;
             this.b4 = b4;
             this.c1 = c1;
+            this.c2 = c2;
             this.successful = successful;
         }
 

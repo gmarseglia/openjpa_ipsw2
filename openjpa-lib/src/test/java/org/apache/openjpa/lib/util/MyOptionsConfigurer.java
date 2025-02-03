@@ -23,7 +23,7 @@ public class MyOptionsConfigurer {
         findMaxDepth();
 
         /* Create Object */
-        /* Use B1, B2, B3, B4, C1 and B5.1, B5.2, B5.3, B5.4, B5.5, C2.1 for each property */
+        /* Use B1, B2, B3, B4, C1, C2 and B5.1, B5.2, B5.3, B5.4, B5.5 for each property */
         setupB();   // this also create the obj
 
         /* Setup A1 */
@@ -39,7 +39,6 @@ public class MyOptionsConfigurer {
 
         /* Set up  */
         for (PropertyState property : testState.properties) {
-            setupPropertyC21(property);
             setupExpected(property);
         }
 
@@ -204,18 +203,6 @@ public class MyOptionsConfigurer {
             }
         }
         property.value = valueBuilder.toString();
-    }
-
-    private void setupPropertyC21(PropertyState property) {
-        switch (property.c21) {
-            case NULL_LAST_INSTANCE:
-                throw new IllegalStateException("#TODO implement: " + property.c21);
-            case NON_NULL_LAST_INSTANCE:
-                // No need to do anything
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + property.c21);
-        }
     }
 
     private void setupExpected(PropertyState property) {

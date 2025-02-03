@@ -62,7 +62,7 @@ public class MyOptionsEnums {
         NULL_INTERMEDIATE_INSTANCES, NON_NULL_INTERMEDIATE_INSTANCES
     }
 
-    public enum C2_1_last_instance_is_null {
+    public enum C2_last_instance_is_null {
         NULL_LAST_INSTANCE, NON_NULL_LAST_INSTANCE
     }
 
