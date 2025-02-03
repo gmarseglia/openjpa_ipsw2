@@ -2,7 +2,12 @@ package org.apache.openjpa.lib.util;
 
 public class MyOptionsObjects {
 
+    public interface AnyDeepInterface {
+        DeepestInterface intermediateGetDeepest();
+    }
+
     public interface DeepestInterface {
+
         int deepestPrimitiveAttribute(String id);
 
         String deepestStringAttribute(String id);
@@ -11,18 +16,21 @@ public class MyOptionsObjects {
     }
 
     public interface IntermediateInterface {
-        Object intermediateGetDeeper();
+        IntermediateInterface intermediateGetDeeper();
 
         void intermediateSetDeeper(IntermediateInterface lower);
 
-        Object intermediateGetDeepest();
+        DeepestInterface intermediateGetDeepest();
 
         void intermediateSetDeepest(DeepestInterface deepest);
     }
 
-    public static class ObjectWithYYNNType1 implements IntermediateInterface {
+    public static class ObjectWithYYNNType1 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithYYNNType1 deeper;
         private DeepestObjectType1 deepest;
+
+        private ObjectWithYYNNType1() {
+        }
 
         public ObjectWithYYNNType1 getDeeper() {
             return deeper;
@@ -41,7 +49,7 @@ public class MyOptionsObjects {
         }
 
         @Override
-        public Object intermediateGetDeeper() {
+        public IntermediateInterface intermediateGetDeeper() {
             return this.deeper;
         }
 
@@ -51,8 +59,8 @@ public class MyOptionsObjects {
         }
 
         @Override
-        public Object intermediateGetDeepest() {
-            return this.deepest;
+        public DeepestInterface intermediateGetDeepest() {
+            return this.deeper.deepest;
         }
 
         @Override
@@ -61,7 +69,51 @@ public class MyOptionsObjects {
         }
     }
 
-    public static class DeepestObjectType1 implements DeepestInterface {
+    public static class ObjectWithYYNYType1 implements IntermediateInterface, AnyDeepInterface {
+        private ObjectWithYYNYType1 deeper;
+        private DeepestObjectType1 deepest;
+
+        public ObjectWithYYNYType1() {
+        }
+
+        public ObjectWithYYNYType1 getDeeper() {
+            return deeper;
+        }
+
+        public void setDeeper(ObjectWithYYNYType1 deeper) {
+            this.deeper = deeper;
+        }
+
+        public DeepestObjectType1 getDeepest() {
+            return deepest;
+        }
+
+        public void setDeepest(DeepestObjectType1 deepest) {
+            this.deepest = deepest;
+        }
+
+        @Override
+        public IntermediateInterface intermediateGetDeeper() {
+            return this.deeper;
+        }
+
+        @Override
+        public void intermediateSetDeeper(IntermediateInterface lower) {
+            this.deeper = (ObjectWithYYNYType1) lower;
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this.deeper.deepest;
+        }
+
+        @Override
+        public void intermediateSetDeepest(DeepestInterface deepest) {
+            this.deeper.setDeepest((DeepestObjectType1) deepest);
+        }
+    }
+
+    public static class DeepestObjectType1 implements DeepestInterface, AnyDeepInterface {
         public String StringAttribute2;
         public SpecialClass SpecialClassAttribute2;
         public int PrimitiveAttribute2;
@@ -82,6 +134,11 @@ public class MyOptionsObjects {
 
         public void setSpecialClassAttribute1(SpecialClass specialClassAttribute1) {
             SpecialClassAttribute1 = specialClassAttribute1;
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this;
         }
 
         @Override
@@ -114,6 +171,4 @@ public class MyOptionsObjects {
             throw new IllegalStateException("Unexpected id: " + id);
         }
     }
-
-
 }

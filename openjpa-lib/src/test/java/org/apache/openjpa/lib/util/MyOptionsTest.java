@@ -1,6 +1,8 @@
 package org.apache.openjpa.lib.util;
 
 import org.apache.openjpa.lib.util.MyOptionsEnums.*;
+import org.apache.openjpa.lib.util.MyOptionsObjects.AnyDeepInterface;
+import org.apache.openjpa.lib.util.MyOptionsObjects.DeepestInterface;
 import org.apache.openjpa.lib.util.MyOptionsObjects.IntermediateInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
@@ -157,7 +159,7 @@ public class MyOptionsTest {
 
         logger.info("setInto done");
 
-        MyOptionsObjects.DeepestInterface deepestObject = (MyOptionsObjects.DeepestInterface) testState.deepestObject;
+        DeepestInterface deepestObject = ((AnyDeepInterface) testState.obj).intermediateGetDeepest();
         for (PropertyState property : testState.properties) {
             String expectedStr = property.value;
             Object expected;
@@ -176,7 +178,7 @@ public class MyOptionsTest {
                             Method setMethod = deepestObject.getClass().getMethod(SetMethodName, int.class);
                             verifySetMethodCalled = () -> {
                                 try {
-                                    setMethod.invoke(verify(testState.deepestObject), (int) expected);
+                                    setMethod.invoke(verify(deepestObject), (int) expected);
                                 } catch (IllegalAccessException | InvocationTargetException e) {
                                     throw new AssertionError(e);
                                 }
@@ -194,7 +196,7 @@ public class MyOptionsTest {
                             Method setMethod = deepestObject.getClass().getMethod(setMethodName, int.class);
                             verifySetMethodCalled = () -> {
                                 try {
-                                    setMethod.invoke(verify(testState.deepestObject), (String) expected);
+                                    setMethod.invoke(verify(deepestObject), (String) expected);
                                 } catch (IllegalAccessException | InvocationTargetException e) {
                                     throw new AssertionError(e);
                                 }
@@ -213,7 +215,7 @@ public class MyOptionsTest {
                             SpecialClass argument = new SpecialClass(property.value);
                             verifySetMethodCalled = () -> {
                                 try {
-                                    setMethod.invoke(verify(testState.deepestObject), argument);
+                                    setMethod.invoke(verify(deepestObject), argument);
                                 } catch (IllegalAccessException | InvocationTargetException e) {
                                     throw new AssertionError(e);
                                 }
@@ -305,7 +307,6 @@ public class MyOptionsTest {
 
         Options SUT;
         Object obj;
-        Object deepestObject;
 
         public TestState(
                 String description, A1_Number_of_properties a1, B1_intermediate_getter b1, B2_intermediate_setter b2,
