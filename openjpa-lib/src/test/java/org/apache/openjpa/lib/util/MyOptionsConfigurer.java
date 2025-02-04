@@ -157,7 +157,8 @@ public class MyOptionsConfigurer {
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectType1.class;
-            } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+            } else if (p1.a23 == A2_3_type_of_values.PRIMITIVE &&
+                    p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
                     p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
