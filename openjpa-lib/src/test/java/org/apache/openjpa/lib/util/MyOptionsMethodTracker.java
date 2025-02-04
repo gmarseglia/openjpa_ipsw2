@@ -10,8 +10,14 @@ public class MyOptionsMethodTracker {
         methodCallList.add(newString);
     }
 
-    public static boolean verify(String methodName) {
+    public static boolean containsMethod(String methodName) {
         return methodCallList.contains(methodName);
+    }
+
+    public static void clearMethods() {
+        while (!methodCallList.isEmpty()) {
+            methodCallList.remove(0);
+        }
     }
 
     public static List<String> getMethods() {

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.apache.openjpa.lib.util.MyOptionsMethodTracker.verify;
+import static org.apache.openjpa.lib.util.MyOptionsMethodTracker.containsMethod;
 
 public class MyOptionsTest {
 
@@ -296,42 +296,42 @@ public class MyOptionsTest {
 
                 /* Assert the correct way is used to proceed towards the deepest object */
                 if (property.expectedSet.contains(ExpectedFlags.VIA_GETTER)) {
-                    Assertions.assertFalse(verify("new IntermediateInterface"));
-                    Assertions.assertTrue(verify("getDeeper"));
-                    Assertions.assertFalse(verify("setDeeper"));
-                    Assertions.assertTrue(verify("getDeepest"));
-                    Assertions.assertFalse(verify("setDeepest"));
+                    Assertions.assertFalse(containsMethod("new IntermediateInterface"));
+                    Assertions.assertTrue(containsMethod("getDeeper"));
+                    Assertions.assertFalse(containsMethod("setDeeper"));
+                    Assertions.assertTrue(containsMethod("getDeepest"));
+                    Assertions.assertFalse(containsMethod("setDeepest"));
                 } else if (property.expectedSet.contains(ExpectedFlags.VIA_NEW_SETTER_GETTER)) {
-                    Assertions.assertTrue(verify("new IntermediateInterface"));
-                    Assertions.assertTrue(verify("getDeeper"));
-                    Assertions.assertTrue(verify("setDeeper"));
-                    Assertions.assertTrue(verify("getDeepest"));
-                    Assertions.assertTrue(verify("setDeepest"));
+                    Assertions.assertTrue(containsMethod("new IntermediateInterface"));
+                    Assertions.assertTrue(containsMethod("getDeeper"));
+                    Assertions.assertTrue(containsMethod("setDeeper"));
+                    Assertions.assertTrue(containsMethod("getDeepest"));
+                    Assertions.assertTrue(containsMethod("setDeepest"));
                 } else if (property.expectedSet.contains(ExpectedFlags.VIA_NEW_SETTER)) {
-                    Assertions.assertTrue(verify("new IntermediateInterface"));
-                    Assertions.assertFalse(verify("getDeeper"));
-                    Assertions.assertTrue(verify("setDeeper"));
-                    Assertions.assertFalse(verify("getDeepest"));
-                    Assertions.assertTrue(verify("setDeepest"));
+                    Assertions.assertTrue(containsMethod("new IntermediateInterface"));
+                    Assertions.assertFalse(containsMethod("getDeeper"));
+                    Assertions.assertTrue(containsMethod("setDeeper"));
+                    Assertions.assertFalse(containsMethod("getDeepest"));
+                    Assertions.assertTrue(containsMethod("setDeepest"));
                 } else if (property.expectedSet.contains(ExpectedFlags.VIA_NEW_PUBLIC)) {
-                    Assertions.assertTrue(verify("new IntermediateInterface"));
-                    Assertions.assertFalse(verify("getDeeper"));
-                    Assertions.assertFalse(verify("setDeeper"));
-                    Assertions.assertFalse(verify("getDeepest"));
-                    Assertions.assertFalse(verify("setDeepest"));
+                    Assertions.assertTrue(containsMethod("new IntermediateInterface"));
+                    Assertions.assertFalse(containsMethod("getDeeper"));
+                    Assertions.assertFalse(containsMethod("setDeeper"));
+                    Assertions.assertFalse(containsMethod("getDeepest"));
+                    Assertions.assertFalse(containsMethod("setDeepest"));
                 } else if (property.expectedSet.contains(ExpectedFlags.VIA_PUBLIC)) {
-                    Assertions.assertFalse(verify("new IntermediateInterface"));
-                    Assertions.assertFalse(verify("getDeeper"));
-                    Assertions.assertFalse(verify("setDeeper"));
-                    Assertions.assertFalse(verify("getDeepest"));
-                    Assertions.assertFalse(verify("setDeepest"));
+                    Assertions.assertFalse(containsMethod("new IntermediateInterface"));
+                    Assertions.assertFalse(containsMethod("getDeeper"));
+                    Assertions.assertFalse(containsMethod("setDeeper"));
+                    Assertions.assertFalse(containsMethod("getDeepest"));
+                    Assertions.assertFalse(containsMethod("setDeepest"));
                 }
 
                 /* Assert the correct final way has been used to set the attribute */
                 if (property.expectedSet.contains(ExpectedFlags.FINAL_SETTER)) {
-                    Assertions.assertTrue(verify(setMethodName), String.format("method '%s' was not called", setMethodName));
+                    Assertions.assertTrue(containsMethod(setMethodName), String.format("method '%s' was not called", setMethodName));
                 } else if (property.expectedSet.contains(ExpectedFlags.FINAL_PUBLIC)) {
-                    Assertions.assertFalse(verify(setMethodName), String.format("method '%s' was called", setMethodName));
+                    Assertions.assertFalse(containsMethod(setMethodName), String.format("method '%s' was called", setMethodName));
                 }
             }
         }

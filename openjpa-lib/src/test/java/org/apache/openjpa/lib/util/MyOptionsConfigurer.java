@@ -19,6 +19,9 @@ public class MyOptionsConfigurer {
     public void setup(TestState testState) {
         this.testState = testState;
 
+        /* Clear the method tracker */
+        MyOptionsMethodTracker.clearMethods();
+
         /* Determine maxDepth */
         findMaxDepth();
 
