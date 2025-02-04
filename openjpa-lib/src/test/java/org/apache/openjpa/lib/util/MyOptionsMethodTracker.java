@@ -13,4 +13,8 @@ public class MyOptionsMethodTracker {
     public static boolean verify(String methodName) {
         return methodCallList.contains(methodName);
     }
+
+    public static List<String> getMethods() {
+        return methodCallList;
+    }
 }
