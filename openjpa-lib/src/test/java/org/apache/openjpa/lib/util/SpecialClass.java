@@ -9,6 +9,10 @@ public class SpecialClass {
         this.value = value;
     }
 
+    public String getValue() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return "ClassFromString{" + "value='" + value + '\'' + '}';

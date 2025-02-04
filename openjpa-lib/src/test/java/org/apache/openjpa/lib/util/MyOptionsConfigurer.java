@@ -140,6 +140,60 @@ public class MyOptionsConfigurer {
         }
     }
 
+    private Class getDeepestClass() {
+        if (testState.properties.size() == 1) {
+            PropertyState p1 = testState.properties.get(0);
+
+            if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectType2.class;
+            } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectType1.class;
+            }
+        } else if (testState.properties.size() == 2) {
+            PropertyState p1 = testState.properties.get(0);
+            PropertyState p2 = testState.properties.get(1);
+
+            if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
+                    p2.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
+                    p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
+                    p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectType1.class;
+            }
+        } else if (testState.properties.size() == 3) {
+            PropertyState p1 = testState.properties.get(0);
+            PropertyState p2 = testState.properties.get(1);
+            PropertyState p3 = testState.properties.get(2);
+
+            if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
+                    p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
+                    p3.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p3.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p3.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p3.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectType3.class;
+            }
+        }
+
+        throw new IllegalStateException("#TODO: not implemented combination of B5.1, B5.2, B5.3, B5.4, B5.5");
+    }
+
     private Class getIntermediateClass() {
         /* This is the case YYNN */
         if (getDeepestClass() == DeepestObjectType1.class &&
@@ -149,6 +203,13 @@ public class MyOptionsConfigurer {
                 testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR
         ) {
             return ObjectWithYYNNType1.class;
+        } else if (getDeepestClass() == DeepestObjectType3.class &&
+                testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
+                testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
+                testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
+                testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR
+        ) {
+            return ObjectWithYYNNType3.class;
         } else if (getDeepestClass() == DeepestObjectType1.class &&
                 testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
                 testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
@@ -182,40 +243,6 @@ public class MyOptionsConfigurer {
             return ObjectWithNNNNType1.class;
         }
         return null;
-    }
-
-    private Class getDeepestClass() {
-        if (testState.properties.size() == 2) {
-            PropertyState p1 = testState.properties.get(0);
-            PropertyState p2 = testState.properties.get(1);
-
-            if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
-                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
-                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
-                    p2.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
-                    p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
-                    p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
-            ) {
-                return DeepestObjectType1.class;
-            }
-        } else if (testState.properties.size() == 1) {
-            PropertyState p1 = testState.properties.get(0);
-
-            if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
-                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
-            ) {
-                return DeepestObjectType2.class;
-            } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
-                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
-                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
-            ) {
-                return DeepestObjectType1.class;
-            }
-        }
-
-        throw new IllegalStateException("#TODO: not implemented combination of B5.1, B5.2, B5.3, B5.4, B5.5");
     }
 
     private void setupPropertyA21to23(PropertyState property) {

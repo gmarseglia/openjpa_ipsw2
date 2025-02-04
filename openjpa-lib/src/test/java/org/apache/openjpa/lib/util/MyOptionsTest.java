@@ -280,11 +280,61 @@ public class MyOptionsTest {
                 EnumSet.of(ExpectedFlags.NOT_SET)
         )));
 
+        availableTestState.add(new TestState(
+                "#10: Multiple properties with multiple values",
+                A1_Number_of_properties.MULTIPLE_PROPERTIES,
+                B1_intermediate_getter.WITH_INTERMEDIATE_GETTER,
+                B2_intermediate_setter.WITH_INTERMEDIATE_SETTER,
+                B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES,
+                B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
+                C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
+                C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                false
+        ).addProperty(new PropertyState(
+                "1",
+                A2_1_depth.DEPTH_GREATER_THAN_ZERO,
+                A2_2_number_of_values.MULTIPLE_VALUES,
+                A2_3_type_of_values.PRIMITIVE,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.COMBINE)
+        )).addProperty(new PropertyState(
+                "2",
+                A2_1_depth.DEPTH_GREATER_THAN_ZERO,
+                A2_2_number_of_values.MULTIPLE_VALUES,
+                A2_3_type_of_values.STRING,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.COMBINE)
+        )).addProperty(new PropertyState(
+                "3",
+                A2_1_depth.DEPTH_GREATER_THAN_ZERO,
+                A2_2_number_of_values.MULTIPLE_VALUES,
+                A2_3_type_of_values.SPECIAL_CLASS,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.COMBINE)
+        )));
+
+
         for (TestState state : availableTestState) {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            activeArguments.add(Arguments.of(state));
+            if (state.description.contains("#"))   // #TODO: remove
+                activeArguments.add(Arguments.of(state));
         }
 
         return activeArguments.stream();
@@ -318,17 +368,60 @@ public class MyOptionsTest {
                 String setMethodName;
                 switch (property.a23) {
                     case PRIMITIVE:
-                        expected = new Integer(expectedStr);
+                        // Compute expected value
+                        if (property.a22 == A2_2_number_of_values.ONE_VALUE) {
+                            expected = new Integer(expectedStr);
+                        } else if (property.a22 == A2_2_number_of_values.MULTIPLE_VALUES) {
+                            int first, second, third;
+                            if (property.expectedSet.contains(ExpectedFlags.COMBINE)) {
+                                first = new Integer(property.value.split(",")[0]);
+                                second = new Integer(property.value.split(",")[1]);
+                                third = new Integer(property.value.split(",")[2]);
+                                expected = first + second + third;
+                            } else {
+                                throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
+                            }
+                        } else {
+                            throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
+                        }
                         actual = deepestObject.deepestPrimitiveAttribute(property.id);
                         setMethodName = "setPrimitiveAttribute" + property.id;
                         break;
                     case STRING:
-                        expected = expectedStr;
+                        if (property.a22 == A2_2_number_of_values.ONE_VALUE) {
+                            expected = expectedStr;
+                        } else if (property.a22 == A2_2_number_of_values.MULTIPLE_VALUES) {
+                            String first, second, third;
+                            if (property.expectedSet.contains(ExpectedFlags.COMBINE)) {
+                                first = property.value.split(",")[0];
+                                second = property.value.split(",")[1];
+                                third = property.value.split(",")[2];
+                                expected = first + second + third;
+                            } else {
+                                throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
+                            }
+                        } else {
+                            throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
+                        }
                         actual = deepestObject.deepestStringAttribute(property.id);
                         setMethodName = "setStringAttribute" + property.id;
                         break;
                     case SPECIAL_CLASS:
-                        expected = new SpecialClass(expectedStr);
+                        if (property.a22 == A2_2_number_of_values.ONE_VALUE) {
+                            expected = new SpecialClass(expectedStr);
+                        } else if (property.a22 == A2_2_number_of_values.MULTIPLE_VALUES) {
+                            String first, second, third;
+                            if (property.expectedSet.contains(ExpectedFlags.COMBINE)) {
+                                first = property.value.split(",")[0];
+                                second = property.value.split(",")[1];
+                                third = property.value.split(",")[2];
+                                expected = new SpecialClass(first + second + third);
+                            } else {
+                                throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
+                            }
+                        } else {
+                            throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
+                        }
                         actual = deepestObject.deepestSpecialClassAttribute1(property.id);
                         setMethodName = "setSpecialClassAttribute" + property.id;
                         break;
