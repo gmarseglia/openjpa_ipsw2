@@ -179,7 +179,22 @@ public class MyOptionsConfigurer {
                     p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectType1.class;
+            } else if (p1.a22 == A2_2_number_of_values.MULTIPLE_VALUES &&
+                    p1.a23 == A2_3_type_of_values.STRING &&
+                    p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
+                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
+                    p2.a22 == A2_2_number_of_values.MULTIPLE_VALUES &&
+                    p2.a23 == A2_3_type_of_values.STRING &&
+                    p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_LESS_VALUES &&
+                    p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectType5.class;
             }
+
         } else if (testState.properties.size() == 3) {
             PropertyState p1 = testState.properties.get(0);
             PropertyState p2 = testState.properties.get(1);

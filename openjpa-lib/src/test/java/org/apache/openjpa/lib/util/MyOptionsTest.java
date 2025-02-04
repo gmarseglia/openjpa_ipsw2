@@ -298,7 +298,7 @@ public class MyOptionsTest {
                 B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
                 C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
                 C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A2_1_depth.DEPTH_GREATER_THAN_ZERO,
@@ -357,12 +357,44 @@ public class MyOptionsTest {
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_PRIMITIVE_LAST_VALUE)
         )));
 
+        availableTestState.add(new TestState(
+                "#12: Different amount of values from setter for String type",
+                A1_Number_of_properties.MULTIPLE_PROPERTIES,
+                null, null, null, null,
+                null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                false
+        ).addProperty(new PropertyState(
+                "1",
+                A2_1_depth.DEPTH_ZERO,
+                A2_2_number_of_values.MULTIPLE_VALUES,
+                A2_3_type_of_values.STRING,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_STRING_NULL)
+        )).addProperty(new PropertyState(
+                "2",
+                A2_1_depth.DEPTH_ZERO,
+                A2_2_number_of_values.MULTIPLE_VALUES,
+                A2_3_type_of_values.STRING,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_LESS_VALUES,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.FINAL_SETTER, ExpectedFlags.NOT_SPLIT_LAST_STRINGS)
+        )));
+
 
         for (TestState state : availableTestState) {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#"))   // #TODO: remove
+            if (state.description.contains("#12"))   // #TODO: remove
                 activeArguments.add(Arguments.of(state));
         }
 
@@ -376,6 +408,8 @@ public class MyOptionsTest {
 
         MyOptionsConfigurer configurer = new MyOptionsConfigurer();
         configurer.setup(testState);
+
+        testState.SUT.remove("StringAttribute2");
 
         logger.info("setup done");
 
