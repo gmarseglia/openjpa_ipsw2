@@ -337,12 +337,32 @@ public class MyOptionsTest {
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.COMBINE)
         )));
 
+        availableTestState.add(new TestState(
+                "#11: Different amount of values from setter for primitive type",
+                A1_Number_of_properties.ONE_PROPERTY,
+                null, null, null, null,
+                null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                false
+        ).addProperty(new PropertyState(
+                "1",
+                A2_1_depth.DEPTH_ZERO,
+                A2_2_number_of_values.MULTIPLE_VALUES,
+                A2_3_type_of_values.PRIMITIVE,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_PRIMITIVE_LAST_VALUE)
+        )));
+
 
         for (TestState state : availableTestState) {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#01"))   // #TODO: remove
+            if (state.description.contains("#"))   // #TODO: remove
                 activeArguments.add(Arguments.of(state));
         }
 
@@ -368,7 +388,7 @@ public class MyOptionsTest {
         logger.info(String.valueOf(calledMethods));
 
         /* If no properties, then simply assert that no options are present in unsetOptions */
-        if (testState.properties.isEmpty()){
+        if (testState.properties.isEmpty()) {
             Assertions.assertEquals(0, unsetOptions.size());
             return;
         }
@@ -387,12 +407,19 @@ public class MyOptionsTest {
                         if (property.a22 == A2_2_number_of_values.ONE_VALUE) {
                             expected = new Integer(expectedStr);
                         } else if (property.a22 == A2_2_number_of_values.MULTIPLE_VALUES) {
-                            int first, second, third;
                             if (property.expectedSet.contains(ExpectedFlags.COMBINE)) {
+                                int first, second, third;
                                 first = new Integer(property.value.split(",")[0]);
                                 second = new Integer(property.value.split(",")[1]);
                                 third = new Integer(property.value.split(",")[2]);
                                 expected = first + second + third;
+                            } else if (property.expectedSet.contains(ExpectedFlags.USE_PRIMITIVE_LAST_VALUE)) {
+                                int first, second, third, fourth;
+                                first = new Integer(property.value.split(",")[0]);
+                                second = new Integer(property.value.split(",")[1]);
+                                third = new Integer(property.value.split(",")[2]);
+                                fourth = third;
+                                expected = first + second + third + fourth;
                             } else {
                                 throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
                             }

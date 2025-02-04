@@ -506,6 +506,47 @@ public class MyOptionsObjects {
         }
     }
 
+    public static class DeepestObjectType3MoreValues implements DeepestInterface, AnyDeepInterface {
+        private int PrimitiveAttribute1;
+
+        public DeepestObjectType3MoreValues() {
+            addMethod("new DeepestInterface");
+        }
+
+        public DeepestObjectType3MoreValues(boolean track) {
+            if (track)
+                addMethod("new DeepestInterface");
+        }
+
+        public void setPrimitiveAttribute1(int first, int second, int third, int fourth) {
+            addMethod("setPrimitiveAttribute1");
+            PrimitiveAttribute1 = first + second + third + fourth;
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this;
+        }
+
+        @Override
+        public int deepestPrimitiveAttribute(String id) {
+            if (id.equals("1")) {
+                return this.PrimitiveAttribute1;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public String deepestStringAttribute(String id) {
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public SpecialClass deepestSpecialClassAttribute1(String id) {
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+    }
+
     public static class DeepestObjectType4 implements DeepestInterface, AnyDeepInterface {
         public DeepestObjectType4() {
             addMethod("new DeepestInterface");
