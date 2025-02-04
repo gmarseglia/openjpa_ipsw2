@@ -174,7 +174,7 @@ public class MyOptionsTest {
                 B4_intermediate_javabean_constructor.WITH_JAVABEAN_CONSTRUCTOR,
                 C1_intermediate_instances_are_null.NULL_INTERMEDIATE_INSTANCES,
                 C2_last_instance_is_null.NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A2_1_depth.DEPTH_GREATER_THAN_ZERO,
@@ -209,7 +209,7 @@ public class MyOptionsTest {
                 B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
                 C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
                 C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A2_1_depth.DEPTH_GREATER_THAN_ZERO,
@@ -233,6 +233,27 @@ public class MyOptionsTest {
                 B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
                 B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_PUBLIC, ExpectedFlags.FINAL_PUBLIC)
+        )));
+
+        availableTestState.add(new TestState(
+                "#08: Single shallow property, not set",
+                A1_Number_of_properties.ONE_PROPERTY,
+                null, null, null, null,
+                null,
+                C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                false
+        ).addProperty(new PropertyState(
+                "1",
+                A2_1_depth.DEPTH_ZERO,
+                A2_2_number_of_values.ONE_VALUE,
+                A2_3_type_of_values.PRIMITIVE,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER,
+                null,
+                null,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.NOT_SET)
         )));
 
         for (TestState state : availableTestState) {
@@ -333,6 +354,16 @@ public class MyOptionsTest {
                 } else if (property.expectedSet.contains(ExpectedFlags.FINAL_PUBLIC)) {
                     Assertions.assertFalse(containsMethod(setMethodName), String.format("method '%s' was called", setMethodName));
                 }
+            } else if (property.expectedSet.contains(ExpectedFlags.NOT_SET)) {
+                DeepestInterface deepest = ((AnyDeepInterface) testState.obj).intermediateGetDeepest();
+
+                /* Assert the property is the unsetOptions returned object */
+                Assertions.assertTrue(unsetOptions.containsKey(property.key));
+
+                /* Assert the attribute of the deepest object has not been modified */
+                Assertions.assertEquals(0, deepest.deepestPrimitiveAttribute(property.id));
+                Assertions.assertNull(deepest.deepestStringAttribute(property.id));
+                Assertions.assertNull(deepest.deepestSpecialClassAttribute1(property.id));
             }
         }
     }

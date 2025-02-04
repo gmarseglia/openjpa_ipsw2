@@ -77,6 +77,8 @@ public class MyOptionsConfigurer {
         /* Check the A1 characteristics */
         switch (testState.a1) {
             case ONE_PROPERTY:
+                assert testState.properties.size() == 1;
+                break;
             case ZERO_PROPERTIES:
                 throw new IllegalStateException("#TODO implement: " + testState.a1);
             case MULTIPLE_PROPERTIES:
@@ -88,22 +90,13 @@ public class MyOptionsConfigurer {
     }
 
     private void createObj() {
-        /* Set up B1 characteristics */
-        if (testState.b1 == null)
-            testState.b1 = B1_intermediate_getter.WITH_INTERMEDIATE_GETTER;
-        if (testState.b2 == null)
-            testState.b2 = B2_intermediate_setter.WITH_INTERMEDIATE_SETTER;
-        if (testState.b3 == null)
-            testState.b3 = B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES;
-        if (testState.b4 == null)
-            testState.b4 = B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR;
-
         /* Choose the class for the deepest object */
         Class deepestClass = getDeepestClass();
         DeepestInterface deepest;
         try {
             deepest = (DeepestInterface) deepestClass.getConstructor(boolean.class).newInstance(false);
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new RuntimeException(e);
         }
 
@@ -113,6 +106,16 @@ public class MyOptionsConfigurer {
                 testState.obj = deepest;
             return;
         }
+
+        /* Set up B1 characteristics */
+        if (testState.b1 == null)
+            testState.b1 = B1_intermediate_getter.WITH_INTERMEDIATE_GETTER;
+        if (testState.b2 == null)
+            testState.b2 = B2_intermediate_setter.WITH_INTERMEDIATE_SETTER;
+        if (testState.b3 == null)
+            testState.b3 = B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES;
+        if (testState.b4 == null)
+            testState.b4 = B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR;
 
         /* Choose the class for the intermediate object */
         Class intermediateClass = getIntermediateClass();
@@ -189,6 +192,14 @@ public class MyOptionsConfigurer {
                     p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectType1.class;
+            }
+        } else if (testState.properties.size() == 1) {
+            PropertyState p1 = testState.properties.get(0);
+
+            if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectType2.class;
             }
         }
 

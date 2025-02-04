@@ -24,6 +24,7 @@ public class MyOptionsObjects {
         void intermediateSetDeepest(DeepestInterface deepest);
     }
 
+    /* Intermediate objects */
     public static class ObjectWithYYNNType1 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithYYNNType1 deeper;
         private DeepestObjectType1 deepest;
@@ -244,7 +245,7 @@ public class MyOptionsObjects {
         }
     }
 
-
+    /* Deepest ojects */
     public static class DeepestObjectType1 implements DeepestInterface, AnyDeepInterface {
         public String StringAttribute2;
         public SpecialClass SpecialClassAttribute2;
@@ -308,6 +309,50 @@ public class MyOptionsObjects {
                 return this.SpecialClassAttribute1;
             } else if (id.equals("2")) {
                 return this.SpecialClassAttribute2;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+    }
+
+    public static class DeepestObjectType2 implements DeepestInterface, AnyDeepInterface {
+        private String StringAttribute1;
+        private SpecialClass SpecialClassAttribute1;
+        private int PrimitiveAttribute1;
+
+        public DeepestObjectType2() {
+            addMethod("new DeepestInterface");
+        }
+
+        public DeepestObjectType2(boolean track) {
+            if (track)
+                addMethod("new DeepestInterface");
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this;
+        }
+
+        @Override
+        public int deepestPrimitiveAttribute(String id) {
+            if (id.equals("1")) {
+                return this.PrimitiveAttribute1;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public String deepestStringAttribute(String id) {
+            if (id.equals("1")) {
+                return this.StringAttribute1;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public SpecialClass deepestSpecialClassAttribute1(String id) {
+            if (id.equals("1")) {
+                return this.SpecialClassAttribute1;
             }
             throw new IllegalStateException("Unexpected id: " + id);
         }
