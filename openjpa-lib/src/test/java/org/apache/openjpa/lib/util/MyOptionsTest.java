@@ -241,7 +241,7 @@ public class MyOptionsTest {
                 null, null, null, null,
                 null,
                 C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A2_1_depth.DEPTH_ZERO,
@@ -251,6 +251,30 @@ public class MyOptionsTest {
                 B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER,
                 null,
                 null,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.NOT_SET)
+        )));
+
+        availableTestState.add(new TestState(
+                "#09: Single deep property, not set",
+                A1_Number_of_properties.ONE_PROPERTY,
+                B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER,
+                B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER,
+                B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES,
+                B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
+                C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
+                C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                false
+        ).addProperty(new PropertyState(
+                "1",
+                A2_1_depth.DEPTH_GREATER_THAN_ZERO,
+                A2_2_number_of_values.ONE_VALUE,
+                A2_3_type_of_values.PRIMITIVE,
+                A2_4_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
                 EnumSet.of(ExpectedFlags.NOT_SET)

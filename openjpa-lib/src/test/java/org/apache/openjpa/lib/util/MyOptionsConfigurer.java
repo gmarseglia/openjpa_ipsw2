@@ -174,6 +174,12 @@ public class MyOptionsConfigurer {
                 testState.b3 == B3_intermediate_public_attributes.WITH_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                 testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR) {
             return ObjectWithNNYNType1.class;
+        } else if (getDeepestClass() == DeepestObjectType1.class &&
+                testState.b1 == B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER &&
+                testState.b2 == B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER &&
+                testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
+                testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR) {
+            return ObjectWithNNNNType1.class;
         }
         return null;
     }
@@ -200,6 +206,12 @@ public class MyOptionsConfigurer {
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectType2.class;
+            } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectType1.class;
             }
         }
 
