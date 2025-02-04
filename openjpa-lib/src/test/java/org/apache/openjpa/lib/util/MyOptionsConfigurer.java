@@ -162,6 +162,12 @@ public class MyOptionsConfigurer {
                 testState.b3 == B3_intermediate_public_attributes.WITH_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                 testState.b4 == B4_intermediate_javabean_constructor.WITH_JAVABEAN_CONSTRUCTOR) {
             return ObjectWithNNYYType1.class;
+        } else if (getDeepestClass() == DeepestObjectType1.class &&
+                testState.b1 == B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER &&
+                testState.b2 == B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER &&
+                testState.b3 == B3_intermediate_public_attributes.WITH_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
+                testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR) {
+            return ObjectWithNNYNType1.class;
         }
         return null;
     }

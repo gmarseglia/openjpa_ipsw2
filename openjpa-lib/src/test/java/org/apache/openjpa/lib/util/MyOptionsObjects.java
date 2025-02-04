@@ -210,6 +210,40 @@ public class MyOptionsObjects {
         }
     }
 
+    public static class ObjectWithNNYNType1 implements IntermediateInterface, AnyDeepInterface {
+        public ObjectWithNNYNType1 deeper;
+        public DeepestObjectType1 deepest;
+
+        private ObjectWithNNYNType1() {
+            addMethod("new IntermediateInterface");
+        }
+
+        public ObjectWithNNYNType1(boolean track) {
+            if (track)
+                addMethod("new IntermediateInterface");
+        }
+
+        @Override
+        public IntermediateInterface intermediateGetDeeper() {
+            return this.deeper;
+        }
+
+        @Override
+        public void intermediateSetDeeper(IntermediateInterface lower) {
+            this.deeper = (ObjectWithNNYNType1) lower;
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this.deeper.deepest;
+        }
+
+        @Override
+        public void intermediateSetDeepest(DeepestInterface deepest) {
+            this.deepest = (DeepestObjectType1) deepest;
+        }
+    }
+
 
     public static class DeepestObjectType1 implements DeepestInterface, AnyDeepInterface {
         public String StringAttribute2;
