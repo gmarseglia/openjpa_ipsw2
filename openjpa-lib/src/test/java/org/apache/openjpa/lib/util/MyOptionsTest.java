@@ -29,6 +29,15 @@ public class MyOptionsTest {
         List<Arguments> activeArguments = new ArrayList<>();
 
         availableTestState.add(new TestState(
+                "#01: No properties",
+                A1_Number_of_properties.ZERO_PROPERTIES,
+                null, null, null, null,
+                null,
+                C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                false
+        ));
+
+        availableTestState.add(new TestState(
                 "#02: Multiple shallow properties using SUT and defaults",
                 A1_Number_of_properties.MULTIPLE_PROPERTIES,
                 null, null, null, null,
@@ -333,7 +342,7 @@ public class MyOptionsTest {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#"))   // #TODO: remove
+            if (state.description.contains("#01"))   // #TODO: remove
                 activeArguments.add(Arguments.of(state));
         }
 
@@ -357,6 +366,12 @@ public class MyOptionsTest {
         List<String> calledMethods = MyOptionsMethodTracker.getMethods();
 
         logger.info(String.valueOf(calledMethods));
+
+        /* If no properties, then simply assert that no options are present in unsetOptions */
+        if (testState.properties.isEmpty()){
+            Assertions.assertEquals(0, unsetOptions.size());
+            return;
+        }
 
         DeepestInterface deepestObject = ((AnyDeepInterface) testState.obj).intermediateGetDeepest();
         for (PropertyState property : testState.properties) {

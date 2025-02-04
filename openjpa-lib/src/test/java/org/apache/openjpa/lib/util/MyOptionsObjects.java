@@ -505,4 +505,37 @@ public class MyOptionsObjects {
             throw new IllegalStateException("Unexpected id: " + id);
         }
     }
+
+    public static class DeepestObjectType4 implements DeepestInterface, AnyDeepInterface {
+        public DeepestObjectType4() {
+            addMethod("new DeepestInterface");
+        }
+
+        public DeepestObjectType4(boolean track) {
+            if (track)
+                addMethod("new DeepestInterface");
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this;
+        }
+
+        @Override
+        public int deepestPrimitiveAttribute(String id) {
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public String deepestStringAttribute(String id) {
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public SpecialClass deepestSpecialClassAttribute1(String id) {
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+    }
+
+
 }

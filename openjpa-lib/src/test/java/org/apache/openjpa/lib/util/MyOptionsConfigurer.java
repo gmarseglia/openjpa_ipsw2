@@ -76,11 +76,12 @@ public class MyOptionsConfigurer {
     private void setupA1() {
         /* Check the A1 characteristics */
         switch (testState.a1) {
+            case ZERO_PROPERTIES:
+                assert testState.properties.isEmpty();
+                break;
             case ONE_PROPERTY:
                 assert testState.properties.size() == 1;
                 break;
-            case ZERO_PROPERTIES:
-                throw new IllegalStateException("#TODO implement: " + testState.a1);
             case MULTIPLE_PROPERTIES:
                 assert testState.properties.size() > 1;
                 break;
@@ -141,7 +142,9 @@ public class MyOptionsConfigurer {
     }
 
     private Class getDeepestClass() {
-        if (testState.properties.size() == 1) {
+        if (testState.properties.isEmpty()) {
+            return DeepestObjectType4.class;
+        } else if (testState.properties.size() == 1) {
             PropertyState p1 = testState.properties.get(0);
 
             if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
