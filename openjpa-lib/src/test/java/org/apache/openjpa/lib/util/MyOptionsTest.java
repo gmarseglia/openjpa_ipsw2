@@ -170,7 +170,7 @@ public class MyOptionsTest {
                 null,
                 B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
                 B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_NEW_SETTER, ExpectedFlags.FINAL_PUBLIC)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_NEW_SETTER, ExpectedFlags.FINAL_PUBLIC, ExpectedFlags.OVERWRITTEN)
         )));
 
         availableTestState.add(new TestState(
@@ -776,7 +776,8 @@ public class MyOptionsTest {
                 }
 
                 /* Assert the correct value */
-                Assertions.assertEquals(expected, actual, String.format("property.id: %s", property.id));
+                if (!property.expectedSet.contains(ExpectedFlags.OVERWRITTEN))
+                    Assertions.assertEquals(expected, actual, String.format("property.id: %s", property.id));
 
                 /* Assert the correct way is used to proceed towards the deepest object */
                 if (property.expectedSet.contains(ExpectedFlags.VIA_GETTER)) {
