@@ -356,6 +356,7 @@ public class MyOptionsConfigurer {
                 throw new IllegalStateException("Unexpected value: " + property.a31);
         }
         assert (numberOfValues > 0);
+        property.numberOfParametersForSetter = numberOfParametersForSetter;
         property.numberOfValues = numberOfValues;
 
         /* Setup A2.3 */

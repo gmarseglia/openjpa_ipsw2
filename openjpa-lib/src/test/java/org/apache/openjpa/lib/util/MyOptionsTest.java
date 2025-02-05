@@ -410,7 +410,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_DEFAULT_IF_MISSING)
         )).addProperty(new PropertyState(
                 "2",
                 A3_1_number_of_values.VALUES_LESS_THAN_SETTER_PARAMETERS,
@@ -421,7 +421,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_DEFAULT_IF_MISSING)
         )).addProperty(new PropertyState(
                 "3",
                 A3_1_number_of_values.VALUES_LESS_THAN_SETTER_PARAMETERS,
@@ -432,7 +432,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_DEFAULT_IF_MISSING)
         )));
 
         availableTestState.add(new TestState(
@@ -621,7 +621,7 @@ public class MyOptionsTest {
 
         logger.info("setup done");
 
-        /* Assert the expcetion throw, if that's expected */
+        /* Assert the exception throw, if that's expected */
         if (testState.properties.size() == 1 &&
                 testState.properties.get(0).expectedSet.contains(ExpectedFlags.THROWS_RUNTIME_EXCEPTION)) {
             Assertions.assertThrows(RuntimeException.class, () -> testState.SUT.setInto(testState.obj), "RuntimeException expected, but not thrown");
@@ -659,7 +659,8 @@ public class MyOptionsTest {
                             expected = new Integer(expectedStr);
                             break;
                         } else {
-                            if (property.expectedSet.contains(ExpectedFlags.USE_ALL)) {
+                            if (property.expectedSet.contains(ExpectedFlags.USE_ALL) ||
+                                    property.expectedSet.contains(ExpectedFlags.USE_DEFAULT_IF_MISSING)) {
                                 int counter = 0;
                                 for (String s : property.value.split(",")) {
                                     counter += new Integer(s);
@@ -683,6 +684,12 @@ public class MyOptionsTest {
                             } else if (property.expectedSet.contains(ExpectedFlags.USE_ALL)) {
                                 expected = expectedStr.replace(",", "");
                                 break;
+                            } else if (property.expectedSet.contains(ExpectedFlags.USE_DEFAULT_IF_MISSING)) {
+                                expected = expectedStr.replace(",", "");
+                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++){
+                                    expected += "null";
+                                }
+                                break;
                             }
                         }
                         throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
@@ -698,6 +705,13 @@ public class MyOptionsTest {
                                 break;
                             } else if (property.expectedSet.contains(ExpectedFlags.USE_ALL)) {
                                 expected = new SpecialClass(expectedStr.replace(",", ""));
+                                break;
+                            } else if (property.expectedSet.contains(ExpectedFlags.USE_DEFAULT_IF_MISSING)) {
+                                String baseStr = expectedStr.replace(",", "");
+                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++){
+                                    baseStr += "null";
+                                }
+                                expected = new SpecialClass(baseStr);
                                 break;
                             }
                         }
@@ -776,6 +790,7 @@ public class MyOptionsTest {
 
         String key;
         int numberOfValues;
+        Integer numberOfParametersForSetter;
         String typeOfValues;
         String value;
 

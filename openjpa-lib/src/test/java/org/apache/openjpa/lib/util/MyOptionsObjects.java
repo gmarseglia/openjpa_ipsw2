@@ -604,12 +604,19 @@ public class MyOptionsObjects {
 
         public void setStringAttribute2(String first, String second, String third) {
             addMethod("setStringAttribute2");
+            String firstValue = first == null ? "null" : first;
+            String secondValue = second == null ? "null" : second;
+            String thirdValue = third == null ? "null" : third;
             StringAttribute2 = first + second + third;
         }
 
         public void setSpecialClassAttribute3(SpecialClass first, SpecialClass second, SpecialClass third) {
             addMethod("setSpecialClassAttribute3");
-            SpecialClassAttribute3 = new SpecialClass(first.getValue() + second.getValue() + third.getValue());
+            String firstValue = first == null ? "null" : first.getValue();
+            String secondValue = second == null ? "null" : second.getValue();
+            String thirdValue = third == null ? "null" : third.getValue();
+
+            SpecialClassAttribute3 = new SpecialClass(firstValue + secondValue + thirdValue);
         }
 
         @Override
