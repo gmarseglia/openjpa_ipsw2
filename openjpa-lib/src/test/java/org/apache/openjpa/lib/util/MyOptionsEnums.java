@@ -6,19 +6,20 @@ public class MyOptionsEnums {
         ZERO_PROPERTIES, ONE_PROPERTY, MULTIPLE_PROPERTIES
     }
 
-    public enum A2_1_depth {
+    public enum A2_depth {
         DEPTH_ZERO, DEPTH_GREATER_THAN_ZERO
     }
 
-    public enum A2_2_number_of_values {
-        ONE_VALUE, MULTIPLE_VALUES
+    public enum A3_1_number_of_values {
+        ONE_VALUE, MULTIPLE_VALUES,
+        VALUES_LESS_THAN_SETTER_PARAMETERS, VALUES_EQUAL_AS_SETTER_PARAMETERS, VALUES_GREATER_THAN_SETTER_PARAMETERS
     }
 
-    public enum A2_3_type_of_values {
+    public enum A3_2_type_of_values {
         PRIMITIVE, STRING, SPECIAL_CLASS
     }
 
-    public enum A2_4_SUT_or_defaults {
+    public enum A3_3_SUT_or_defaults {
         ONLY_IN_SUT, ONLY_IN_DEFAULTS, BOTH_SUT_AND_DEFAULTS
     }
 
@@ -43,7 +44,7 @@ public class MyOptionsEnums {
     }
 
     public enum B5_2_number_of_parameter_of_deepest_setter {
-        SETTER_NEEDS_LESS_VALUES, SETTER_NEEDS_SAME_VALUES, SETTER_NEEDS_MORE_VALUES
+        SETTER_WITH_ONE_PARAMETER, SETTER_WITH_MULTIPLE_PARAMETERS
     }
 
     public enum B5_3_parsable_for_setter {
@@ -70,7 +71,7 @@ public class MyOptionsEnums {
         SET,
         FINAL_SETTER, FINAL_PUBLIC,
         VIA_GETTER, VIA_NEW_SETTER_GETTER, VIA_NEW_SETTER, VIA_NEW_PUBLIC, VIA_PUBLIC,
-        COMBINE, USE_PRIMITIVE_LAST_VALUE, USE_STRING_NULL, NOT_SPLIT_LAST_STRINGS,
+        USE_ALL, REPEAT_LAST, NOT_SPLIT_STRINGS,
         NOT_SET,
         THROWS_RUNTIME_EXCEPTION
     }

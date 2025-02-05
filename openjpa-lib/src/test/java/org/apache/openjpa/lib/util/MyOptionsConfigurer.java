@@ -60,13 +60,13 @@ public class MyOptionsConfigurer {
     private void createSUT() {
         Options defaults = new Options();
         for (PropertyState property : testState.properties) {
-            if (property.a24 == A2_4_SUT_or_defaults.BOTH_SUT_AND_DEFAULTS || property.a24 == A2_4_SUT_or_defaults.ONLY_IN_DEFAULTS) {
+            if (property.a33 == A3_3_SUT_or_defaults.BOTH_SUT_AND_DEFAULTS || property.a33 == A3_3_SUT_or_defaults.ONLY_IN_DEFAULTS) {
                 defaults.setProperty(property.key, property.value);
             }
         }
         Options SUT = new Options(defaults);
         for (PropertyState property : testState.properties) {
-            if (property.a24 == A2_4_SUT_or_defaults.BOTH_SUT_AND_DEFAULTS || property.a24 == A2_4_SUT_or_defaults.ONLY_IN_SUT) {
+            if (property.a33 == A3_3_SUT_or_defaults.BOTH_SUT_AND_DEFAULTS || property.a33 == A3_3_SUT_or_defaults.ONLY_IN_SUT) {
                 SUT.setProperty(property.key, property.value);
             }
         }
@@ -157,7 +157,7 @@ public class MyOptionsConfigurer {
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectType1.class;
-            } else if (p1.a23 == A2_3_type_of_values.PRIMITIVE &&
+            } else if (p1.a32 == A3_2_type_of_values.PRIMITIVE &&
                     p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
                     p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
@@ -179,14 +179,14 @@ public class MyOptionsConfigurer {
                     p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectType1.class;
-            } else if (p1.a22 == A2_2_number_of_values.MULTIPLE_VALUES &&
-                    p1.a23 == A2_3_type_of_values.STRING &&
+            } else if (p1.a31 == A3_1_number_of_values.MULTIPLE_VALUES &&
+                    p1.a32 == A3_2_type_of_values.STRING &&
                     p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
                     p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
-                    p2.a22 == A2_2_number_of_values.MULTIPLE_VALUES &&
-                    p2.a23 == A2_3_type_of_values.STRING &&
+                    p2.a31 == A3_1_number_of_values.MULTIPLE_VALUES &&
+                    p2.a32 == A3_2_type_of_values.STRING &&
                     p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_LESS_VALUES &&
                     p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
@@ -287,7 +287,7 @@ public class MyOptionsConfigurer {
 
         /* Setup A2.2 */
         int numberOfValues;
-        switch (property.a22) {
+        switch (property.a31) {
             case ONE_VALUE:
                 numberOfValues = 1;
                 break;
@@ -295,13 +295,13 @@ public class MyOptionsConfigurer {
                 numberOfValues = 3;
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + property.a22);
+                throw new IllegalStateException("Unexpected value: " + property.a31);
         }
         property.numberOfValues = numberOfValues;
 
         /* Setup A2.3 */
         String singleValue;
-        switch (property.a23) {
+        switch (property.a32) {
             case PRIMITIVE:
                 singleValue = PRIMITIVE_VALUE;
                 property.typeOfValues = "Primitive";
@@ -315,7 +315,7 @@ public class MyOptionsConfigurer {
                 property.typeOfValues = "SpecialClass";
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + property.a23);
+                throw new IllegalStateException("Unexpected value: " + property.a32);
         }
 
         /* Finally set up the key of the property */
