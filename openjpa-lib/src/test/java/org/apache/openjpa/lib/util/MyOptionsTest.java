@@ -393,7 +393,7 @@ public class MyOptionsTest {
         )));
 
         availableTestState.add(new TestState(
-                "#11: Setters with multiple values, properties has less values",
+                "#11_a: Setters with multiple values, properties has less values",
                 A1_Number_of_properties.MULTIPLE_PROPERTIES,
                 A2_depth.DEPTH_ZERO,
                 null, null, null, null,
@@ -433,6 +433,49 @@ public class MyOptionsTest {
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
                 EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_DEFAULT_IF_MISSING)
+        )));
+
+        availableTestState.add(new TestState(
+                "#11_b: Setters with multiple values, properties has less values",
+                A1_Number_of_properties.MULTIPLE_PROPERTIES,
+                A2_depth.DEPTH_ZERO,
+                null, null, null, null,
+                null,
+                C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                true
+        ).addProperty(new PropertyState(
+                "1",
+                A3_1_number_of_values.ONE_VALUE,
+                A3_2_type_of_values.PRIMITIVE,
+                A3_3_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
+        )).addProperty(new PropertyState(
+                "2",
+                A3_1_number_of_values.ONE_VALUE,
+                A3_2_type_of_values.STRING,
+                A3_3_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
+        )).addProperty(new PropertyState(
+                "3",
+                A3_1_number_of_values.ONE_VALUE,
+                A3_2_type_of_values.SPECIAL_CLASS,
+                A3_3_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITH_DEEPEST_SETTER,
+                B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS,
+                B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
         )));
 
         availableTestState.add(new TestState(
@@ -604,7 +647,7 @@ public class MyOptionsTest {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#"))   // #TODO: remove
+            if (state.description.contains("#11_b:"))   // #TODO: remove
                 activeArguments.add(Arguments.of(state));
         }
 
@@ -655,7 +698,8 @@ public class MyOptionsTest {
                     case PRIMITIVE:
                         actual = deepestObject.deepestPrimitiveAttribute(property.id);
                         setMethodName = "setPrimitiveAttribute" + property.id;
-                        if (property.numberOfValues == 1) {
+                        if (property.numberOfValues == 1 &&
+                                property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER) {
                             expected = new Integer(expectedStr);
                             break;
                         } else {
@@ -667,6 +711,18 @@ public class MyOptionsTest {
                                 }
                                 expected = counter;
                                 break;
+                            } else if (property.expectedSet.contains(ExpectedFlags.REPEAT_LAST)) {
+                                int counter = 0;
+                                int last = 0;
+                                for (String s : property.value.split(",")) {
+                                    last = new Integer(s);
+                                    counter += last;
+                                }
+                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++) {
+                                    counter += last;
+                                }
+                                expected = counter;
+                                break;
                             }
                         }
                         throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
@@ -674,7 +730,8 @@ public class MyOptionsTest {
                         actual = deepestObject.deepestStringAttribute(property.id);
                         setMethodName = "setStringAttribute" + property.id;
 
-                        if (property.numberOfValues == 1) {
+                        if (property.numberOfValues == 1 &&
+                                property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER) {
                             expected = expectedStr;
                             break;
                         } else {
@@ -686,8 +743,15 @@ public class MyOptionsTest {
                                 break;
                             } else if (property.expectedSet.contains(ExpectedFlags.USE_DEFAULT_IF_MISSING)) {
                                 expected = expectedStr.replace(",", "");
-                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++){
+                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++) {
                                     expected += "null";
+                                }
+                                break;
+                            } else if (property.expectedSet.contains(ExpectedFlags.REPEAT_LAST)) {
+                                String last = expectedStr.split(",")[property.numberOfValues - 1];
+                                expected = expectedStr.replace(",", "");
+                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++) {
+                                    expected += last;
                                 }
                                 break;
                             }
@@ -696,7 +760,8 @@ public class MyOptionsTest {
                     case SPECIAL_CLASS:
                         actual = deepestObject.deepestSpecialClassAttribute1(property.id);
                         setMethodName = "setSpecialClassAttribute" + property.id;
-                        if (property.numberOfValues == 1) {
+                        if (property.numberOfValues == 1 &&
+                                property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER) {
                             expected = new SpecialClass(expectedStr);
                             break;
                         } else {
@@ -708,8 +773,16 @@ public class MyOptionsTest {
                                 break;
                             } else if (property.expectedSet.contains(ExpectedFlags.USE_DEFAULT_IF_MISSING)) {
                                 String baseStr = expectedStr.replace(",", "");
-                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++){
+                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++) {
                                     baseStr += "null";
+                                }
+                                expected = new SpecialClass(baseStr);
+                                break;
+                            } else if (property.expectedSet.contains(ExpectedFlags.REPEAT_LAST)) {
+                                String last = expectedStr.split(",")[property.numberOfValues - 1];
+                                String baseStr = expectedStr.replace(",", "");
+                                for (int i = property.numberOfValues; i < property.numberOfParametersForSetter; i++) {
+                                    baseStr += last;
                                 }
                                 expected = new SpecialClass(baseStr);
                                 break;
