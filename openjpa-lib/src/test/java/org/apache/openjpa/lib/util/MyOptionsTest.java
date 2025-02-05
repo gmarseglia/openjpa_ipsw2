@@ -627,8 +627,7 @@ public class MyOptionsTest {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#"))   // #TODO: remove
-                activeArguments.add(Arguments.of(state));
+            activeArguments.add(Arguments.of(state));
         }
 
         return activeArguments.stream();
