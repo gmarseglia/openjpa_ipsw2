@@ -168,15 +168,13 @@ public class MyOptionsConfigurer {
                     p1.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectPublic1Public2.class;
+            } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS &&
+                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectMultiple1.class;
             }
-            // else if (p1.a32 == A3_2_type_of_values.PRIMITIVE &&
-            //         p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-            //         p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
-            //         p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
-            //         p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
-            // ) {
-            //     return DeepestObjectType3MoreValues.class;
-            // }
 
         } else if (testState.properties.size() == 2) {
             PropertyState p1 = testState.properties.get(0);

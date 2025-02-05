@@ -649,6 +649,72 @@ public class MyOptionsObjects {
         }
     }
 
+    public static class DeepestObjectMultiple1 implements DeepestInterface, AnyDeepInterface {
+        private int PrimitiveAttribute1;
+        private String StringAttribute1;
+        private SpecialClass SpecialClassAttribute1;
+
+        public DeepestObjectMultiple1() {
+            addMethod("new DeepestInterface");
+        }
+
+        public DeepestObjectMultiple1(boolean track) {
+            if (track)
+                addMethod("new DeepestInterface");
+        }
+
+        public void setPrimitiveAttribute1(int first, int second, int third) {
+            addMethod("setPrimitiveAttribute1");
+            PrimitiveAttribute1 = first + second + third;
+        }
+
+        public void setStringAttribute1(String first, String second, String third) {
+            addMethod("setStringAttribute1");
+            String firstValue = first == null ? "null" : first;
+            String secondValue = second == null ? "null" : second;
+            String thirdValue = third == null ? "null" : third;
+            StringAttribute1 = first + second + third;
+        }
+
+        public void setSpecialClassAttribute1(SpecialClass first, SpecialClass second, SpecialClass third) {
+            addMethod("setSpecialClassAttribute1");
+            String firstValue = first == null ? "null" : first.getValue();
+            String secondValue = second == null ? "null" : second.getValue();
+            String thirdValue = third == null ? "null" : third.getValue();
+
+            SpecialClassAttribute1 = new SpecialClass(firstValue + secondValue + thirdValue);
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this;
+        }
+
+        @Override
+        public int deepestPrimitiveAttribute(String id) {
+            if (id.equals("1")) {
+                return this.PrimitiveAttribute1;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public String deepestStringAttribute(String id) {
+            if (id.equals("2")) {
+                return this.StringAttribute1;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public SpecialClass deepestSpecialClassAttribute1(String id) {
+            if (id.equals("3")) {
+                return this.SpecialClassAttribute1;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+    }
+
     public static class DeepestObjectType3MoreValues implements DeepestInterface, AnyDeepInterface {
         private int PrimitiveAttribute1;
 
