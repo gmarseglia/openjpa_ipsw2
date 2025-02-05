@@ -49,10 +49,16 @@ public class MyOptionsConfigurer {
 
     private void findMaxDepth() {
         this.maxDepth = 0;
-        for (PropertyState property : testState.properties) {
-            if (property.a21 == A2_1_depth.DEPTH_GREATER_THAN_ZERO) {
-                this.maxDepth = 2;
-                break;
+        if (testState.a2 != null) {
+            switch (testState.a2) {
+                case DEPTH_ZERO:
+                    this.maxDepth = 0;
+                    break;
+                case DEPTH_GREATER_THAN_ZERO:
+                    this.maxDepth = 2;
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + testState.a2);
             }
         }
     }
@@ -143,57 +149,71 @@ public class MyOptionsConfigurer {
 
     private Class getDeepestClass() {
         if (testState.properties.isEmpty()) {
-            return DeepestObjectType4.class;
+            return DeepestObjectEmpty.class;
         } else if (testState.properties.size() == 1) {
             PropertyState p1 = testState.properties.get(0);
 
             if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
-                return DeepestObjectType2.class;
+                return DeepestObjectNo1.class;
             } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER &&
                     p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
-                return DeepestObjectType1.class;
-            } else if (p1.a32 == A3_2_type_of_values.PRIMITIVE &&
-                    p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
-                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
-                    p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
-            ) {
-                return DeepestObjectType3MoreValues.class;
+                return DeepestObjectSetter1Public2.class;
             }
+            // else if (p1.a32 == A3_2_type_of_values.PRIMITIVE &&
+            //         p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+            //         p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
+            //         p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+            //         p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            // ) {
+            //     return DeepestObjectType3MoreValues.class;
+            // }
 
         } else if (testState.properties.size() == 2) {
             PropertyState p1 = testState.properties.get(0);
             PropertyState p2 = testState.properties.get(1);
 
             if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER &&
                     p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p2.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
                     p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
             ) {
-                return DeepestObjectType1.class;
-            } else if (p1.a31 == A3_1_number_of_values.MULTIPLE_VALUES &&
-                    p1.a32 == A3_2_type_of_values.STRING &&
-                    p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
+                return DeepestObjectSetter1Public2.class;
+            } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER &&
                     p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
-                    p2.a31 == A3_1_number_of_values.MULTIPLE_VALUES &&
-                    p2.a32 == A3_2_type_of_values.STRING &&
                     p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_LESS_VALUES &&
+                    p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER &&
                     p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
-                return DeepestObjectType5.class;
+                return DeepestObjectSetter1Setter2.class;
             }
+
+
+            // else if (p1.a31 == A3_1_number_of_values.MULTIPLE_VALUES &&
+            //         p1.a32 == A3_2_type_of_values.STRING &&
+            //         p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+            //         p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
+            //         p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+            //         p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
+            //         p2.a31 == A3_1_number_of_values.MULTIPLE_VALUES &&
+            //         p2.a32 == A3_2_type_of_values.STRING &&
+            //         p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
+            //         p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_LESS_VALUES &&
+            //         p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
+            //         p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
+            // ) {
+            //     return DeepestObjectType5.class;
+            // }
 
         } else if (testState.properties.size() == 3) {
             PropertyState p1 = testState.properties.get(0);
@@ -201,19 +221,19 @@ public class MyOptionsConfigurer {
             PropertyState p3 = testState.properties.get(2);
 
             if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS &&
                     p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS &&
                     p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p3.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-                    p3.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_SAME_VALUES &&
+                    p3.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS &&
                     p3.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p3.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
-                return DeepestObjectType3.class;
+                return DeepestObjectMultiple1Multiple2Multiple3.class;
             }
         }
 
@@ -222,46 +242,46 @@ public class MyOptionsConfigurer {
 
     private Class getIntermediateClass() {
         /* This is the case YYNN */
-        if (getDeepestClass() == DeepestObjectType1.class &&
+        if (getDeepestClass() == DeepestObjectSetter1Public2.class &&
                 testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
                 testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
                 testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                 testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR
         ) {
             return ObjectWithYYNNType1.class;
-        } else if (getDeepestClass() == DeepestObjectType3.class &&
+        } else if (getDeepestClass() == DeepestObjectMultiple1Multiple2Multiple3.class &&
                 testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
                 testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
                 testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                 testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR
         ) {
             return ObjectWithYYNNType3.class;
-        } else if (getDeepestClass() == DeepestObjectType1.class &&
+        } else if (getDeepestClass() == DeepestObjectSetter1Public2.class &&
                 testState.b1 == B1_intermediate_getter.WITH_INTERMEDIATE_GETTER &&
                 testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
                 testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                 testState.b4 == B4_intermediate_javabean_constructor.WITH_JAVABEAN_CONSTRUCTOR
         ) {
             return ObjectWithYYNYType1.class;
-        } else if (getDeepestClass() == DeepestObjectType1.class &&
+        } else if (getDeepestClass() == DeepestObjectSetter1Public2.class &&
                 testState.b1 == B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER &&
                 testState.b2 == B2_intermediate_setter.WITH_INTERMEDIATE_SETTER &&
                 testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                 testState.b4 == B4_intermediate_javabean_constructor.WITH_JAVABEAN_CONSTRUCTOR) {
             return ObjectWithNYNYType1.class;
-        } else if (getDeepestClass() == DeepestObjectType1.class &&
+        } else if (getDeepestClass() == DeepestObjectSetter1Public2.class &&
                 testState.b1 == B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER &&
                 testState.b2 == B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER &&
                 testState.b3 == B3_intermediate_public_attributes.WITH_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                 testState.b4 == B4_intermediate_javabean_constructor.WITH_JAVABEAN_CONSTRUCTOR) {
             return ObjectWithNNYYType1.class;
-        } else if (getDeepestClass() == DeepestObjectType1.class &&
+        } else if (getDeepestClass() == DeepestObjectSetter1Public2.class &&
                 testState.b1 == B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER &&
                 testState.b2 == B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER &&
                 testState.b3 == B3_intermediate_public_attributes.WITH_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
                 testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR) {
             return ObjectWithNNYNType1.class;
-        } else if (getDeepestClass() == DeepestObjectType1.class &&
+        } else if (getDeepestClass() == DeepestObjectSetter1Public2.class &&
                 testState.b1 == B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER &&
                 testState.b2 == B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER &&
                 testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
@@ -274,7 +294,7 @@ public class MyOptionsConfigurer {
     private void setupPropertyA21to23(PropertyState property) {
         /* Setup A2.1 */
         String prefixKey;
-        switch (property.a21) {
+        switch (testState.a2) {
             case DEPTH_ZERO:
                 prefixKey = "";
                 break;
@@ -282,11 +302,24 @@ public class MyOptionsConfigurer {
                 prefixKey = "deeper.deepest.";
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + property.a21);
+                throw new IllegalStateException("Unexpected value: " + testState.a2);
         }
 
         /* Setup A2.2 */
         int numberOfValues;
+        Integer numberOfParametersForSetter = null;
+        if (property.b52 != null) {
+            switch (property.b52) {
+                case SETTER_WITH_ONE_PARAMETER:
+                    numberOfParametersForSetter = 1;
+                    break;
+                case SETTER_WITH_MULTIPLE_PARAMETERS:
+                    numberOfParametersForSetter = 3;
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + property.b52);
+            }
+        }
         switch (property.a31) {
             case ONE_VALUE:
                 numberOfValues = 1;
@@ -294,9 +327,22 @@ public class MyOptionsConfigurer {
             case MULTIPLE_VALUES:
                 numberOfValues = 3;
                 break;
+            case VALUES_LESS_THAN_SETTER_PARAMETERS:
+                assert (numberOfParametersForSetter != null);
+                numberOfValues = numberOfParametersForSetter - 1;
+                break;
+            case VALUES_EQUAL_AS_SETTER_PARAMETERS:
+                assert (numberOfParametersForSetter != null);
+                numberOfValues = numberOfParametersForSetter;
+                break;
+            case VALUES_GREATER_THAN_SETTER_PARAMETERS:
+                assert (numberOfParametersForSetter != null);
+                numberOfValues = numberOfParametersForSetter + 1;
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + property.a31);
         }
+        assert (numberOfValues > 0);
         property.numberOfValues = numberOfValues;
 
         /* Setup A2.3 */

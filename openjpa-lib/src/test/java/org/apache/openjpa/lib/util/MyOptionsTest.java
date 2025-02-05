@@ -604,7 +604,7 @@ public class MyOptionsTest {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#12"))   // #TODO: remove
+            if (state.description.contains("#"))   // #TODO: remove
                 activeArguments.add(Arguments.of(state));
         }
 
@@ -623,9 +623,17 @@ public class MyOptionsTest {
 
         logger.info("setup done");
 
+        /* Assert the expcetion throw, if that's expected */
+        if (testState.properties.size() == 1 &&
+                testState.properties.get(0).expectedSet.contains(ExpectedFlags.THROWS_RUNTIME_EXCEPTION)) {
+            Assertions.assertThrows(RuntimeException.class, () -> testState.SUT.setInto(testState.obj), "RuntimeException expected, but not thrown");
+            return;
+        }
+
+        /* Otherwise call the setInto method */
         Options unsetOptions = testState.SUT.setInto(testState.obj);
 
-        logger.info("setInto done, unsetOptions: " + unsetOptions);
+        logger.info(String.format("setInto done, unsetOptions: %s", unsetOptions));
 
         List<String> calledMethods = MyOptionsMethodTracker.getMethods();
 
@@ -648,16 +656,16 @@ public class MyOptionsTest {
                 switch (property.a32) {
                     case PRIMITIVE:
                         // Compute expected value
-                        if (property.a31 == A3_1_number_of_values.ONE_VALUE) {
+                        if (property.numberOfValues == 1) {
                             expected = new Integer(expectedStr);
                         } else if (property.a31 == A3_1_number_of_values.MULTIPLE_VALUES) {
-                            if (property.expectedSet.contains(ExpectedFlags.COMBINE)) {
+                            if (property.expectedSet.contains(ExpectedFlags.USE_ALL)) {
                                 int first, second, third;
                                 first = new Integer(property.value.split(",")[0]);
                                 second = new Integer(property.value.split(",")[1]);
                                 third = new Integer(property.value.split(",")[2]);
                                 expected = first + second + third;
-                            } else if (property.expectedSet.contains(ExpectedFlags.USE_PRIMITIVE_LAST_VALUE)) {
+                            } else if (property.expectedSet.contains(ExpectedFlags.REPEAT_LAST)) {
                                 int first, second, third, fourth;
                                 first = new Integer(property.value.split(",")[0]);
                                 second = new Integer(property.value.split(",")[1]);
@@ -674,43 +682,32 @@ public class MyOptionsTest {
                         setMethodName = "setPrimitiveAttribute" + property.id;
                         break;
                     case STRING:
-                        if (property.a31 == A3_1_number_of_values.ONE_VALUE) {
-                            expected = expectedStr;
-                        } else if (property.a31 == A3_1_number_of_values.MULTIPLE_VALUES) {
-                            String first, second, third;
-                            if (property.expectedSet.contains(ExpectedFlags.COMBINE)) {
-                                first = property.value.split(",")[0];
-                                second = property.value.split(",")[1];
-                                third = property.value.split(",")[2];
-                                expected = first + second + third;
-                            } else {
-                                throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
-                            }
-                        } else {
-                            throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
-                        }
                         actual = deepestObject.deepestStringAttribute(property.id);
                         setMethodName = "setStringAttribute" + property.id;
-                        break;
-                    case SPECIAL_CLASS:
-                        if (property.a31 == A3_1_number_of_values.ONE_VALUE) {
-                            expected = new SpecialClass(expectedStr);
-                        } else if (property.a31 == A3_1_number_of_values.MULTIPLE_VALUES) {
-                            String first, second, third;
-                            if (property.expectedSet.contains(ExpectedFlags.COMBINE)) {
-                                first = property.value.split(",")[0];
-                                second = property.value.split(",")[1];
-                                third = property.value.split(",")[2];
-                                expected = new SpecialClass(first + second + third);
-                            } else {
-                                throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
-                            }
+
+                        if (property.numberOfValues == 1) {
+                            expected = expectedStr;
+                            break;
                         } else {
-                            throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
+                            if (property.expectedSet.contains(ExpectedFlags.NOT_SPLIT_STRINGS)) {
+                                expected = expectedStr;
+                                break;
+                            }
                         }
+                        throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
+                    case SPECIAL_CLASS:
                         actual = deepestObject.deepestSpecialClassAttribute1(property.id);
                         setMethodName = "setSpecialClassAttribute" + property.id;
-                        break;
+                        if (property.numberOfValues == 1) {
+                            expected = new SpecialClass(expectedStr);
+                            break;
+                        } else {
+                            if (property.expectedSet.contains(ExpectedFlags.NOT_SPLIT_STRINGS)) {
+                                expected = new SpecialClass(expectedStr);
+                                break;
+                            }
+                        }
+                        throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
                     default:
                         throw new IllegalStateException("Unexpected value: " + property.a32);
                 }

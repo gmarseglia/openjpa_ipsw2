@@ -27,7 +27,7 @@ public class MyOptionsObjects {
     /* Intermediate objects */
     public static class ObjectWithYYNNType1 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithYYNNType1 deeper;
-        private DeepestObjectType1 deepest;
+        private DeepestObjectSetter1Public2 deepest;
 
         private ObjectWithYYNNType1() {
             addMethod("new IntermediateInterface");
@@ -48,12 +48,12 @@ public class MyOptionsObjects {
             this.deeper = deeper;
         }
 
-        public DeepestObjectType1 getDeepest() {
+        public DeepestObjectSetter1Public2 getDeepest() {
             addMethod("getDeepest");
             return deepest;
         }
 
-        public void setDeepest(DeepestObjectType1 deepest) {
+        public void setDeepest(DeepestObjectSetter1Public2 deepest) {
             addMethod("setDeepest");
             this.deepest = deepest;
         }
@@ -75,13 +75,13 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deepest = (DeepestObjectType1) deepest;
+            this.deepest = (DeepestObjectSetter1Public2) deepest;
         }
     }
 
     public static class ObjectWithYYNNType3 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithYYNNType3 deeper;
-        private DeepestObjectType3 deepest;
+        private DeepestObjectMultiple1Multiple2Multiple3 deepest;
 
         private ObjectWithYYNNType3() {
             addMethod("new IntermediateInterface");
@@ -102,12 +102,12 @@ public class MyOptionsObjects {
             this.deeper = deeper;
         }
 
-        public DeepestObjectType3 getDeepest() {
+        public DeepestObjectMultiple1Multiple2Multiple3 getDeepest() {
             addMethod("getDeepest");
             return deepest;
         }
 
-        public void setDeepest(DeepestObjectType3 deepest) {
+        public void setDeepest(DeepestObjectMultiple1Multiple2Multiple3 deepest) {
             addMethod("setDeepest");
             this.deepest = deepest;
         }
@@ -129,13 +129,13 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deepest = (DeepestObjectType3) deepest;
+            this.deepest = (DeepestObjectMultiple1Multiple2Multiple3) deepest;
         }
     }
 
     public static class ObjectWithYYNYType1 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithYYNYType1 deeper;
-        private DeepestObjectType1 deepest;
+        private DeepestObjectSetter1Public2 deepest;
 
         public ObjectWithYYNYType1() {
             addMethod("new IntermediateInterface");
@@ -156,12 +156,12 @@ public class MyOptionsObjects {
             this.deeper = deeper;
         }
 
-        public DeepestObjectType1 getDeepest() {
+        public DeepestObjectSetter1Public2 getDeepest() {
             addMethod("getDeepest");
             return deepest;
         }
 
-        public void setDeepest(DeepestObjectType1 deepest) {
+        public void setDeepest(DeepestObjectSetter1Public2 deepest) {
             addMethod("setDeepest");
             this.deepest = deepest;
         }
@@ -183,13 +183,13 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deepest = (DeepestObjectType1) deepest;
+            this.deepest = (DeepestObjectSetter1Public2) deepest;
         }
     }
 
     public static class ObjectWithNYNYType1 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithNYNYType1 deeper;
-        private DeepestObjectType1 deepest;
+        private DeepestObjectSetter1Public2 deepest;
 
         public ObjectWithNYNYType1() {
             addMethod("new IntermediateInterface");
@@ -205,7 +205,7 @@ public class MyOptionsObjects {
             this.deeper = deeper;
         }
 
-        public void setDeepest(DeepestObjectType1 deepest) {
+        public void setDeepest(DeepestObjectSetter1Public2 deepest) {
             addMethod("setDeepest");
             this.deepest = deepest;
         }
@@ -227,13 +227,13 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deepest = (DeepestObjectType1) deepest;
+            this.deepest = (DeepestObjectSetter1Public2) deepest;
         }
     }
 
     public static class ObjectWithNNYYType1 implements IntermediateInterface, AnyDeepInterface {
         public ObjectWithNNYYType1 deeper;
-        public DeepestObjectType1 deepest;
+        public DeepestObjectSetter1Public2 deepest;
 
         public ObjectWithNNYYType1() {
             addMethod("new IntermediateInterface");
@@ -261,13 +261,13 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deepest = (DeepestObjectType1) deepest;
+            this.deepest = (DeepestObjectSetter1Public2) deepest;
         }
     }
 
     public static class ObjectWithNNYNType1 implements IntermediateInterface, AnyDeepInterface {
         public ObjectWithNNYNType1 deeper;
-        public DeepestObjectType1 deepest;
+        public DeepestObjectSetter1Public2 deepest;
 
         private ObjectWithNNYNType1() {
             addMethod("new IntermediateInterface");
@@ -295,13 +295,13 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deepest = (DeepestObjectType1) deepest;
+            this.deepest = (DeepestObjectSetter1Public2) deepest;
         }
     }
 
     public static class ObjectWithNNNNType1 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithNNNNType1 deeper;
-        private DeepestObjectType1 deepest;
+        private DeepestObjectSetter1Public2 deepest;
 
         private ObjectWithNNNNType1() {
             addMethod("new IntermediateInterface");
@@ -329,13 +329,13 @@ public class MyOptionsObjects {
 
         @Override
         public void intermediateSetDeepest(DeepestInterface deepest) {
-            this.deepest = (DeepestObjectType1) deepest;
+            this.deepest = (DeepestObjectSetter1Public2) deepest;
         }
     }
 
 
     /* Deepest objects */
-    public static class DeepestObjectType1 implements DeepestInterface, AnyDeepInterface {
+    public static class DeepestObjectSetter1Public2 implements DeepestInterface, AnyDeepInterface {
         public String StringAttribute2;
         public SpecialClass SpecialClassAttribute2;
         public int PrimitiveAttribute2;
@@ -343,11 +343,11 @@ public class MyOptionsObjects {
         private SpecialClass SpecialClassAttribute1;
         private int PrimitiveAttribute1;
 
-        public DeepestObjectType1() {
+        public DeepestObjectSetter1Public2() {
             addMethod("new DeepestInterface");
         }
 
-        public DeepestObjectType1(boolean track) {
+        public DeepestObjectSetter1Public2(boolean track) {
             if (track)
                 addMethod("new DeepestInterface");
         }
@@ -403,16 +403,100 @@ public class MyOptionsObjects {
         }
     }
 
-    public static class DeepestObjectType2 implements DeepestInterface, AnyDeepInterface {
+    public static class DeepestObjectSetter1Setter2 implements DeepestInterface, AnyDeepInterface {
+        private String StringAttribute2;
+        private SpecialClass SpecialClassAttribute2;
+        private int PrimitiveAttribute2;
         private String StringAttribute1;
         private SpecialClass SpecialClassAttribute1;
         private int PrimitiveAttribute1;
 
-        public DeepestObjectType2() {
+        public DeepestObjectSetter1Setter2() {
             addMethod("new DeepestInterface");
         }
 
-        public DeepestObjectType2(boolean track) {
+        public DeepestObjectSetter1Setter2(boolean track) {
+            if (track)
+                addMethod("new DeepestInterface");
+        }
+
+        public void setPrimitiveAttribute1(int primitiveAttribute1) {
+            addMethod("setPrimitiveAttribute1");
+            PrimitiveAttribute1 = primitiveAttribute1;
+        }
+
+        public void setStringAttribute1(String stringAttribute1) {
+            addMethod("setStringAttribute1");
+            StringAttribute1 = stringAttribute1;
+        }
+
+        public void setSpecialClassAttribute1(SpecialClass specialClassAttribute1) {
+            addMethod("setSpecialClassAttribute1");
+            SpecialClassAttribute1 = specialClassAttribute1;
+        }
+
+        public void setPrimitiveAttribute2(int primitiveAttribute2) {
+            addMethod("setPrimitiveAttribute2");
+            PrimitiveAttribute2 = primitiveAttribute2;
+        }
+
+        public void setStringAttribute2(String stringAttribute2) {
+            addMethod("setStringAttribute2");
+            StringAttribute2 = stringAttribute2;
+        }
+
+        public void setSpecialClassAttribute2(SpecialClass specialClassAttribute2) {
+            addMethod("setSpecialClassAttribute2");
+            SpecialClassAttribute2 = specialClassAttribute2;
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this;
+        }
+
+        @Override
+        public int deepestPrimitiveAttribute(String id) {
+            if (id.equals("1")) {
+                return this.PrimitiveAttribute1;
+            } else if (id.equals("2")) {
+                return this.PrimitiveAttribute2;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public String deepestStringAttribute(String id) {
+            if (id.equals("1")) {
+                return this.StringAttribute1;
+            } else if (id.equals("2")) {
+                return this.StringAttribute2;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public SpecialClass deepestSpecialClassAttribute1(String id) {
+            if (id.equals("1")) {
+                return this.SpecialClassAttribute1;
+            } else if (id.equals("2")) {
+                return this.SpecialClassAttribute2;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+    }
+
+
+    public static class DeepestObjectNo1 implements DeepestInterface, AnyDeepInterface {
+        private String StringAttribute1;
+        private SpecialClass SpecialClassAttribute1;
+        private int PrimitiveAttribute1;
+
+        public DeepestObjectNo1() {
+            addMethod("new DeepestInterface");
+        }
+
+        public DeepestObjectNo1(boolean track) {
             if (track)
                 addMethod("new DeepestInterface");
         }
@@ -447,16 +531,16 @@ public class MyOptionsObjects {
         }
     }
 
-    public static class DeepestObjectType3 implements DeepestInterface, AnyDeepInterface {
+    public static class DeepestObjectMultiple1Multiple2Multiple3 implements DeepestInterface, AnyDeepInterface {
         private int PrimitiveAttribute1;
         private String StringAttribute2;
         private SpecialClass SpecialClassAttribute3;
 
-        public DeepestObjectType3() {
+        public DeepestObjectMultiple1Multiple2Multiple3() {
             addMethod("new DeepestInterface");
         }
 
-        public DeepestObjectType3(boolean track) {
+        public DeepestObjectMultiple1Multiple2Multiple3(boolean track) {
             if (track)
                 addMethod("new DeepestInterface");
         }
@@ -547,12 +631,12 @@ public class MyOptionsObjects {
         }
     }
 
-    public static class DeepestObjectType4 implements DeepestInterface, AnyDeepInterface {
-        public DeepestObjectType4() {
+    public static class DeepestObjectEmpty implements DeepestInterface, AnyDeepInterface {
+        public DeepestObjectEmpty() {
             addMethod("new DeepestInterface");
         }
 
-        public DeepestObjectType4(boolean track) {
+        public DeepestObjectEmpty(boolean track) {
             if (track)
                 addMethod("new DeepestInterface");
         }
