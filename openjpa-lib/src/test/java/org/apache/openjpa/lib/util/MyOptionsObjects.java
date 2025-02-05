@@ -715,47 +715,6 @@ public class MyOptionsObjects {
         }
     }
 
-    public static class DeepestObjectType3MoreValues implements DeepestInterface, AnyDeepInterface {
-        private int PrimitiveAttribute1;
-
-        public DeepestObjectType3MoreValues() {
-            addMethod("new DeepestInterface");
-        }
-
-        public DeepestObjectType3MoreValues(boolean track) {
-            if (track)
-                addMethod("new DeepestInterface");
-        }
-
-        public void setPrimitiveAttribute1(int first, int second, int third, int fourth) {
-            addMethod("setPrimitiveAttribute1");
-            PrimitiveAttribute1 = first + second + third + fourth;
-        }
-
-        @Override
-        public DeepestInterface intermediateGetDeepest() {
-            return this;
-        }
-
-        @Override
-        public int deepestPrimitiveAttribute(String id) {
-            if (id.equals("1")) {
-                return this.PrimitiveAttribute1;
-            }
-            throw new IllegalStateException("Unexpected id: " + id);
-        }
-
-        @Override
-        public String deepestStringAttribute(String id) {
-            throw new IllegalStateException("Unexpected id: " + id);
-        }
-
-        @Override
-        public SpecialClass deepestSpecialClassAttribute1(String id) {
-            throw new IllegalStateException("Unexpected id: " + id);
-        }
-    }
-
     public static class DeepestObjectEmpty implements DeepestInterface, AnyDeepInterface {
         public DeepestObjectEmpty() {
             addMethod("new DeepestInterface");
@@ -786,54 +745,4 @@ public class MyOptionsObjects {
             throw new IllegalStateException("Unexpected id: " + id);
         }
     }
-
-    public static class DeepestObjectType5 implements DeepestInterface, AnyDeepInterface {
-        private String StringAttribute2;
-        private String StringAttribute1;
-
-        public DeepestObjectType5() {
-            addMethod("new DeepestInterface");
-        }
-
-        public DeepestObjectType5(boolean track) {
-            if (track)
-                addMethod("new DeepestInterface");
-        }
-
-        public void setStringAttribute1(String first, String second, String third, String fourth) {
-            addMethod("setStringAttribute1");
-            StringAttribute1 = first + second + third + fourth;
-        }
-
-        public void setStringAttribute2(String first, String second) {
-            addMethod("setStringAttribute2");
-            StringAttribute2 = first + second;
-        }
-
-        @Override
-        public DeepestInterface intermediateGetDeepest() {
-            return this;
-        }
-
-        @Override
-        public int deepestPrimitiveAttribute(String id) {
-            throw new IllegalStateException("Unexpected id: " + id);
-        }
-
-        @Override
-        public String deepestStringAttribute(String id) {
-            if (id.equals("1")) {
-                return this.StringAttribute1;
-            } else if (id.equals("2")) {
-                return this.StringAttribute2;
-            }
-            throw new IllegalStateException("Unexpected id: " + id);
-        }
-
-        @Override
-        public SpecialClass deepestSpecialClassAttribute1(String id) {
-            throw new IllegalStateException("Unexpected id: " + id);
-        }
-    }
-
 }
