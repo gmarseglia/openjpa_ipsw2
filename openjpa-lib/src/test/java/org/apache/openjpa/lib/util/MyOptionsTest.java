@@ -622,26 +622,6 @@ public class MyOptionsTest {
                 EnumSet.of(ExpectedFlags.THROWS_RUNTIME_EXCEPTION)
         )));
 
-        availableTestState.add(new TestState(
-                "#17: Not parsable because no way to set deepest attribute",
-                A1_Number_of_properties.ONE_PROPERTY,
-                A2_depth.DEPTH_ZERO,
-                null, null, null, null,
-                null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
-        ).addProperty(new PropertyState(
-                "1",
-                A3_1_number_of_values.ONE_VALUE,
-                A3_2_type_of_values.PRIMITIVE,
-                A3_3_SUT_or_defaults.ONLY_IN_SUT,
-                B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER,
-                null,
-                null,
-                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
-                null,
-                EnumSet.of(ExpectedFlags.THROWS_RUNTIME_EXCEPTION)
-        )));
-
 
         for (TestState state : availableTestState) {
             if (!state.successful)

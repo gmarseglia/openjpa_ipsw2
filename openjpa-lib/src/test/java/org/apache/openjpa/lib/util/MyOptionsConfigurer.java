@@ -11,6 +11,7 @@ import java.util.Set;
 public class MyOptionsConfigurer {
 
     public static final String PRIMITIVE_VALUE = "1";
+    public static final String NOT_PRIMITIVE_VALUE = "abc";
     public static final String STRING_VALUE = "one";
 
     TestState testState;
@@ -159,18 +160,15 @@ public class MyOptionsConfigurer {
                 return DeepestObjectNo1.class;
             } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER &&
-                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectSetter1Public2.class;
             } else if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
-                    p1.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
-                    p1.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
+                    p1.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectPublic1Public2.class;
             } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS &&
-                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectMultiple1.class;
@@ -182,50 +180,26 @@ public class MyOptionsConfigurer {
 
             if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER &&
-                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p2.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
-                    p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
-                    p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
+                    p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectSetter1Public2.class;
             } else if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER &&
-                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER &&
-                    p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectSetter1Setter2.class;
             } else if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
-                    p1.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE &&
                     p2.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
-                    p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
-                    p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
+                    p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectPublic1Public2.class;
             }
-
-
-            // else if (p1.a31 == A3_1_number_of_values.MULTIPLE_VALUES &&
-            //         p1.a32 == A3_2_type_of_values.STRING &&
-            //         p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-            //         p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_MORE_VALUES &&
-            //         p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
-            //         p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
-            //         p2.a31 == A3_1_number_of_values.MULTIPLE_VALUES &&
-            //         p2.a32 == A3_2_type_of_values.STRING &&
-            //         p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
-            //         p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_NEEDS_LESS_VALUES &&
-            //         p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
-            //         p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
-            // ) {
-            //     return DeepestObjectType5.class;
-            // }
-
         } else if (testState.properties.size() == 3) {
             PropertyState p1 = testState.properties.get(0);
             PropertyState p2 = testState.properties.get(1);
@@ -233,15 +207,12 @@ public class MyOptionsConfigurer {
 
             if (p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p1.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS &&
-                    p1.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p2.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p2.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS &&
-                    p2.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE &&
                     p3.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
                     p3.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_MULTIPLE_PARAMETERS &&
-                    p3.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER &&
                     p3.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectMultiple1Multiple2Multiple3.class;
@@ -357,11 +328,22 @@ public class MyOptionsConfigurer {
         property.numberOfParametersForSetter = numberOfParametersForSetter;
         property.numberOfValues = numberOfValues;
 
+        /* Compute if parsable */
+        boolean parsable = false;
+        if (property.b53 == B5_3_parsable_for_setter.PARSABLE_FOR_SETTER ||
+                property.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE) {
+            parsable = true;
+        }
+
         /* Setup A2.3 */
         String singleValue;
         switch (property.a32) {
             case PRIMITIVE:
-                singleValue = PRIMITIVE_VALUE;
+                if (parsable){
+                    singleValue = PRIMITIVE_VALUE;
+                } else {
+                    singleValue = NOT_PRIMITIVE_VALUE;
+                }
                 property.typeOfValues = "Primitive";
                 break;
             case STRING:
