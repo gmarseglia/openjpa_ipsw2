@@ -34,7 +34,7 @@ public class MyOptionsTest {
                 null,
                 null, null, null, null,
                 null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ));
 
         availableTestState.add(new TestState(
@@ -442,7 +442,7 @@ public class MyOptionsTest {
                 null, null, null, null,
                 null,
                 C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                true
+                false
         ).addProperty(new PropertyState(
                 "1",
                 A3_1_number_of_values.ONE_VALUE,
@@ -484,7 +484,7 @@ public class MyOptionsTest {
                 A2_depth.DEPTH_ZERO,
                 null, null, null, null,
                 null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A3_1_number_of_values.ONE_VALUE,
@@ -508,7 +508,7 @@ public class MyOptionsTest {
                 B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
                 C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
                 C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A3_1_number_of_values.ONE_VALUE,
@@ -528,7 +528,7 @@ public class MyOptionsTest {
                 A2_depth.DEPTH_ZERO,
                 null, null, null, null,
                 null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A3_1_number_of_values.VALUES_GREATER_THAN_SETTER_PARAMETERS,
@@ -548,7 +548,7 @@ public class MyOptionsTest {
                 A2_depth.DEPTH_ZERO,
                 null, null, null, null,
                 null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A3_1_number_of_values.VALUES_GREATER_THAN_SETTER_PARAMETERS,
@@ -568,7 +568,7 @@ public class MyOptionsTest {
                 A2_depth.DEPTH_ZERO,
                 null, null, null, null,
                 null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A3_1_number_of_values.VALUES_GREATER_THAN_SETTER_PARAMETERS,
@@ -588,7 +588,7 @@ public class MyOptionsTest {
                 A2_depth.DEPTH_ZERO,
                 null, null, null, null,
                 null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A3_1_number_of_values.VALUES_EQUAL_AS_SETTER_PARAMETERS,
@@ -608,7 +608,7 @@ public class MyOptionsTest {
                 A2_depth.DEPTH_ZERO,
                 null, null, null, null,
                 null, C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
-                false
+                true
         ).addProperty(new PropertyState(
                 "1",
                 A3_1_number_of_values.ONE_VALUE,
