@@ -647,7 +647,7 @@ public class MyOptionsTest {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#11_b:"))   // #TODO: remove
+            if (state.description.contains("#"))   // #TODO: remove
                 activeArguments.add(Arguments.of(state));
         }
 
@@ -699,7 +699,8 @@ public class MyOptionsTest {
                         actual = deepestObject.deepestPrimitiveAttribute(property.id);
                         setMethodName = "setPrimitiveAttribute" + property.id;
                         if (property.numberOfValues == 1 &&
-                                property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER) {
+                                (property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER ||
+                                        property.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE)) {
                             expected = new Integer(expectedStr);
                             break;
                         } else {
@@ -731,7 +732,8 @@ public class MyOptionsTest {
                         setMethodName = "setStringAttribute" + property.id;
 
                         if (property.numberOfValues == 1 &&
-                                property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER) {
+                                (property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER ||
+                                        property.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE)) {
                             expected = expectedStr;
                             break;
                         } else {
@@ -761,7 +763,8 @@ public class MyOptionsTest {
                         actual = deepestObject.deepestSpecialClassAttribute1(property.id);
                         setMethodName = "setSpecialClassAttribute" + property.id;
                         if (property.numberOfValues == 1 &&
-                                property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER) {
+                                (property.b52 == B5_2_number_of_parameter_of_deepest_setter.SETTER_WITH_ONE_PARAMETER ||
+                                        property.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE)) {
                             expected = new SpecialClass(expectedStr);
                             break;
                         } else {
