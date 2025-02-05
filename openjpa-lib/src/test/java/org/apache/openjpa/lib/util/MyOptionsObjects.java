@@ -539,7 +539,6 @@ public class MyOptionsObjects {
         }
     }
 
-
     public static class DeepestObjectNo1 implements DeepestInterface, AnyDeepInterface {
         private String StringAttribute1;
         private SpecialClass SpecialClassAttribute1;
