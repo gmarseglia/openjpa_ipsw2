@@ -367,7 +367,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_ALL)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_ALL)
         )).addProperty(new PropertyState(
                 "2",
                 A3_1_number_of_values.VALUES_EQUAL_AS_SETTER_PARAMETERS,
@@ -378,7 +378,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_ALL)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_ALL)
         )).addProperty(new PropertyState(
                 "3",
                 A3_1_number_of_values.VALUES_EQUAL_AS_SETTER_PARAMETERS,
@@ -389,7 +389,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_ALL)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.USE_ALL)
         )));
 
         availableTestState.add(new TestState(
@@ -410,7 +410,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
         )).addProperty(new PropertyState(
                 "2",
                 A3_1_number_of_values.VALUES_LESS_THAN_SETTER_PARAMETERS,
@@ -421,7 +421,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
         )).addProperty(new PropertyState(
                 "3",
                 A3_1_number_of_values.VALUES_LESS_THAN_SETTER_PARAMETERS,
@@ -432,7 +432,7 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.VIA_GETTER, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.REPEAT_LAST)
         )));
 
         availableTestState.add(new TestState(
@@ -619,8 +619,6 @@ public class MyOptionsTest {
         MyOptionsConfigurer configurer = new MyOptionsConfigurer();
         configurer.setup(testState);
 
-        testState.SUT.remove("StringAttribute2");
-
         logger.info("setup done");
 
         /* Assert the expcetion throw, if that's expected */
@@ -655,32 +653,22 @@ public class MyOptionsTest {
                 String setMethodName;
                 switch (property.a32) {
                     case PRIMITIVE:
-                        // Compute expected value
-                        if (property.numberOfValues == 1) {
-                            expected = new Integer(expectedStr);
-                        } else if (property.a31 == A3_1_number_of_values.MULTIPLE_VALUES) {
-                            if (property.expectedSet.contains(ExpectedFlags.USE_ALL)) {
-                                int first, second, third;
-                                first = new Integer(property.value.split(",")[0]);
-                                second = new Integer(property.value.split(",")[1]);
-                                third = new Integer(property.value.split(",")[2]);
-                                expected = first + second + third;
-                            } else if (property.expectedSet.contains(ExpectedFlags.REPEAT_LAST)) {
-                                int first, second, third, fourth;
-                                first = new Integer(property.value.split(",")[0]);
-                                second = new Integer(property.value.split(",")[1]);
-                                third = new Integer(property.value.split(",")[2]);
-                                fourth = third;
-                                expected = first + second + third + fourth;
-                            } else {
-                                throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
-                            }
-                        } else {
-                            throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
-                        }
                         actual = deepestObject.deepestPrimitiveAttribute(property.id);
                         setMethodName = "setPrimitiveAttribute" + property.id;
-                        break;
+                        if (property.numberOfValues == 1) {
+                            expected = new Integer(expectedStr);
+                            break;
+                        } else {
+                            if (property.expectedSet.contains(ExpectedFlags.USE_ALL)) {
+                                int counter = 0;
+                                for (String s : property.value.split(",")) {
+                                    counter += new Integer(s);
+                                }
+                                expected = counter;
+                                break;
+                            }
+                        }
+                        throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
                     case STRING:
                         actual = deepestObject.deepestStringAttribute(property.id);
                         setMethodName = "setStringAttribute" + property.id;
@@ -691,6 +679,9 @@ public class MyOptionsTest {
                         } else {
                             if (property.expectedSet.contains(ExpectedFlags.NOT_SPLIT_STRINGS)) {
                                 expected = expectedStr;
+                                break;
+                            } else if (property.expectedSet.contains(ExpectedFlags.USE_ALL)) {
+                                expected = expectedStr.replace(",", "");
                                 break;
                             }
                         }
@@ -705,6 +696,9 @@ public class MyOptionsTest {
                             if (property.expectedSet.contains(ExpectedFlags.NOT_SPLIT_STRINGS)) {
                                 expected = new SpecialClass(expectedStr);
                                 break;
+                            } else if (property.expectedSet.contains(ExpectedFlags.USE_ALL)) {
+                                expected = new SpecialClass(expectedStr.replace(",", ""));
+                                break;
                             }
                         }
                         throw new IllegalStateException("Unexpected MULTIPLE_VALUE option");
@@ -717,35 +711,35 @@ public class MyOptionsTest {
 
                 /* Assert the correct way is used to proceed towards the deepest object */
                 if (property.expectedSet.contains(ExpectedFlags.VIA_GETTER)) {
-                    Assertions.assertFalse(containsMethod("new IntermediateInterface"));
-                    Assertions.assertTrue(containsMethod("getDeeper"));
-                    Assertions.assertFalse(containsMethod("setDeeper"));
-                    Assertions.assertTrue(containsMethod("getDeepest"));
-                    Assertions.assertFalse(containsMethod("setDeepest"));
+                    Assertions.assertFalse(containsMethod("new IntermediateInterface"), "new IntermediateInterface");
+                    Assertions.assertTrue(containsMethod("getDeeper"), "getDeeper expected");
+                    Assertions.assertFalse(containsMethod("setDeeper"), "setDeeper expected");
+                    Assertions.assertTrue(containsMethod("getDeepest"), "getDeepest expected");
+                    Assertions.assertFalse(containsMethod("setDeepest"), "setDeepest");
                 } else if (property.expectedSet.contains(ExpectedFlags.VIA_NEW_SETTER_GETTER)) {
-                    Assertions.assertTrue(containsMethod("new IntermediateInterface"));
-                    Assertions.assertTrue(containsMethod("getDeeper"));
-                    Assertions.assertTrue(containsMethod("setDeeper"));
-                    Assertions.assertTrue(containsMethod("getDeepest"));
-                    Assertions.assertTrue(containsMethod("setDeepest"));
+                    Assertions.assertTrue(containsMethod("new IntermediateInterface"), "new IntermediateInterface");
+                    Assertions.assertTrue(containsMethod("getDeeper"), "getDeeper expected");
+                    Assertions.assertTrue(containsMethod("setDeeper"), "setDeeper expected");
+                    Assertions.assertTrue(containsMethod("getDeepest"), "getDeepest expected");
+                    Assertions.assertTrue(containsMethod("setDeepest"), "setDeepest");
                 } else if (property.expectedSet.contains(ExpectedFlags.VIA_NEW_SETTER)) {
-                    Assertions.assertTrue(containsMethod("new IntermediateInterface"));
-                    Assertions.assertFalse(containsMethod("getDeeper"));
-                    Assertions.assertTrue(containsMethod("setDeeper"));
-                    Assertions.assertFalse(containsMethod("getDeepest"));
-                    Assertions.assertTrue(containsMethod("setDeepest"));
+                    Assertions.assertTrue(containsMethod("new IntermediateInterface"), "new IntermediateInterface");
+                    Assertions.assertFalse(containsMethod("getDeeper"), "getDeeper expected");
+                    Assertions.assertTrue(containsMethod("setDeeper"), "setDeeper expected");
+                    Assertions.assertFalse(containsMethod("getDeepest"), "getDeepest expected");
+                    Assertions.assertTrue(containsMethod("setDeepest"), "setDeepest");
                 } else if (property.expectedSet.contains(ExpectedFlags.VIA_NEW_PUBLIC)) {
-                    Assertions.assertTrue(containsMethod("new IntermediateInterface"));
-                    Assertions.assertFalse(containsMethod("getDeeper"));
-                    Assertions.assertFalse(containsMethod("setDeeper"));
-                    Assertions.assertFalse(containsMethod("getDeepest"));
-                    Assertions.assertFalse(containsMethod("setDeepest"));
+                    Assertions.assertTrue(containsMethod("new IntermediateInterface"), "new IntermediateInterface");
+                    Assertions.assertFalse(containsMethod("getDeeper"), "getDeeper expected");
+                    Assertions.assertFalse(containsMethod("setDeeper"), "setDeeper expected");
+                    Assertions.assertFalse(containsMethod("getDeepest"), "getDeepest expected");
+                    Assertions.assertFalse(containsMethod("setDeepest"), "setDeepest");
                 } else if (property.expectedSet.contains(ExpectedFlags.VIA_PUBLIC)) {
-                    Assertions.assertFalse(containsMethod("new IntermediateInterface"));
-                    Assertions.assertFalse(containsMethod("getDeeper"));
-                    Assertions.assertFalse(containsMethod("setDeeper"));
-                    Assertions.assertFalse(containsMethod("getDeepest"));
-                    Assertions.assertFalse(containsMethod("setDeepest"));
+                    Assertions.assertFalse(containsMethod("new IntermediateInterface"), "new IntermediateInterface");
+                    Assertions.assertFalse(containsMethod("getDeeper"), "getDeeper expected");
+                    Assertions.assertFalse(containsMethod("setDeeper"), "setDeeper expected");
+                    Assertions.assertFalse(containsMethod("getDeepest"), "getDeepest expected");
+                    Assertions.assertFalse(containsMethod("setDeepest"), "setDeepest");
                 }
 
                 /* Assert the correct final way has been used to set the attribute */
