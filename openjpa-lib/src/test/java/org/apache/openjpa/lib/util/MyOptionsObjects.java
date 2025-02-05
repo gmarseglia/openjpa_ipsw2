@@ -486,6 +486,59 @@ public class MyOptionsObjects {
         }
     }
 
+    public static class DeepestObjectPublic1Public2 implements DeepestInterface, AnyDeepInterface {
+        public String StringAttribute2;
+        public SpecialClass SpecialClassAttribute2;
+        public int PrimitiveAttribute2;
+        public String StringAttribute1;
+        public SpecialClass SpecialClassAttribute1;
+        public int PrimitiveAttribute1;
+
+        public DeepestObjectPublic1Public2() {
+            addMethod("new DeepestInterface");
+        }
+
+        public DeepestObjectPublic1Public2(boolean track) {
+            if (track)
+                addMethod("new DeepestInterface");
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this;
+        }
+
+        @Override
+        public int deepestPrimitiveAttribute(String id) {
+            if (id.equals("1")) {
+                return this.PrimitiveAttribute1;
+            } else if (id.equals("2")) {
+                return this.PrimitiveAttribute2;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public String deepestStringAttribute(String id) {
+            if (id.equals("1")) {
+                return this.StringAttribute1;
+            } else if (id.equals("2")) {
+                return this.StringAttribute2;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+
+        @Override
+        public SpecialClass deepestSpecialClassAttribute1(String id) {
+            if (id.equals("1")) {
+                return this.SpecialClassAttribute1;
+            } else if (id.equals("2")) {
+                return this.SpecialClassAttribute2;
+            }
+            throw new IllegalStateException("Unexpected id: " + id);
+        }
+    }
+
 
     public static class DeepestObjectNo1 implements DeepestInterface, AnyDeepInterface {
         private String StringAttribute1;

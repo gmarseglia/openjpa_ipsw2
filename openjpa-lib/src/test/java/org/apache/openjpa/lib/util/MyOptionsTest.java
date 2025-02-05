@@ -335,7 +335,7 @@ public class MyOptionsTest {
                 null,
                 B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
                 B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.NOT_SPLIT_STRINGS)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_PUBLIC, ExpectedFlags.NOT_SPLIT_STRINGS)
         )).addProperty(new PropertyState(
                 "2",
                 A3_1_number_of_values.MULTIPLE_VALUES,
@@ -346,7 +346,7 @@ public class MyOptionsTest {
                 null,
                 B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
                 B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
-                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_SETTER, ExpectedFlags.NOT_SPLIT_STRINGS)
+                EnumSet.of(ExpectedFlags.SET, ExpectedFlags.FINAL_PUBLIC, ExpectedFlags.NOT_SPLIT_STRINGS)
         )));
 
         availableTestState.add(new TestState(

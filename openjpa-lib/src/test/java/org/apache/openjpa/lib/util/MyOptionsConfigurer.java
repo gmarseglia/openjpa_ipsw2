@@ -163,6 +163,11 @@ public class MyOptionsConfigurer {
                     p1.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectSetter1Public2.class;
+            } else if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
+                    p1.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectPublic1Public2.class;
             }
             // else if (p1.a32 == A3_2_type_of_values.PRIMITIVE &&
             //         p1.b51 == B5_1_deepest_setter.WITH_DEEPEST_SETTER &&
@@ -196,6 +201,14 @@ public class MyOptionsConfigurer {
                     p2.b54 == B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE
             ) {
                 return DeepestObjectSetter1Setter2.class;
+            } else if (p1.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
+                    p1.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
+                    p1.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE &&
+                    p2.b51 == B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER &&
+                    p2.b54 == B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE &&
+                    p2.b55 == B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE
+            ) {
+                return DeepestObjectPublic1Public2.class;
             }
 
 
