@@ -357,6 +357,16 @@ public class MyOptionsObjects {
             PrimitiveAttribute1 = primitiveAttribute1;
         }
 
+        public void setPrimitiveAttribute1() {
+            addMethod("setPrimitiveAttribute1");
+            PrimitiveAttribute1 = -1;
+        }
+
+        public void setPrimitiveAttribute1(int[] primitiveAttributes) {
+            addMethod("setPrimitiveAttribute1");
+            PrimitiveAttribute1 = -1;
+        }
+
         public void setStringAttribute1(String stringAttribute1) {
             addMethod("setStringAttribute1");
             StringAttribute1 = stringAttribute1;
