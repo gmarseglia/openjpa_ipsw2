@@ -66,12 +66,22 @@ public class MyOptionsConfigurer {
 
     private void createSUT() {
         Options defaults = new Options();
+        int propertiesInDefault = 0;
         for (PropertyState property : testState.properties) {
             if (property.a33 == A3_3_SUT_or_defaults.BOTH_SUT_AND_DEFAULTS || property.a33 == A3_3_SUT_or_defaults.ONLY_IN_DEFAULTS) {
                 defaults.setProperty(property.key, property.value);
+                propertiesInDefault++;
             }
         }
-        Options SUT = new Options(defaults);
+
+        /* Set up defaults only if needed */
+        Options SUT;
+        if (propertiesInDefault > 0) {
+            SUT = new Options(defaults);
+        } else {
+            SUT = new Options();
+        }
+
         for (PropertyState property : testState.properties) {
             if (property.a33 == A3_3_SUT_or_defaults.BOTH_SUT_AND_DEFAULTS || property.a33 == A3_3_SUT_or_defaults.ONLY_IN_SUT) {
                 SUT.setProperty(property.key, property.value);
@@ -346,7 +356,7 @@ public class MyOptionsConfigurer {
         String singleValue;
         switch (property.a32) {
             case PRIMITIVE:
-                if (parsable){
+                if (parsable) {
                     singleValue = PRIMITIVE_VALUE;
                 } else {
                     singleValue = NOT_PRIMITIVE_VALUE;
