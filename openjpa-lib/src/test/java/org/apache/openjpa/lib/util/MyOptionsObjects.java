@@ -236,6 +236,50 @@ public class MyOptionsObjects {
         }
     }
 
+    public static class ObjectWithYNNYType1 implements IntermediateInterface, AnyDeepInterface {
+        private ObjectWithYNNYType1 deeper;
+        private DeepestObjectSetter1Public2 deepest;
+
+        public ObjectWithYNNYType1() {
+            addMethod("new IntermediateInterface");
+        }
+
+        public ObjectWithYNNYType1(boolean track) {
+            if (track)
+                addMethod("new IntermediateInterface");
+        }
+
+        public ObjectWithYNNYType1 getDeeper() {
+            addMethod("getDeeper");
+            return deeper;
+        }
+
+        public DeepestObjectSetter1Public2 getDeepest() {
+            addMethod("getDeepest");
+            return deepest;
+        }
+
+        @Override
+        public IntermediateInterface intermediateGetDeeper() {
+            return this.deeper;
+        }
+
+        @Override
+        public void intermediateSetDeeper(IntermediateInterface lower) {
+            this.deeper = (ObjectWithYNNYType1) lower;
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this.deeper.deepest;
+        }
+
+        @Override
+        public void intermediateSetDeepest(DeepestInterface deepest) {
+            this.deepest = (DeepestObjectSetter1Public2) deepest;
+        }
+    }
+
     public static class ObjectWithNYNYType1 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithNYNYType1 deeper;
         private DeepestObjectSetter1Public2 deepest;
