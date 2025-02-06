@@ -333,6 +333,62 @@ public class MyOptionsObjects {
         }
     }
 
+    public static class ObjectWithExceptionInConstructor implements IntermediateInterface, AnyDeepInterface {
+        private ObjectWithExceptionInConstructor deeper;
+        private DeepestObjectSetter1Public2 deepest;
+
+        private ObjectWithExceptionInConstructor() throws Exception {
+            addMethod("new IntermediateInterface");
+            addMethod("throw new Exception");
+            throw new Exception("from ObjectWithExceptionInConstructor");
+        }
+
+        public ObjectWithExceptionInConstructor(boolean track) {
+            if (track)
+                addMethod("new IntermediateInterface");
+        }
+
+        public ObjectWithExceptionInConstructor getDeeper() {
+            addMethod("getDeeper");
+            return deeper;
+        }
+
+        public void setDeeper(ObjectWithExceptionInConstructor deeper) {
+            addMethod("setDeeper");
+            this.deeper = deeper;
+        }
+
+        public DeepestObjectSetter1Public2 getDeepest() {
+            addMethod("getDeepest");
+            return deepest;
+        }
+
+        public void setDeepest(DeepestObjectSetter1Public2 deepest) {
+            addMethod("setDeepest");
+            this.deepest = deepest;
+        }
+
+        @Override
+        public IntermediateInterface intermediateGetDeeper() {
+            return this.deeper;
+        }
+
+        @Override
+        public void intermediateSetDeeper(IntermediateInterface lower) {
+            this.deeper = (ObjectWithExceptionInConstructor) lower;
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this.deeper.deepest;
+        }
+
+        @Override
+        public void intermediateSetDeepest(DeepestInterface deepest) {
+            this.deepest = (DeepestObjectSetter1Public2) deepest;
+        }
+    }
+
 
     /* Deepest objects */
     public static class DeepestObjectSetter1Public2 implements DeepestInterface, AnyDeepInterface {

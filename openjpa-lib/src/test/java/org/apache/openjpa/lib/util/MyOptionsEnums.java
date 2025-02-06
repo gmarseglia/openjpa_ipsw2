@@ -36,7 +36,7 @@ public class MyOptionsEnums {
     }
 
     public enum B4_intermediate_javabean_constructor {
-        WITH_JAVABEAN_CONSTRUCTOR, WITHOUT_JAVABEAN_CONSTRUCTOR
+        WITH_JAVABEAN_CONSTRUCTOR, WITHOUT_JAVABEAN_CONSTRUCTOR, EXCEPTION_IN_CONSTRUCTOR
     }
 
     public enum B5_1_deepest_setter {
