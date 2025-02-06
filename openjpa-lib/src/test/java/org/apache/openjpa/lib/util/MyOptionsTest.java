@@ -73,7 +73,7 @@ public class MyOptionsTest {
                 A1_Number_of_properties.MULTIPLE_PROPERTIES,
                 A2_depth.DEPTH_GREATER_THAN_ZERO,
                 B1_intermediate_getter.WITH_INTERMEDIATE_GETTER,
-                B2_intermediate_setter.WITH_INTERMEDIATE_SETTER,
+                B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER,
                 B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES,
                 B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
                 C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
