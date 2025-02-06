@@ -440,6 +440,16 @@ public class MyOptionsObjects {
             StringAttribute1 = stringAttribute1;
         }
 
+        public void setStringAttribute1(String stringAttribute1, String second) {
+            addMethod("setStringAttribute1");
+            StringAttribute1 = stringAttribute1 + "second" + second;
+        }
+
+        public void setStringAttribute1(int first, int second) {
+            addMethod("setStringAttribute1");
+            StringAttribute1 = String.valueOf(first + second + 1000);
+        }
+
         public void setSpecialClassAttribute1(SpecialClass specialClassAttribute1) {
             addMethod("setSpecialClassAttribute1");
             SpecialClassAttribute1 = specialClassAttribute1;

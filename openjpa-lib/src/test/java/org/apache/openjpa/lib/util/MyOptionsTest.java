@@ -641,7 +641,7 @@ public class MyOptionsTest {
         MyOptionsConfigurer configurer = new MyOptionsConfigurer();
         configurer.setup(testState);
 
-        logger.info("setup done");
+        logger.info(String.format("setup done, obj.class: %s", testState.obj == null ? "null" : testState.obj.getClass().getSimpleName()));
 
         /* Assert the exception throw, if that's expected */
         if (testState.properties.size() == 1 &&
