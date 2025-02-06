@@ -8,6 +8,7 @@ fi
 
 PITEST=false
 STRING_UTIL=false
+OPTIONS=false
 ALL=false
 ACTIVE_PROFILE=""
 
@@ -20,6 +21,10 @@ do
     STRING_UTIL=true
     ACTIVE_PROFILE="myStringUtilSuite"
   fi
+  if [ "$arg" == "--op" ] ; then
+      OPTIONS=true
+      ACTIVE_PROFILE="myOptionsSuite"
+    fi
   if [ "$arg" == "--all" ] ; then
     echo "NOT IMPLEMENTED YET"
     exit 1
@@ -29,7 +34,7 @@ do
   fi
 done
 
-if [ $STRING_UTIL == false ] && [ $ALL == false ] ; then
+if [ $STRING_UTIL == false ] && [ $OPTIONS == false ] && [ $ALL == false ] ; then
   echo "Incorrect usage. Correct usage: runAndSave.sh <version_name> <--su> [-p]"
   exit 1
 fi
