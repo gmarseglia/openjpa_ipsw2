@@ -499,8 +499,8 @@ public class MyOptionsTest {
         )));
 
         availableTestState.add(new TestState(
-                "#13: Single deep property, not set",
-                A1_Number_of_properties.ONE_PROPERTY,
+                "#13: Multiple deep property, not set",
+                A1_Number_of_properties.MULTIPLE_PROPERTIES,
                 A2_depth.DEPTH_GREATER_THAN_ZERO,
                 B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER,
                 B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER,
@@ -519,6 +519,17 @@ public class MyOptionsTest {
                 B5_3_parsable_for_setter.PARSABLE_FOR_SETTER,
                 B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
                 null,
+                EnumSet.of(ExpectedFlags.NOT_SET)
+        )).addProperty(new PropertyState(
+                "2",
+                A3_1_number_of_values.ONE_VALUE,
+                A3_2_type_of_values.PRIMITIVE,
+                A3_3_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER,
+                null,
+                null,
+                B5_4_deepest_public_attribute.WITH_DEEPEST_PUBLIC_ATTRIBUTE,
+                B5_5_parsable_for_public_attribute.PARSABLE_FOR_PUBLIC_ATTRIBUTE,
                 EnumSet.of(ExpectedFlags.NOT_SET)
         )));
 
@@ -665,7 +676,7 @@ public class MyOptionsTest {
         MyOptionsConfigurer configurer = new MyOptionsConfigurer();
         configurer.setup(testState);
 
-        logger.info(String.format("setup done, obj.class: %s", testState.obj == null ? "null" : testState.obj.getClass().getSimpleName()));
+        logger.info("setup done");
 
         /* Assert the exception throw, if that's expected */
         if (testState.properties.size() == 1 &&

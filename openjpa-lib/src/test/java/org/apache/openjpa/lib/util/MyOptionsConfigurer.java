@@ -4,16 +4,17 @@ import org.apache.openjpa.lib.util.MyOptionsEnums.*;
 import org.apache.openjpa.lib.util.MyOptionsObjects.*;
 import org.apache.openjpa.lib.util.MyOptionsTest.PropertyState;
 import org.apache.openjpa.lib.util.MyOptionsTest.TestState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 public class MyOptionsConfigurer {
-
     public static final String PRIMITIVE_VALUE = "1";
     public static final String NOT_PRIMITIVE_VALUE = "abc";
     public static final String STRING_VALUE = "one";
-
+    private static final Logger logger = LoggerFactory.getLogger(MyOptionsConfigurer.class);
     TestState testState;
     int maxDepth = 0;
 
@@ -110,6 +111,7 @@ public class MyOptionsConfigurer {
     private void createObj() {
         /* Choose the class for the deepest object */
         Class deepestClass = getDeepestClass();
+        logger.info(String.format("deepestClass: %s", deepestClass == null ? "null" : deepestClass.getSimpleName()));
         DeepestInterface deepest;
         try {
             deepest = (DeepestInterface) deepestClass.getConstructor(boolean.class).newInstance(false);
@@ -140,6 +142,8 @@ public class MyOptionsConfigurer {
 
         if (intermediateClass == null)
             throw new IllegalStateException("#TODO: not implemented combination of B1, B2, B3, B4");
+
+        logger.info(String.format("intermediateClass: %s", intermediateClass.getSimpleName()));
 
         IntermediateInterface top;
         IntermediateInterface middle;
@@ -286,6 +290,12 @@ public class MyOptionsConfigurer {
                 testState.b4 == B4_intermediate_javabean_constructor.EXCEPTION_IN_CONSTRUCTOR
         ) {
             return ObjectWithExceptionInConstructor.class;
+        } else if (getDeepestClass() == DeepestObjectSetter1Setter2.class &&
+                testState.b1 == B1_intermediate_getter.WITHOUT_INTERMEDIATE_GETTER &&
+                testState.b2 == B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER &&
+                testState.b3 == B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES &&
+                testState.b4 == B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR) {
+            return ObjectWithNNNNType1.class;
         }
         return null;
     }
