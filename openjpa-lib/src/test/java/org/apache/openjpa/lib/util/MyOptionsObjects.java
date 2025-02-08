@@ -128,6 +128,50 @@ public class MyOptionsObjects {
         }
     }
 
+    public static class ObjectWithYNNNNo1 implements IntermediateInterface, AnyDeepInterface {
+        private ObjectWithYNNNNo1 deeper;
+        private DeepestObjectNo1 deepest;
+
+        private ObjectWithYNNNNo1() {
+            addMethod("new IntermediateInterface");
+        }
+
+        public ObjectWithYNNNNo1(boolean track) {
+            if (track)
+                addMethod("new IntermediateInterface");
+        }
+
+        public ObjectWithYNNNNo1 getDeeper() {
+            addMethod("getDeeper");
+            return deeper;
+        }
+
+        public DeepestObjectNo1 getDeepest() {
+            addMethod("getDeepest");
+            return deepest;
+        }
+
+        @Override
+        public IntermediateInterface intermediateGetDeeper() {
+            return this.deeper;
+        }
+
+        @Override
+        public void intermediateSetDeeper(IntermediateInterface lower) {
+            this.deeper = (ObjectWithYNNNNo1) lower;
+        }
+
+        @Override
+        public DeepestInterface intermediateGetDeepest() {
+            return this.deeper.deepest;
+        }
+
+        @Override
+        public void intermediateSetDeepest(DeepestInterface deepest) {
+            this.deepest = (DeepestObjectNo1) deepest;
+        }
+    }
+
     public static class ObjectWithYYNNType3 implements IntermediateInterface, AnyDeepInterface {
         private ObjectWithYYNNType3 deeper;
         private DeepestObjectMultiple1Multiple2Multiple3 deepest;

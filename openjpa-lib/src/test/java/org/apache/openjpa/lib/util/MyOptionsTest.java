@@ -681,12 +681,37 @@ public class MyOptionsTest {
                 EnumSet.of(ExpectedFlags.THROWS_RUNTIME_EXCEPTION)
         )));
 
+        availableTestState.add(new TestState(
+                "#19: Single deep property, not set 2",
+                A1_Number_of_properties.ONE_PROPERTY,
+                A2_depth.DEPTH_GREATER_THAN_ZERO,
+                B1_intermediate_getter.WITH_INTERMEDIATE_GETTER,
+                B2_intermediate_setter.WITHOUT_INTERMEDIATE_SETTER,
+                B3_intermediate_public_attributes.WITHOUT_INTERMEDIATE_PUBLIC_ATTRIBUTES,
+                B4_intermediate_javabean_constructor.WITHOUT_JAVABEAN_CONSTRUCTOR,
+                C1_intermediate_instances_are_null.NON_NULL_INTERMEDIATE_INSTANCES,
+                C2_last_instance_is_null.NON_NULL_LAST_INSTANCE,
+                true
+        ).addProperty(new PropertyState(
+                "1",
+                A3_1_number_of_values.ONE_VALUE,
+                A3_2_type_of_values.PRIMITIVE,
+                A3_3_SUT_or_defaults.ONLY_IN_SUT,
+                B5_1_deepest_setter.WITHOUT_DEEPEST_SETTER,
+                null,
+                null,
+                B5_4_deepest_public_attribute.WITHOUT_DEEPEST_PUBLIC_ATTRIBUTE,
+                null,
+                EnumSet.of(ExpectedFlags.NOT_SET)
+        )));
+
 
         for (TestState state : availableTestState) {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#"))
+            // if (!state.properties.isEmpty() && state.properties.get(0).expectedSet.contains(ExpectedFlags.NOT_SET)
+            //         && state.description.contains("#19"))
                 activeArguments.add(Arguments.of(state));
         }
 
