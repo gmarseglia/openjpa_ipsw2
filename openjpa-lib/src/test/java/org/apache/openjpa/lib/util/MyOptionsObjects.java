@@ -766,6 +766,18 @@ public class MyOptionsObjects {
                 addMethod("new DeepestInterface");
         }
 
+        public String getStringAttribute1() {
+            return StringAttribute1;
+        }
+
+        public SpecialClass getSpecialClassAttribute1() {
+            return SpecialClassAttribute1;
+        }
+
+        public int getPrimitiveAttribute1() {
+            return PrimitiveAttribute1;
+        }
+
         @Override
         public DeepestInterface intermediateGetDeepest() {
             return this;
