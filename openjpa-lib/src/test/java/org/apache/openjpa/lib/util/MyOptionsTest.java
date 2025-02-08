@@ -710,9 +710,7 @@ public class MyOptionsTest {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            // if (!state.properties.isEmpty() && state.properties.get(0).expectedSet.contains(ExpectedFlags.NOT_SET)
-            //         && state.description.contains("#19"))
-                activeArguments.add(Arguments.of(state));
+            activeArguments.add(Arguments.of(state));
         }
 
         return activeArguments.stream();
@@ -903,10 +901,14 @@ public class MyOptionsTest {
                 } else if (property.expectedSet.contains(ExpectedFlags.FINAL_PUBLIC)) {
                     Assertions.assertFalse(containsMethod(setMethodName), String.format("method '%s' was called", setMethodName));
                 }
+
+                /* Assert the property is not in the unsetOptions returned object */
+                Assertions.assertFalse(unsetOptions.containsKey(property.key));
+
             } else if (property.expectedSet.contains(ExpectedFlags.NOT_SET)) {
                 DeepestInterface deepest = ((AnyDeepInterface) testState.obj).intermediateGetDeepest();
 
-                /* Assert the property is the unsetOptions returned object */
+                /* Assert the property is in the unsetOptions returned object */
                 Assertions.assertTrue(unsetOptions.containsKey(property.key));
 
                 /* Assert the attribute of the deepest object has not been modified */
