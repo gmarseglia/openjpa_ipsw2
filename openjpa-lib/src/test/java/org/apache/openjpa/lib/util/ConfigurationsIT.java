@@ -120,7 +120,15 @@ public class ConfigurationsIT {
             return;
         } else if (testState.expectedSet.contains(EXPECTED.PARSE_EXCEPTION)) {
             ParseException e = Assertions.assertThrows(ParseException.class, sutMethod);
-            logger.info(String.format("ParseException caught, e.getMessage(): %s", e.getMessage()));
+            String eMessage = e.getMessage();
+            logger.info(String.format("ParseException caught, e.getMessage(): %s", eMessage));
+            if (testState.expectedSet.contains(EXPECTED.NO_MESSAGE)) {
+                Assertions.assertFalse(eMessage.contains("perhaps the property was misspelled"));
+            } else if (testState.expectedSet.contains(EXPECTED.MESSAGE)) {
+                Assertions.assertTrue(eMessage.contains("perhaps the property was misspelled"));
+            } else {
+                throw new IllegalStateException("PARSE_EXCEPTION but neither NO_MESSAGE nor MESSAGE in expectedSet");
+            }
             return;
         } else if (testState.expectedSet.contains(EXPECTED.NO_EXCEPTION)) {
             sutMethod.execute();
