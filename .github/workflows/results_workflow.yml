@@ -28,3 +28,8 @@ jobs:
       - name: Test with Junit
         working-directory: openjpa-lib/
         run: mvn -B test -PmyAllSuite,customTest
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Surefire Report
+          path: openjpa-lib/target/surefire-reports
