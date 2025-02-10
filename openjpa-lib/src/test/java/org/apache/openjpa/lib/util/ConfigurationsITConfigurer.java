@@ -4,6 +4,7 @@ import org.apache.openjpa.lib.util.ConfigurationsIT.A1_EXCEPTION;
 import org.apache.openjpa.lib.util.ConfigurationsIT.A2_NUMBER_OF_SETTABLE_PROPERTIES;
 import org.apache.openjpa.lib.util.ConfigurationsIT.TestState;
 import org.apache.openjpa.lib.util.ConfigurationsITClasses.Deepest1;
+import org.apache.openjpa.lib.util.ConfigurationsITClasses.Deepest123;
 
 import java.util.Properties;
 
@@ -25,15 +26,18 @@ public class ConfigurationsITConfigurer {
             return;
         }
 
+        assert testState.a1 == A1_EXCEPTION.NO;
+
         testState.properties.setProperty("first", "1");
         testState.properties.setProperty("second", "2");
         testState.properties.setProperty("third", "3");
 
         /* Configure the case in which too few properties are set */
-        if (testState.a1 == A1_EXCEPTION.NO &&
-                testState.a2 == A2_NUMBER_OF_SETTABLE_PROPERTIES.LESS_THAN_PROPERTIES_SIZE_MINUS_1) {
+        if (testState.a2 == A2_NUMBER_OF_SETTABLE_PROPERTIES.LESS_THAN_PROPERTIES_SIZE_MINUS_1) {
             testState.obj = new Deepest1();
-
+            return;
+        } else if (testState.a2 == A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE) {
+            testState.obj = new Deepest123();
             return;
         }
 

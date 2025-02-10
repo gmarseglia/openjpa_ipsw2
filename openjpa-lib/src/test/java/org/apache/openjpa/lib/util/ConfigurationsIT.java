@@ -87,7 +87,7 @@ public class ConfigurationsIT {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (state.description.contains("#02"))
+            if (true || state.description.contains("#02"))
                 activeArguments.add(Arguments.of(state));
         }
 

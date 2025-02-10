@@ -35,4 +35,18 @@ public class ConfigurationsITClasses {
             this.first = first;
         }
     }
+
+    public static class Deepest123 extends DeepestBase {
+        public void setFirst(int first) {
+            this.first = first;
+        }
+
+        public void setSecond(int second) {
+            this.second = second;
+        }
+
+        public void setThird(int third) {
+            this.third = third;
+        }
+    }
 }
