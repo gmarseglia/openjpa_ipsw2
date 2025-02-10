@@ -90,8 +90,7 @@ public class ConfigurationsIT {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (true || state.description.contains("#05"))
-                activeArguments.add(Arguments.of(state));
+            activeArguments.add(Arguments.of(state));
         }
 
         return activeArguments.stream();
