@@ -5,6 +5,7 @@ import org.apache.openjpa.lib.util.ConfigurationsIT.A2_NUMBER_OF_SETTABLE_PROPER
 import org.apache.openjpa.lib.util.ConfigurationsIT.A3_OBJ_DEPTH;
 import org.apache.openjpa.lib.util.ConfigurationsIT.TestState;
 import org.apache.openjpa.lib.util.ConfigurationsITClasses.Deepest1;
+import org.apache.openjpa.lib.util.ConfigurationsITClasses.Deepest12;
 import org.apache.openjpa.lib.util.ConfigurationsITClasses.Deepest123;
 import org.apache.openjpa.lib.util.ConfigurationsITClasses.Intermediate12;
 
@@ -50,6 +51,10 @@ public class ConfigurationsITConfigurer {
         } else if (testState.a2 == A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE_MINUS_1 &&
                 testState.a3 == A3_OBJ_DEPTH.GREATER_THAN_ZERO) {
             testState.obj = new Intermediate12();
+            return;
+        } else if (testState.a2 == A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE_MINUS_1 &&
+                testState.a3 == A3_OBJ_DEPTH.ZERO) {
+            testState.obj = new Deepest12();
             return;
         }
 
