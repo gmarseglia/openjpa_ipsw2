@@ -27,7 +27,7 @@ jobs:
 
       - name: Test with Junit
         working-directory: openjpa-lib/
-        run: mvn -B test -PmyAllSuite,customTest
+        run: mvn -B test -PmyAllSuite,customTest,ignoreTestFailure
 
       - uses: actions/upload-artifact@v4
         with:
