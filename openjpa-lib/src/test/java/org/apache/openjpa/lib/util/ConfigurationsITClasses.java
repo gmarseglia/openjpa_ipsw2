@@ -4,11 +4,11 @@ public class ConfigurationsITClasses {
 
     public static final String[] AVAILABLE_ATTRIBUTES = {"first", "second", "third"};
 
-    public interface WithGeneralGetter {
+    public interface DeepestInterface {
         public Integer generalGetter(String attributeName);
     }
 
-    public static class DeepestBase implements WithGeneralGetter {
+    public static class DeepestBase implements DeepestInterface {
         protected Integer first;
         protected Integer second;
         protected Integer third;
@@ -47,6 +47,29 @@ public class ConfigurationsITClasses {
 
         public void setThird(int third) {
             this.third = third;
+        }
+    }
+
+    public static class Deepest12 extends DeepestBase {
+        public void setFirst(int first) {
+            this.first = first;
+        }
+
+        public void setSecond(int second) {
+            this.second = second;
+        }
+    }
+
+
+    public static class Intermediate12 {
+        DeepestInterface deepest;
+
+        public Intermediate12() {
+            deepest = new Deepest12();
+        }
+
+        public DeepestInterface getDeepest() {
+            return deepest;
         }
     }
 }

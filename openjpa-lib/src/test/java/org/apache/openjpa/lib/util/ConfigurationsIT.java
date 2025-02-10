@@ -1,7 +1,7 @@
 package org.apache.openjpa.lib.util;
 
 import org.apache.openjpa.lib.conf.Configurations;
-import org.apache.openjpa.lib.util.ConfigurationsITClasses.WithGeneralGetter;
+import org.apache.openjpa.lib.util.ConfigurationsITClasses.DeepestInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +10,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Properties;
 import java.util.stream.Stream;
 
 public class ConfigurationsIT {
@@ -102,6 +105,8 @@ public class ConfigurationsIT {
         ConfigurationsITConfigurer configurer = new ConfigurationsITConfigurer(testState);
         configurer.configure();
 
+        logger.info(String.format("test.obj.getClass(): %s", testState.obj.getClass()));
+
         Executable sutMethod = () -> {
             Configurations.configureInstance(
                     testState.obj,
@@ -113,10 +118,10 @@ public class ConfigurationsIT {
         if (testState.expectedSet.contains(EXPECTED.RUNTIME_EXCEPTION)) {
             Assertions.assertThrows(RuntimeException.class, sutMethod);
             return;
-        } else if (testState.expectedSet.contains(EXPECTED.PARSE_EXCEPTION)){
+        } else if (testState.expectedSet.contains(EXPECTED.PARSE_EXCEPTION)) {
             Assertions.assertThrows(ParseException.class, sutMethod);
             return;
-        } else if (testState.expectedSet.contains(EXPECTED.NO_EXCEPTION)){
+        } else if (testState.expectedSet.contains(EXPECTED.NO_EXCEPTION)) {
             sutMethod.execute();
             /* Assert that only the set properties are set */
             for (String property : ConfigurationsITClasses.AVAILABLE_ATTRIBUTES) {
@@ -126,7 +131,7 @@ public class ConfigurationsIT {
                 } else {
                     expected = null;
                 }
-                actual = ((WithGeneralGetter) testState.obj).generalGetter(property);
+                actual = ((DeepestInterface) testState.obj).generalGetter(property);
                 Assertions.assertEquals(expected, actual);
             }
             return;
