@@ -1,6 +1,7 @@
 package org.apache.openjpa.lib.util;
 
 import org.apache.openjpa.lib.conf.Configurations;
+import org.apache.openjpa.lib.util.ConfigurationsITClasses.WithGeneralGetter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,9 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class ConfigurationsIT {
@@ -30,7 +29,7 @@ public class ConfigurationsIT {
                 null,
                 null,
                 null,
-                EXPECTED.RUNTIME_EXCEPTION,
+                EnumSet.of(EXPECTED.RUNTIME_EXCEPTION),
                 false
         ));
 
@@ -40,7 +39,7 @@ public class ConfigurationsIT {
                 A2_NUMBER_OF_SETTABLE_PROPERTIES.LESS_THAN_PROPERTIES_SIZE_MINUS_1,
                 null,
                 null,
-                EXPECTED.NO_ACTIVATION,
+                EnumSet.of(EXPECTED.PARSE_EXCEPTION, EXPECTED.NO_MESSAGE),
                 false
         ));
 
@@ -50,7 +49,7 @@ public class ConfigurationsIT {
                 A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE,
                 null,
                 null,
-                EXPECTED.NO_ACTIVATION,
+                EnumSet.of(EXPECTED.NO_EXCEPTION),
                 false
         ));
 
@@ -60,7 +59,7 @@ public class ConfigurationsIT {
                 A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE_MINUS_1,
                 A3_OBJ_DEPTH.GREATER_THAN_ZERO,
                 null,
-                EXPECTED.NO_ACTIVATION,
+                EnumSet.of(EXPECTED.PARSE_EXCEPTION, EXPECTED.NO_MESSAGE),
                 false
         ));
 
@@ -70,7 +69,7 @@ public class ConfigurationsIT {
                 A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE_MINUS_1,
                 A3_OBJ_DEPTH.ZERO,
                 A4_NEAR_MISS_SETTER_PRESENT.NO,
-                EXPECTED.ACTIVATION_NOT_FOUND,
+                EnumSet.of(EXPECTED.PARSE_EXCEPTION, EXPECTED.NO_MESSAGE),
                 false
         ));
 
@@ -80,7 +79,7 @@ public class ConfigurationsIT {
                 A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE_MINUS_1,
                 A3_OBJ_DEPTH.ZERO,
                 A4_NEAR_MISS_SETTER_PRESENT.YES,
-                EXPECTED.ACTIVATION_FOUND,
+                EnumSet.of(EXPECTED.PARSE_EXCEPTION, EXPECTED.MESSAGE),
                 false
         ));
 
@@ -88,7 +87,8 @@ public class ConfigurationsIT {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            activeArguments.add(Arguments.of(state));
+            if (state.description.contains("#02"))
+                activeArguments.add(Arguments.of(state));
         }
 
         return activeArguments.stream();
@@ -110,12 +110,31 @@ public class ConfigurationsIT {
                     "test properties");
         };
 
-        if (testState.expected == EXPECTED.RUNTIME_EXCEPTION) {
+        if (testState.expectedSet.contains(EXPECTED.RUNTIME_EXCEPTION)) {
             Assertions.assertThrows(RuntimeException.class, sutMethod);
+            return;
+        } else if (testState.expectedSet.contains(EXPECTED.PARSE_EXCEPTION)){
+            Assertions.assertThrows(ParseException.class, sutMethod);
+            return;
+        } else if (testState.expectedSet.contains(EXPECTED.NO_EXCEPTION)){
+            sutMethod.execute();
+            /* Assert that only the set properties are set */
+            for (String property : ConfigurationsITClasses.AVAILABLE_ATTRIBUTES) {
+                Integer expected, actual;
+                if (testState.properties.containsKey(property)) {
+                    expected = new Integer(testState.properties.getProperty(property));
+                } else {
+                    expected = null;
+                }
+                actual = ((WithGeneralGetter) testState.obj).generalGetter(property);
+                Assertions.assertEquals(expected, actual);
+            }
             return;
         }
 
-        sutMethod.execute();
+        throw new IllegalStateException(String.format(
+                "Unexpected teststate.expected: %s", testState.expectedSet
+        ));
     }
 
 
@@ -137,7 +156,9 @@ public class ConfigurationsIT {
     }
 
     public enum EXPECTED {
-        RUNTIME_EXCEPTION, NO_ACTIVATION, ACTIVATION_NOT_FOUND, ACTIVATION_FOUND
+        RUNTIME_EXCEPTION,
+        PARSE_EXCEPTION, MESSAGE, NO_MESSAGE,
+        NO_EXCEPTION
     }
 
     public static class TestState {
@@ -146,20 +167,20 @@ public class ConfigurationsIT {
         A2_NUMBER_OF_SETTABLE_PROPERTIES a2;
         A3_OBJ_DEPTH a3;
         A4_NEAR_MISS_SETTER_PRESENT a4;
-        EXPECTED expected;
+        EnumSet<EXPECTED> expectedSet;
         boolean successful;
 
         Object obj;
         Properties properties;
 
         public TestState(String description, A1_EXCEPTION a1, A2_NUMBER_OF_SETTABLE_PROPERTIES a2, A3_OBJ_DEPTH a3,
-                         A4_NEAR_MISS_SETTER_PRESENT a4, EXPECTED expected, boolean successful) {
+                         A4_NEAR_MISS_SETTER_PRESENT a4, EnumSet<EXPECTED> expectedSet, boolean successful) {
             this.description = description;
             this.a1 = a1;
             this.a2 = a2;
             this.a3 = a3;
             this.a4 = a4;
-            this.expected = expected;
+            this.expectedSet = expectedSet;
             this.successful = successful;
         }
     }
