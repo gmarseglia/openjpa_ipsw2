@@ -4,10 +4,7 @@ import org.apache.openjpa.lib.util.ConfigurationsIT.A1_EXCEPTION;
 import org.apache.openjpa.lib.util.ConfigurationsIT.A2_NUMBER_OF_SETTABLE_PROPERTIES;
 import org.apache.openjpa.lib.util.ConfigurationsIT.A3_OBJ_DEPTH;
 import org.apache.openjpa.lib.util.ConfigurationsIT.TestState;
-import org.apache.openjpa.lib.util.ConfigurationsITClasses.Deepest1;
-import org.apache.openjpa.lib.util.ConfigurationsITClasses.Deepest12;
-import org.apache.openjpa.lib.util.ConfigurationsITClasses.Deepest123;
-import org.apache.openjpa.lib.util.ConfigurationsITClasses.Intermediate12;
+import org.apache.openjpa.lib.util.ConfigurationsITClasses.*;
 
 import java.util.Properties;
 
@@ -53,8 +50,14 @@ public class ConfigurationsITConfigurer {
             testState.obj = new Intermediate12();
             return;
         } else if (testState.a2 == A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE_MINUS_1 &&
-                testState.a3 == A3_OBJ_DEPTH.ZERO) {
+                testState.a3 == A3_OBJ_DEPTH.ZERO &&
+                testState.a4 == ConfigurationsIT.A4_NEAR_MISS_SETTER_PRESENT.NO) {
             testState.obj = new Deepest12();
+            return;
+        } else if (testState.a2 == A2_NUMBER_OF_SETTABLE_PROPERTIES.EQUAL_AS_PROPERTIES_SIZE_MINUS_1 &&
+                testState.a3 == A3_OBJ_DEPTH.ZERO &&
+                testState.a4 == ConfigurationsIT.A4_NEAR_MISS_SETTER_PRESENT.YES) {
+            testState.obj = new Deepest12Near3();
             return;
         }
 

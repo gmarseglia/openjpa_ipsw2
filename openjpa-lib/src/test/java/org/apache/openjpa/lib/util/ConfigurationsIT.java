@@ -90,7 +90,7 @@ public class ConfigurationsIT {
             if (!state.successful)
                 if (("pitest".equals(envFlag) || "onlySuccess".equals(envFlag)))
                     continue;
-            if (true || state.description.contains("#02"))
+            if (true || state.description.contains("#05"))
                 activeArguments.add(Arguments.of(state));
         }
 
@@ -119,7 +119,8 @@ public class ConfigurationsIT {
             Assertions.assertThrows(RuntimeException.class, sutMethod);
             return;
         } else if (testState.expectedSet.contains(EXPECTED.PARSE_EXCEPTION)) {
-            Assertions.assertThrows(ParseException.class, sutMethod);
+            ParseException e = Assertions.assertThrows(ParseException.class, sutMethod);
+            logger.info(String.format("ParseException caught, e.getMessage(): %s", e.getMessage()));
             return;
         } else if (testState.expectedSet.contains(EXPECTED.NO_EXCEPTION)) {
             sutMethod.execute();

@@ -60,6 +60,20 @@ public class ConfigurationsITClasses {
         }
     }
 
+    public static class Deepest12Near3 extends DeepestBase {
+        public void setFirst(int first) {
+            this.first = first;
+        }
+
+        public void setSecond(int second) {
+            this.second = second;
+        }
+
+        public void setThird2(int third) {
+            this.third = third;
+        }
+    }
+
 
     public static class Intermediate12 {
         DeepestInterface deepest;
